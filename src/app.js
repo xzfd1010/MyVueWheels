@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import GButton from './g-button'
 
-Vue.component('g-button', GButton)
+Vue.component('my-button', GButton)
 
 new Vue({
   el: '#app'

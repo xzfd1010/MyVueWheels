@@ -2,7 +2,7 @@
   "name": "my-vue-wheels",
   "version": "1.0.0",
   "description": "vue轮子",
-  "main": "index.js",
+  "main": "index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
