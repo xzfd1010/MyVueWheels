@@ -24,7 +24,7 @@
       --border-radius: 4px;
       --color: #333;
       --border-color: #999;
-      --border-color-hover: #666;
+      --border-color-hover: red;
     }
   </style>
 </head>
@@ -39,9 +39,13 @@
   <my-button icon="settings" icon-position="right" :loading="loading3" @click="loading3=!loading3">
     按钮
   </my-button>
-  <icon name="download"></icon>
+  <my-button-group>
+    <my-button icon="left">上一页</my-button>
+    <my-button>更多</my-button>
+    <my-button icon="right" icon-position="right">下一页</my-button>
+  </my-button-group>
 </div>
 <script src="./src/app.js"></script>
-<script src="//at.alicdn.com/t/font_1443855_osiljcg0cql.js"></script>
+<script src="//at.alicdn.com/t/font_1443855_udeyoowrhf.js"></script>
 </body>
 </html>
