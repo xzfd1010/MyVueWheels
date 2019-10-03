@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/xzfd1010/MyVueWheels/issues"
   },
-  "homepage": "https://github.com/xzfd1010/MyVueWheels#readme"
+  "homepage": "https://github.com/xzfd1010/MyVueWheels#readme",
+  "dependencies": {
+    "vue": "^2.6.10"
+  }
 }
