@@ -6,5 +6,12 @@ Vue.component('my-button', GButton)
 Vue.component('icon', Icon)
 
 new Vue({
-  el: '#app'
+  el: '#app',
+  data () {
+    return {
+      loading1: true,
+      loading2: true,
+      loading3: true
+    }
+  }
 })
