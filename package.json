@@ -1,0 +1,19 @@
+{
+  "name": "my-vue-wheels",
+  "version": "1.0.0",
+  "description": "vue轮子",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xzfd1010/MyVueWheels.git"
+  },
+  "author": "Nick",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/xzfd1010/MyVueWheels/issues"
+  },
+  "homepage": "https://github.com/xzfd1010/MyVueWheels#readme"
+}
