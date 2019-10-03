@@ -12,7 +12,16 @@
 <script>
   export default {
     name: 'g-button',
-    props: ['icon', 'iconPosition']
+    props: {
+      icon: {},
+      iconPosition: {
+        type: String,
+        default: 'left',
+        validator (value) {
+          return value === 'left' || value === 'right'
+        }
+      }
+    }
   }
 </script>
 
