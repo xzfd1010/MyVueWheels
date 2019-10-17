@@ -67,8 +67,13 @@ describe('Input', () => {
         const callback = sinon.fake()
         vm.$on(eventName, callback) // 组件绑定事件
         const event = new Event(eventName)
+        Object.defineProperty(
+          event, 'target', {
+            value: { value: 'hi' }, enumerable: true
+          }
+        )
         inputElement.dispatchEvent(event)
-        expect(callback).to.be.calledWith(event)
+        expect(callback).to.be.calledWith('hi')
       })
     })
   })
