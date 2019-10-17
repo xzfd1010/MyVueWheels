@@ -2,8 +2,8 @@ const expect = chai.expect
 import Vue from 'vue'
 import Button from '../src/button'
 
-Vue.config.productionTip = false
-Vue.config.devtools = false
+Vue.config.productionTip = false // 阻止生产环境提示
+Vue.config.devtools = false // 是否允许devtools检查代码
 
 describe('Button', () => {
   it('存在.', () => {
