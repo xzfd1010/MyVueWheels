@@ -31,9 +31,39 @@
       margin: 20px;
     }
   </style>
+  <style>
+    .demo {
+      background: #ddd;
+      border: 1px solid #666;
+      height: 100px;
+    }
+  </style>
 </head>
 <body>
 <div id="app">
+  <!-- my-row的测试用例 -->
+  <my-row>
+    <my-col span="24" :ipad="{span:12}" :narrow-pc="{span:8}">
+      <div class="demo"></div>
+    </my-col>
+    <my-col span="24" :ipad="{span:12}" :narrow-pc="{span:8}">
+      <div class="demo"></div>
+    </my-col>
+    <my-col span="24" :ipad="{span:12}" :narrow-pc="{span:8}">
+      <div class="demo"></div>
+    </my-col>
+    <my-col span="24" :ipad="{span:12}" :narrow-pc="{span:8}">
+      <div class="demo"></div>
+    </my-col>
+    <my-col span="24" :ipad="{span:12}" :narrow-pc="{span:8}">
+      <div class="demo"></div>
+    </my-col>
+    <my-col span="24" :ipad="{span:12}" :narrow-pc="{span:8}">
+      <div class="demo"></div>
+    </my-col>
+  </my-row>
+
+
   <!--  <my-row :gutter="20" align="right">-->
   <!--    <my-col>1</my-col>-->
   <!--    <my-col>2</my-col>-->
@@ -49,46 +79,44 @@
   <!--    <my-col>3</my-col>-->
   <!--    <my-col>4</my-col>-->
   <!--  </my-row>-->
-  <my-row :gutter="20">
-    <my-col span="2"
-            :phone="{span:24}"
-            :ipad="{span:12}"
-            :narrow-pc="{span:8}"
-            :pc="{span:4}"
-            :wide-pc="{span:2}">2
-    </my-col>
-    <my-col span="22"
-            :phone="{span:24}"
-            :ipad="{span:12}"
-            :narrow-pc="{span:16}"
-            :pc="{span:20}"
-            :wide-pc="{span:22}">22
-    </my-col>
-  </my-row>
-  <div class="box">
-    <my-input value="张三"></my-input>
-    <my-input value="李四" disabled></my-input>
-    <my-input value="王五" readonly></my-input>
-  </div>
-  <div class="box">
-    <my-input value="赵" error="请输入姓名"></my-input>
-  </div>
-  <div class="box">
-    <my-button :loading="loading1" @click="loading1=!loading1">
-      按钮
-    </my-button>
-    <my-button icon="settings" :loading="loading2" @click="loading2=!loading2">
-      按钮
-    </my-button>
-    <my-button icon="settings" icon-position="right" :loading="loading3" @click="loading3=!loading3">
-      按钮
-    </my-button>
-    <my-button-group>
-      <my-button icon="left">上一页</my-button>
-      <my-button>更多</my-button>
-      <my-button icon="right" icon-position="right">下一页</my-button>
-    </my-button-group>
-  </div>
+  <!--  <my-row :gutter="20">-->
+  <!--    <my-col span="2"-->
+  <!--            :ipad="{span:12}"-->
+  <!--            :narrow-pc="{span:8}"-->
+  <!--            :pc="{span:4}"-->
+  <!--            :wide-pc="{span:2}">2-->
+  <!--    </my-col>-->
+  <!--    <my-col span="22"-->
+  <!--            :ipad="{span:12}"-->
+  <!--            :narrow-pc="{span:16}"-->
+  <!--            :pc="{span:20}"-->
+  <!--            :wide-pc="{span:22}">22-->
+  <!--    </my-col>-->
+  <!--  </my-row>-->
+  <!--  <div class="box">-->
+  <!--    <my-input value="张三"></my-input>-->
+  <!--    <my-input value="李四" disabled></my-input>-->
+  <!--    <my-input value="王五" readonly></my-input>-->
+  <!--  </div>-->
+  <!--  <div class="box">-->
+  <!--    <my-input value="赵" error="请输入姓名"></my-input>-->
+  <!--  </div>-->
+  <!--  <div class="box">-->
+  <!--    <my-button :loading="loading1" @click="loading1=!loading1">-->
+  <!--      按钮-->
+  <!--    </my-button>-->
+  <!--    <my-button icon="settings" :loading="loading2" @click="loading2=!loading2">-->
+  <!--      按钮-->
+  <!--    </my-button>-->
+  <!--    <my-button icon="settings" icon-position="right" :loading="loading3" @click="loading3=!loading3">-->
+  <!--      按钮-->
+  <!--    </my-button>-->
+  <!--    <my-button-group>-->
+  <!--      <my-button icon="left">上一页</my-button>-->
+  <!--      <my-button>更多</my-button>-->
+  <!--      <my-button icon="right" icon-position="right">下一页</my-button>-->
+  <!--    </my-button-group>-->
+  <!--  </div>-->
 </div>
 <script src="./src/app.js"></script>
 </body>
