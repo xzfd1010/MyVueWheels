@@ -1,13 +1,18 @@
 <template>
-
+  <div class="row">
+    <slot></slot>
+  </div>
 </template>
 
 <script>
   export default {
-    name: 'row'
+    name: 'my-row'
   }
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+  .row {
+    width: 100%;
+    display: flex;
+  }
 </style>

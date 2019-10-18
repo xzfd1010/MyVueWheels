@@ -11,11 +11,11 @@
       padding: 0;
       box-sizing: border-box;
     }
-    
+
     #app {
       margin: 20px;
     }
-    
+
     html {
       --button-height: 32px;
       --font-size: 14px;
@@ -26,13 +26,33 @@
       --border-color: #999;
       --border-color-hover: #666;
     }
-    .box{
+
+    .box {
       margin: 20px;
     }
   </style>
 </head>
 <body>
 <div id="app">
+  <my-row>
+    <my-col>1</my-col>
+    <my-col>2</my-col>
+  </my-row>
+  <my-row>
+    <my-col>1</my-col>
+    <my-col>2</my-col>
+    <my-col>3</my-col>
+  </my-row>
+  <my-row>
+    <my-col>1</my-col>
+    <my-col>2</my-col>
+    <my-col>3</my-col>
+    <my-col>4</my-col>
+  </my-row>
+  <my-row>
+    <my-col span="2">2</my-col>
+    <my-col span="22">22</my-col>
+  </my-row>
   <div class="box">
     <my-input value="张三"></my-input>
     <my-input value="李四" disabled></my-input>
