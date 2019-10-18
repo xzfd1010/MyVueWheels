@@ -42,7 +42,7 @@
 
 <style scoped lang="scss">
   .col {
-    width: 50%;
+    /*width: 50%;*/
     height: 50px;
     > div {
       background: gray;
