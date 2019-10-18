@@ -43,6 +43,7 @@
 <style scoped lang="scss">
   .row {
     display: flex;
+    flex-wrap: wrap;
     width: 100%;
     &.align-left {
       justify-content: flex-start;

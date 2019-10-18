@@ -34,24 +34,36 @@
 </head>
 <body>
 <div id="app">
-  <my-row :gutter="20" align="right">
-    <my-col>1</my-col>
-    <my-col>2</my-col>
-  </my-row>
+  <!--  <my-row :gutter="20" align="right">-->
+  <!--    <my-col>1</my-col>-->
+  <!--    <my-col>2</my-col>-->
+  <!--  </my-row>-->
+  <!--  <my-row :gutter="20">-->
+  <!--    <my-col>1</my-col>-->
+  <!--    <my-col>2</my-col>-->
+  <!--    <my-col>3</my-col>-->
+  <!--  </my-row>-->
+  <!--  <my-row :gutter="20">-->
+  <!--    <my-col>1</my-col>-->
+  <!--    <my-col>2</my-col>-->
+  <!--    <my-col>3</my-col>-->
+  <!--    <my-col>4</my-col>-->
+  <!--  </my-row>-->
   <my-row :gutter="20">
-    <my-col>1</my-col>
-    <my-col>2</my-col>
-    <my-col>3</my-col>
-  </my-row>
-  <my-row :gutter="20">
-    <my-col>1</my-col>
-    <my-col>2</my-col>
-    <my-col>3</my-col>
-    <my-col>4</my-col>
-  </my-row>
-  <my-row :gutter="20">
-    <my-col span="2">2</my-col>
-    <my-col span="22">22</my-col>
+    <my-col span="2"
+            :phone="{span:24}"
+            :ipad="{span:12}"
+            :narrow-pc="{span:8}"
+            :pc="{span:4}"
+            :wide-pc="{span:2}">2
+    </my-col>
+    <my-col span="22"
+            :phone="{span:24}"
+            :ipad="{span:12}"
+            :narrow-pc="{span:16}"
+            :pc="{span:20}"
+            :wide-pc="{span:22}">22
+    </my-col>
   </my-row>
   <div class="box">
     <my-input value="张三"></my-input>
