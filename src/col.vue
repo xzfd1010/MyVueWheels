@@ -43,7 +43,7 @@
           classes.push(`col-${prefix}${spanAndOffset.span}`)
         }
         if (spanAndOffset.offset) {
-          classes.push(`col-${prefix}${spanAndOffset.offset}`)
+          classes.push(`offset-${prefix}${spanAndOffset.offset}`)
         }
         return classes
       }
