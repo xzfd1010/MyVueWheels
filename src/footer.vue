@@ -1,13 +1,17 @@
 <template>
-
+  <div class="footer">
+    <slot></slot>
+  </div>
 </template>
 
 <script>
   export default {
-    name: 'footer'
+    name: 'my-footer'
   }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+  .footer{
 
+  }
 </style>
