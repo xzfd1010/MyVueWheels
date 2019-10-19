@@ -40,6 +40,17 @@
   </style>
 </head>
 <body>
+<!-- 样式必须在这覆盖 -->
+<style>
+  .sider {
+    background: #333;
+    width: 150px;
+  }
+
+  .sider.slide-enter, .sider.slide-leave-to {
+    margin-left: -150px;
+  }
+</style>
 <div id="app">
   <!-- 布局1 -->
   <!--  <my-layout style="height: 100vh;">-->
