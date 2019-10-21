@@ -39,15 +39,17 @@ new Vue({
     }
   },
   created () {
-    this.$toast('<p>haha</p>', {
+    this.$toast({
+      message: '确定关闭吗？',
       autoClose: false,
       enableHtml: true,
       closeButton: {
-        text: '知道了',
+        text: '是的',
         callback () {
-          console.log('知道了')
+          console.log('关闭')
         }
       },
+      position: 'bottom'
     })
   }
 })
