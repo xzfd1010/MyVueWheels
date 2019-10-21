@@ -36,9 +36,18 @@ new Vue({
   },
   methods: {
     showToast () {
-      this.$toast('toast message')
     }
   },
-  mounted () {
+  created () {
+    this.$toast('<p>haha</p>', {
+      autoClose: false,
+      enableHtml: true,
+      closeButton: {
+        text: '知道了',
+        callback () {
+          console.log('知道了')
+        }
+      },
+    })
   }
 })
