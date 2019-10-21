@@ -59,23 +59,27 @@
   <!--    <my-footer class="demo">footer</my-footer>-->
   <!--  </my-layout>-->
   <!-- 布局2 -->
-  <!--  <my-layout style="height: 100vh;">-->
-  <!--    <my-header class="demo">header</my-header>-->
-  <!--    <my-layout>-->
-  <!--      <my-sider>sider</my-sider>-->
-  <!--      <my-content class="demo">content</my-content>-->
-  <!--    </my-layout>-->
-  <!--    <my-footer class="demo">footer</my-footer>-->
-  <!--  </my-layout>-->
-  <!-- 布局3 -->
   <my-layout style="height: 100vh;">
-    <my-sider>sider</my-sider>
-    <my-layout>
-      <my-header class="demo">header</my-header>
-      <my-content class="demo">content</my-content>
-      <my-footer class="demo">footer</my-footer>
-    </my-layout>
+    <my-header class="demo">header</my-header>
+    <my-content>
+      <my-layout style="height: 100%;">
+        <my-sider>sider</my-sider>
+        <my-content>content</my-content>
+      </my-layout>
+    </my-content>
+    <my-footer class="demo">footer</my-footer>
   </my-layout>
+  <!-- 布局3 -->
+  <!--  <my-layout style="height: 100vh;">-->
+  <!--    <my-sider>sider</my-sider>-->
+  <!--    <my-content>-->
+  <!--      <my-layout>-->
+  <!--        <my-header class="demo">header</my-header>-->
+  <!--        <my-content class="demo">content</my-content>-->
+  <!--        <my-footer class="demo">footer</my-footer>-->
+  <!--      </my-layout>-->
+  <!--    </my-content>-->
+  <!--  </my-layout>-->
 
   <!-- my-row的测试用例 -->
   <!--  <my-row>-->
