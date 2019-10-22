@@ -36,20 +36,21 @@ new Vue({
   },
   methods: {
     showToast () {
+      this.$toast({
+        message: `${Math.floor(+Math.random() * 100)}确定关闭吗？`,
+        autoClose: false,
+        enableHtml: true,
+        closeButton: {
+          text: '是的',
+          callback () {
+            console.log('关闭')
+          }
+        },
+        position: 'middle'
+      })
     }
   },
   created () {
-    this.$toast({
-      message: '确定关闭吗？',
-      autoClose: false,
-      enableHtml: true,
-      closeButton: {
-        text: '是的',
-        callback () {
-          console.log('关闭')
-        }
-      },
-      position: 'bottom'
-    })
+
   }
 })
