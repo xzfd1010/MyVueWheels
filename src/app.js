@@ -35,7 +35,7 @@ new Vue({
     }
   },
   methods: {
-    showToast () {
+    showToast (position) {
       this.$toast({
         message: `${Math.floor(+Math.random() * 100)}确定关闭吗？`,
         autoClose: false,
@@ -46,7 +46,7 @@ new Vue({
             console.log('关闭')
           }
         },
-        position: 'middle'
+        position: position
       })
     }
   },

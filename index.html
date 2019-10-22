@@ -26,22 +26,13 @@
       --border-color: #999;
       --border-color-hover: #666;
     }
-
-    .box {
-      /*margin: 20px;*/
-    }
-  </style>
-  <style>
-    .demo {
-      background: #ddd;
-      border: 1px solid #666;
-      height: 100px;
-    }
   </style>
 </head>
 <body>
 <div id="app">
-  <button @click="showToast">点我</button>
+  <my-button @click="showToast('top')">top</my-button>
+  <my-button @click="showToast('middle')">middle</my-button>
+  <my-button @click="showToast('bottom')">bottom</my-button>
 </div>
 <script src="./src/app.js"></script>
 </body>
