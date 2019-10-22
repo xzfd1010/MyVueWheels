@@ -64,6 +64,7 @@
       },
       close () {
         this.$el.remove() // destroy不会删掉元素
+        this.$emit('close')
         this.$destroy()
       },
       onClickClose () {

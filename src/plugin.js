@@ -7,12 +7,18 @@ export default {
       if (currentToast) {
         currentToast.close()
       }
-      currentToast = createToast({ Vue, toastOptions })
+      currentToast = createToast({
+        Vue,
+        toastOptions,
+        onClose: () => {
+          currentToast = null
+        }
+      })
     }
   }
 }
 
-function createToast ({ Vue, toastOptions }) {
+function createToast ({ Vue, toastOptions, onClose }) {
   if (typeof toastOptions === 'string') {
     toastOptions = {
       message: toastOptions
@@ -25,7 +31,7 @@ function createToast ({ Vue, toastOptions }) {
   })
 
   // toast.$slots.default = [message]
-
+  toast.$on('close', onClose)
   toast.$mount()
 
   document.body.appendChild(toast.$el)
