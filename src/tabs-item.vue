@@ -31,7 +31,7 @@
     methods: {
       changeTab () {
         // 切换tab
-        this.eventBus.$emit('update:selected', this.name)
+        this.eventBus.$emit('update:selected', this.name, this)
       }
     },
     created () {
@@ -44,6 +44,7 @@
 </script>
 
 <style scoped lang="scss">
+  $blue: deepskyblue;
   .tabs-item {
     display: flex;
     align-items: center;
@@ -52,9 +53,9 @@
     padding: 0 2em;
     cursor: pointer;
     height: 100%;
-    border: 1px solid green;
     &.active {
-      background: red;
+      color: $blue;
+      font-weight: bold;
     }
   }
 </style>
