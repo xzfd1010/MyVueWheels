@@ -34,7 +34,7 @@ describe('Toast', () => {
         done()
       }, 1500)
     })
-    it('接受 closeButton', () => {
+    it('接受 closeButton', (done) => {
       const callback = sinon.fake()
       const Constructor = Vue.extend(Toast)
       const vm = new Constructor({
@@ -47,8 +47,11 @@ describe('Toast', () => {
       }).$mount()
       let closeButton = vm.$el.querySelector('.close')
       expect(closeButton.innerText.trim()).to.eq('关闭吧')
-      closeButton.click()
-      expect(callback).to.have.been.called
+      setTimeout(() => {
+        closeButton.click()
+        expect(callback).to.have.been.called
+        done()
+      }, 200)
     })
     it('接受 enableHtml和html形式的message', () => {
       let html = '<p id="content">html内容</p>'
