@@ -5,6 +5,8 @@
 </template>
 
 <script>
+  import Vue from 'vue'
+
   export default {
     name: 'tabs',
     props: {
@@ -20,9 +22,18 @@
         }
       }
     },
+    data () {
+      return {
+        eventBus: new Vue()
+      }
+    },
+    provide () {
+      return { eventBus: this.eventBus }
+    },
     created () {
-      // todo 需要触发
-      // this.$emit('update:selected','xxx')
+      this.eventBus.$on('update:selected', (value) => {
+        this.$emit('update:selected', value) // 把value传递出去
+      })
     }
   }
 </script>

@@ -30,7 +30,7 @@
 </head>
 <body>
 <div id="app">
-  <tabs :selected="selectedTab">
+  <tabs :selected.sync="selectedTab">
     <tabs-head>
       <template slot="actions">
         <my-button>编辑</my-button>
@@ -38,7 +38,7 @@
       <tabs-item name="woman">
         <icon name="settings"></icon>美女
       </tabs-item>
-      <tabs-item names="finance" disabled>
+      <tabs-item name="finance" disabled>
         财经
       </tabs-item>
     </tabs-head>
