@@ -31,6 +31,9 @@
       return { eventBus: this.eventBus }
     },
     mounted () {
+      if (this.$children.length === 0) {
+        throw new Error('tabs的子组件应该是 tabs-head 和 tabs-nav，但你没有写子组件')
+      }
       // 初始化
       this.$children.forEach(vm => {
         if (vm.$options.name === 'tabs-head') {
