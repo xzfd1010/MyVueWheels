@@ -45,7 +45,7 @@ new Vue({
       loading1: true,
       loading2: true,
       loading3: true,
-      selectedTab: 'finance'
+      selectedTab: 'woman'
     }
   },
   methods: {

@@ -25,12 +25,13 @@
     },
     computed: {
       classes () {
-        return { active: this.active }
+        return { active: this.active, disabled: this.disabled }
       }
     },
     methods: {
       changeTab () {
         // 切换tab
+        if (this.disabled) return
         this.eventBus.$emit('update:selected', this.name, this)
       }
     },
@@ -45,6 +46,7 @@
 
 <style scoped lang="scss">
   $blue: deepskyblue;
+  $disabled-text-color: #666;
   .tabs-item {
     display: flex;
     align-items: center;
@@ -56,6 +58,10 @@
     &.active {
       color: $blue;
       font-weight: bold;
+    }
+    &.disabled {
+      color: $disabled-text-color;
+      cursor: not-allowed;
     }
   }
 </style>
