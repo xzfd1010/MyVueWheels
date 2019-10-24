@@ -30,10 +30,9 @@
     provide () {
       return { eventBus: this.eventBus }
     },
-    created () {
-      this.eventBus.$on('update:selected', (value) => {
-        this.$emit('update:selected', value) // 把value传递出去
-      })
+    mounted () {
+      // 初始化
+      this.eventBus.$emit('update:selected', this.selected)
     }
   }
 </script>

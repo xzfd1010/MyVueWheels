@@ -1,5 +1,5 @@
 <template>
-  <div class="tabs-item" @click="xxx">
+  <div class="tabs-item" @click="changeTab" :class="classes">
     <slot></slot>
   </div>
 </template>
@@ -18,21 +18,38 @@
         required: true
       }
     },
+    data () {
+      return {
+        active: false
+      }
+    },
+    computed: {
+      classes () {
+        return { active: this.active }
+      }
+    },
     methods: {
-      xxx () {
-        // 触发事件
+      changeTab () {
+        // 切换tab
         this.eventBus.$emit('update:selected', this.name)
       }
     },
     created () {
       // 监听事件
       this.eventBus.$on('update:selected', (name) => {
-        console.log(name)
+        this.active = name === this.name
       })
     }
   }
 </script>
 
 <style scoped lang="scss">
-
+  .tabs-item {
+    /*flex-grow: 1;*/
+    flex-shrink: 0;
+    padding: 0 2em;
+    &.active {
+      background: red;
+    }
+  }
 </style>

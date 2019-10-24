@@ -49,9 +49,6 @@ new Vue({
     }
   },
   methods: {
-    yyy () {
-      console.log('yyy')
-    },
     showToast (position) {
       this.$toast({
         message: `${Math.floor(+Math.random() * 100)}确定关闭吗？`,
