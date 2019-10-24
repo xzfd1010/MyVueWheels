@@ -12,6 +12,13 @@ import Sider from './sider'
 import Footer from './footer'
 import plugin from './plugin'
 
+// tab
+import Tabs from './tabs'
+import TabsHead from './tabs-head'
+import TabsBody from './tabs-body'
+import TabsItem from './tabs-item'
+import TabsPane from './tabs-pane'
+
 Vue.component('my-button', Button)
 Vue.component('icon', Icon)
 Vue.component('my-button-group', ButtonGroup)
@@ -25,13 +32,20 @@ Vue.component('my-content', Content)
 Vue.component('my-sider', Sider)
 Vue.use(plugin)
 
+Vue.component('tabs', Tabs)
+Vue.component('tabs-head', TabsHead)
+Vue.component('tabs-body', TabsBody)
+Vue.component('tabs-item', TabsItem)
+Vue.component('tabs-pane', TabsPane)
+
 new Vue({
   el: '#app',
   data () {
     return {
       loading1: true,
       loading2: true,
-      loading3: true
+      loading3: true,
+      selectedTab: 'woman'
     }
   },
   methods: {

@@ -30,9 +30,27 @@
 </head>
 <body>
 <div id="app">
-  <my-button @click="showToast('top')">top</my-button>
-  <my-button @click="showToast('middle')">middle</my-button>
-  <my-button @click="showToast('bottom')">bottom</my-button>
+  <tabs :selected="selectedTab">
+    <tabs-head>
+      <template slot="actions">
+        <my-button>编辑</my-button>
+      </template>
+      <tabs-item name="woman">
+        <icon name="settings"></icon>美女
+      </tabs-item>
+      <tabs-item names="finance" disabled>
+        财经
+      </tabs-item>
+    </tabs-head>
+    <tabs-body>
+      <tabs-pane name="woman">
+        美女相关资讯
+      </tabs-pane>
+      <tabs-pane name="finance">
+        财经相关资讯
+      </tabs-pane>
+    </tabs-body>
+  </tabs>
 </div>
 <script src="./src/app.js"></script>
 </body>
