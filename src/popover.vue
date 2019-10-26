@@ -34,24 +34,29 @@
       positionContent () {
         const { contentWrapper, triggerWrapper } = this.$refs
         document.body.appendChild(contentWrapper)
-        let position = triggerWrapper.getBoundingClientRect()
-        let { height } = contentWrapper.getBoundingClientRect()
-        if (this.position === 'top') {
-          contentWrapper.style.left = (window.scrollX + position.left) + 'px'
-          contentWrapper.style.top = (window.scrollY + position.top) + 'px'
-        } else if (this.position === 'bottom') {
-          contentWrapper.style.left = (window.scrollX + position.left) + 'px'
-          contentWrapper.style.top = (window.scrollY + position.top + position.height) + 'px'
-        } else if (this.position === 'left') {
-          let diff = (position.height - height) / 2
-          contentWrapper.style.left = (window.scrollX + position.left) + 'px'
-          contentWrapper.style.top = (window.scrollY + position.top + diff) + 'px'
-        } else if (this.position === 'right') {
-          let diff = (position.height - height) / 2
-          contentWrapper.style.left = (window.scrollX + position.left + position.width) + 'px'
-          contentWrapper.style.top = (window.scrollY + position.top + diff) + 'px'
+        const { left, top, width, height } = triggerWrapper.getBoundingClientRect()
+        const { height: height2 } = contentWrapper.getBoundingClientRect()
+        let diff = (height - height2) / 2
+        let x = {
+          top: {
+            left: window.scrollX + left,
+            top: window.scrollY + top
+          },
+          bottom: {
+            left: window.scrollX + left,
+            top: window.scrollY + top + height
+          },
+          left: {
+            left: window.scrollX + left,
+            top: window.scrollY + top + diff
+          },
+          right: {
+            left: window.scrollX + left + width,
+            top: window.scrollY + top + diff
+          }
         }
-
+        contentWrapper.style.left = x[this.position].left + 'px'
+        contentWrapper.style.top = x[this.position].top + 'px'
       },
       open () {
         this.visible = true
