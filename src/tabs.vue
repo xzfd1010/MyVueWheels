@@ -30,20 +30,28 @@
     provide () {
       return { eventBus: this.eventBus }
     },
-    mounted () {
-      if (this.$children.length === 0) {
-        throw new Error('tabs的子组件应该是 tabs-head 和 tabs-nav，但你没有写子组件')
-      }
-      // 初始化
-      this.$children.forEach(vm => {
-        if (vm.$options.name === 'tabs-head') {
-          vm.$children.forEach(childVm => {
-            if (childVm.$options.name === 'tabs-item' && childVm.name === this.selected) {
-              this.eventBus.$emit('update:selected', this.selected, childVm)
-            }
-          })
+    methods: {
+      checkChildren () {
+        if (this.$children.length === 0) {
+          throw new Error('tabs的子组件应该是 tabs-head 和 tabs-nav，但你没有写子组件')
         }
-      })
+      },
+      selectTab () {
+        this.$children.forEach(vm => {
+          if (vm.$options.name === 'tabs-head') {
+            vm.$children.forEach(childVm => {
+              if (childVm.$options.name === 'tabs-item' && childVm.name === this.selected) {
+                this.eventBus.$emit('update:selected', this.selected, childVm)
+              }
+            })
+          }
+        })
+      }
+    },
+    mounted () {
+      this.checkChildren()
+      // 初始化
+      this.selectTab()
     }
   }
 </script>
