@@ -1,8 +1,10 @@
 <template>
   <div class="popover" ref="popover">
-    <div class="content-wrapper" ref="contentWrapper" v-if="visible" :class="{[`position-${position}`]:true}">
-      <slot name="content" :close="close"></slot>
-    </div>
+    <transition name="fade">
+      <div class="content-wrapper" ref="contentWrapper" v-show="visible" :class="{[`position-${position}`]:true}">
+        <slot name="content" :close="close"></slot>
+      </div>
+    </transition>
     <span class="trigger" ref="triggerWrapper" style="display: inline-block;">
       <slot></slot>
     </span>
@@ -31,32 +33,31 @@
         visible: false
       }
     },
-    computed: {
-      openEvent () {
-        if (this.trigger === 'click') {
-          return 'click'
-        } else {
-          return 'mouseenter'
-        }
-      },
-      closeEvent () {
-        if (this.trigger === 'click') {
-          return 'click'
-        } else {
-          return 'mouseleave'
-        }
-      }
-    },
     mounted () {
+      let triggerWrapper = this.$refs.triggerWrapper
+      const contentWrapper = this.$refs.contentWrapper
       if (this.trigger === 'click') {
         this.$refs.popover.addEventListener('click', this.onClick)
       } else {
-        console.log('exec')
-        this.$refs.popover.addEventListener('mouseenter', this.open)
-        this.$refs.popover.addEventListener('mouseleave', this.close)
+        triggerWrapper.addEventListener('mouseenter', this.handleMouseEnter)
+        triggerWrapper.addEventListener('mouseleave', this.handleMouseLeave)
+        contentWrapper.addEventListener('mouseenter', this.handleMouseEnter)
+        contentWrapper.addEventListener('mouseleave', this.handleMouseLeave)
       }
     },
     methods: {
+      handleMouseLeave () {
+        clearTimeout(this._timer)
+        this._timer = setTimeout(() => {
+          this.close()
+        }, 200)
+      },
+      handleMouseEnter () {
+        clearTimeout(this._timer)
+        this._timer = setTimeout(() => {
+          this.open()
+        }, 200)
+      },
       onClickDocument (e) {
         if (this.$refs.popover && this.$refs.popover.contains(e.target)) return // 判断点击的是否是popover
         if (this.$refs.contentWrapper && this.$refs.contentWrapper.contains(e.target)) return // contentWrapper移到外面，需要单独判断
@@ -97,6 +98,7 @@
         })
       },
       close () {
+        console.log('close')
         this.visible = false
         document.removeEventListener('click', this.onClickDocument)
       },
@@ -116,6 +118,12 @@
 <style scoped lang="scss">
   $border-color: #333;
   $border-radius: 4px;
+  .fade-enter-active, .fade-leave-active {
+    transition: all .3s;
+  }
+  .fade-enter, .fade-leave-to {
+    opacity: 0;
+  }
   .popover {
     display: inline-block;
   }
