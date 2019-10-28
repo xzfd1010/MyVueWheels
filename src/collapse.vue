@@ -33,22 +33,24 @@
       this.eventBus.$emit('update:selected', this.selected)
       // 监听传回的数据
       this.eventBus.$on('update:addSelected', (name) => {
+        let selectedCopy = JSON.parse(JSON.stringify(this.selected))
         // 根据single判断，是否需要折叠其他的
         if (this.single) {
-          this.selected.splice(0, this.selected.length, name)
+          selectedCopy = [name]
         } else {
-          this.selected.push(name)
+          selectedCopy.push(name)
         }
-        this.$emit('update:selected', this.selected)
-        this.eventBus.$emit('update:selected', this.selected)
+        this.$emit('update:selected', selectedCopy)
+        this.eventBus.$emit('update:selected', selectedCopy)
       })
 
       this.eventBus.$on('update:removeSelected', (name) => {
+        let selectedCopy = JSON.parse(JSON.stringify(this.selected))
         // 根据single判断，是否需要折叠其他的
-        let index = this.selected.indexOf(name)
-        this.selected.splice(index, 1)
-        this.$emit('update:selected', this.selected) // 把选中项传给用户
-        this.eventBus.$emit('update:selected', this.selected) // 把选中项传给子组件
+        let index = selectedCopy.indexOf(name)
+        selectedCopy.splice(index, 1)
+        this.$emit('update:selected', selectedCopy) // 把选中项传给用户
+        this.eventBus.$emit('update:selected', selectedCopy) // 把选中项传给子组件
 
       })
     }
