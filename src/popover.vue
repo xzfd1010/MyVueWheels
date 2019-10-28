@@ -45,6 +45,17 @@
         contentWrapper.addEventListener('mouseleave', this.handleMouseLeave)
       }
     },
+    destroyed () {
+      if (this.trigger === 'click') {
+        document.removeEventListener('click', this.onClickDocument)
+        this.$refs.popover.removeEventListener('click', this.onClick)
+      } else {
+        this.$refs.triggerWrapper.removeEventListener('mouseenter', this.handleMouseEnter)
+        this.$refs.triggerWrapper.removeEventListener('mouseleave', this.handleMouseLeave)
+        this.$refs.contentWrapper.removeEventListener('mouseenter', this.handleMouseEnter)
+        this.$refs.contentWrapper.removeEventListener('mouseleave', this.handleMouseLeave)
+      }
+    },
     methods: {
       handleMouseLeave () {
         clearTimeout(this._timer)
@@ -99,7 +110,6 @@
         })
       },
       close () {
-        console.log('close')
         this.visible = false
         document.removeEventListener('click', this.onClickDocument)
       },
