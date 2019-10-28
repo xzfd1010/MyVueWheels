@@ -18,7 +18,11 @@ import TabsHead from './tabs-head'
 import TabsBody from './tabs-body'
 import TabsItem from './tabs-item'
 import TabsPane from './tabs-pane'
+
 import Popover from './popover'
+
+import Collapse from './collapse'
+import CollapseItem from './collapse-item'
 
 Vue.component('my-button', Button)
 Vue.component('icon', Icon)
@@ -38,7 +42,11 @@ Vue.component('tabs-head', TabsHead)
 Vue.component('tabs-body', TabsBody)
 Vue.component('tabs-item', TabsItem)
 Vue.component('tabs-pane', TabsPane)
+
 Vue.component('popover', Popover)
+
+Vue.component('collapse', Collapse)
+Vue.component('collapse-item', CollapseItem)
 
 new Vue({
   el: '#app',
@@ -47,7 +55,8 @@ new Vue({
       loading1: true,
       loading2: true,
       loading3: true,
-      selectedTab: 'woman'
+      selectedTab: 'woman',
+      selected: ['1', '2']
     }
   },
   methods: {

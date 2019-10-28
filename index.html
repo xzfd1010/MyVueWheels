@@ -34,84 +34,12 @@
 </head>
 <body>
 <div id="app" style="padding: 100px;">
-  <!-- 通过两个slot使用 -->
-  <popover>
-    <template slot="content" slot-scope="{close}">
-      <div>popover1里面的内容</div>
-      <my-button @click="close">关闭</my-button>
-    </template>
-    <template>
-      <my-button>点我</my-button>
-    </template>
-  </popover>
-
-  <popover position="bottom">
-    <template slot="content">
-      <div>popover2里面的内容</div>
-    </template>
-    <template>
-      <my-button>点我</my-button>
-    </template>
-  </popover>
-
-  <popover position="left">
-    <template slot="content">
-      <div>popover3里面的内容</div>
-    </template>
-    <template>
-      <my-button>点我</my-button>
-    </template>
-  </popover>
-
-  <popover position="right">
-    <template slot="content">
-      <div>popover4里面的内容</div>
-    </template>
-    <template>
-      <my-button>点我</my-button>
-    </template>
-  </popover>
-
-  <div style="margin-top:100px;">
-    <popover trigger="hover">
-      <template slot="content" slot-scope="{close}">
-        <div>popover1里面的内容</div>
-        <my-button @click="close">关闭</my-button>
-      </template>
-      <template>
-        <my-button>点我</my-button>
-      </template>
-    </popover>
-
-    <popover trigger='hover' position="bottom">
-      <template slot="content">
-        <div>popover2里面的内容</div>
-      </template>
-      <template>
-        <my-button>点我</my-button>
-      </template>
-    </popover>
-
-    <popover trigger='hover' position="left">
-      <template slot="content">
-        <div>popover3里面的内容</div>
-      </template>
-      <template>
-        <my-button>点我</my-button>
-      </template>
-    </popover>
-
-    <popover trigger='hover' position="right">
-      <template slot="content">
-        <div>popover4里面的内容</div>
-      </template>
-      <template>
-        <my-button>点我</my-button>
-      </template>
-    </popover>
-  </div>
-
-
+  <collapse :selected="selected" single>
+    <collapse-item title="标题1" name="1">内容1</collapse-item>
+    <collapse-item title="标题2" name="2">内容2</collapse-item>
+    <collapse-item title="标题3" name="3">内容3</collapse-item>
+  </collapse>
+  {{selected}}
 </div>
 <script src="./src/app.js"></script>
 </body>
