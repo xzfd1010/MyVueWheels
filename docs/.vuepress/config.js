@@ -1,4 +1,5 @@
 module.exports = {
+  base: '/nick-vue-wheels/',
   title: 'Nick的轮子',
   description: '一个好用的UI框架',
   themeConfig: {
@@ -16,9 +17,16 @@ module.exports = {
       },
       {
         title: '组件',
-        children: ['/components/Button']
+        children: [
+          '/components/Button',
+          '/components/tabs',
+          '/components/input',
+          '/components/grid',
+          '/components/layout',
+          '/components/toast',
+          '/components/tabs',
+        ]
       }
-
     ]
   }
 }

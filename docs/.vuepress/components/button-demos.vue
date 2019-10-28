@@ -5,8 +5,7 @@
     <my-button :loading="true">加载中</my-button>
     <my-button disabled>禁用</my-button>
 
-    <pre><code>{{contents}}</code>
-    </pre>
+    <pre><code>{{contents}}</code></pre>
   </div>
 </template>
 
@@ -25,7 +24,7 @@
         <my-button icon="settings">设置</my-button>
         <my-button :loading="true">加载中</my-button>
         <my-button disabled>禁用</my-button>
-        `
+        `.trim().split(/\n/).map(item=>item.trim()).join('\n')
       }
     }
   }
