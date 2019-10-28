@@ -66,7 +66,6 @@
       handleMouseEnter () {
         clearTimeout(this._timer)
         this._timer = setTimeout(() => {
-          console.log('open')
           this.open()
         }, 200)
       },
