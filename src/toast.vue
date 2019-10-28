@@ -2,13 +2,13 @@
   <div class="wrapper" :class="toastClasses">
     <div class="toast">
       <div class="message">
-        <slot>
-          <div v-if="!enableHtml">{{message}}</div>
-          <div v-else v-html="message"></div>
-        </slot>
+        <!--        <slot>-->
+        <div v-if="!enableHtml">{{message}}</div>
+        <div v-else v-html="message"></div>
+        <!--        </slot>-->
       </div>
       <!--    todo 这里也要改，closeButton现在一直都存在  -->
-      <span class="close" v-if="closeButton" @click.stop="onClickClose" ref="button">
+      <span class="close" v-if="showClose" @click.stop="onClickClose" ref="button">
       {{closeButton.text}}
     </span>
     </div>
@@ -25,6 +25,10 @@
         validator (value) {
           return value === false || typeof value === 'number'
         }
+      },
+      showClose: {
+        type: Boolean,
+        default: false
       },
       closeButton: {
         type: Object,
@@ -60,7 +64,7 @@
         if (this.autoClose) {
           setTimeout(() => {
             this.close()
-          }, this.autoCloseDelay * 1000)
+          }, this.autoClose * 1000)
         }
       },
       close () {
@@ -76,7 +80,7 @@
       },
       updateStyles () {
         this.$nextTick(() => {
-          this.$refs.button.style.height = this.$el.getBoundingClientRect().height + 'px'
+          this.showClose ? this.$refs.button.style.height = this.$el.getBoundingClientRect().height + 'px' : ''
         })
       }
     },
