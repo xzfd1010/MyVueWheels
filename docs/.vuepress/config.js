@@ -13,7 +13,8 @@ module.exports = {
         children: [
           '/install/',
           '/get-started/',
-        ]
+        ],
+        collapsable: false,
       },
       {
         title: '组件',
@@ -25,7 +26,8 @@ module.exports = {
           '/components/layout',
           '/components/toast',
           '/components/tabs',
-        ]
+        ],
+        collapsable: false,
       }
     ]
   }
