@@ -1,12 +1,25 @@
 {
-  "name": "hello-world",
-  "version": "0.1.0",
-  "private": true,
+  "name": "nick-vue-wheels",
+  "version": "0.0.3",
+  "description": "vue轮子的UI框架",
+  "main": "dist/index.js",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "test:unit": "vue-cli-service test:unit"
+    "test:unit": "vue-cli-service test:unit",
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xzfd1010/MyVueWheels.git"
+  },
+  "author": "Nick",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/xzfd1010/MyVueWheels/issues"
+  },
+  "homepage": "https://github.com/xzfd1010/MyVueWheels#readme",
   "dependencies": {
     "core-js": "^2.6.5",
     "vue": "^2.6.10"
