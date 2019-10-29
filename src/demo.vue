@@ -1,7 +1,5 @@
 <template>
-  <cascader :source="source">
-    <my-input></my-input>
-  </cascader>
+  <cascader :source="source" height="200px"></cascader>
 </template>
 
 <script>
