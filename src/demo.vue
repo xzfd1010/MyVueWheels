@@ -1,5 +1,7 @@
 <template>
-  <cascader :source="source" height="200px"></cascader>
+  <div style="padding: 100px;">
+    <cascader :source="source" height="200px"></cascader>
+  </div>
 </template>
 
 <script>
@@ -42,6 +44,19 @@
   }
 </script>
 
-<style scoped lang="scss">
-
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  #app {
+    /*margin: 20px;*/
+  }
+  :root {
+    --font-size: 14px;
+  }
+  body {
+    font-size: var(--font-size);
+  }
 </style>

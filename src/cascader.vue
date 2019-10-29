@@ -3,8 +3,8 @@
     <div class="trigger" @click="popoverVisible=!popoverVisible">
       <slot></slot>
     </div>
-    <div class="popover" v-if="popoverVisible">
-      <cascader-items :children="source" :height="height"></cascader-items>
+    <div class="popover-wrapper" v-if="popoverVisible">
+      <cascader-items :children="source" :height="height" class="popover"></cascader-items>
     </div>
   </div>
 </template>
@@ -38,20 +38,17 @@
   .cascader {
     position: relative;
     .trigger {
-      border: 1px solid #dcdfe6;
+      border: 1px solid black;
       height: 32px;
       width: 100px;
     }
-    .popover {
+    .popover-wrapper {
       position: absolute;
       top: 100%;
       left: 0;
       background: white;
       display: flex;
       @extend .box-shadow;
-      .label {
-        white-space: nowrap;
-      }
     }
   }
 </style>

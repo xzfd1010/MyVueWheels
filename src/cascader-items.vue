@@ -52,22 +52,23 @@
     flex-flow: row nowrap;
     align-items: flex-start;
     justify-content: flex-start;
-    /*padding: 0.3em 0;*/
+    height: 100px;
     .left {
+      height: 100%;
       padding: 0.3em 0;
-      //@extend .box-shadow;
       .label {
         padding: 0.3em 1em;
         display: flex;
         align-items: center;
       }
-      .icon{
+      .icon {
         transform: scale(0.8);
         margin-left: 0.5em;
+        fill: #606266;
       }
     }
     .right {
-      // margin-top: -1px;
+      height: 100%;
       border-left: 1px solid $border-color-light;
     }
   }
