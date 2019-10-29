@@ -1,18 +1,16 @@
 <template>
   <div class="cascader">
-    <div class="trigger">
+    <div class="trigger" @click="popoverVisible=!popoverVisible">
       <slot></slot>
     </div>
-    <div class="popover">
-      <div v-for="item in source">
-        <cascader-item :sourceItem="item"></cascader-item>
-      </div>
+    <div class="popover" v-if="popoverVisible">
+      <cascader-items :children="source"></cascader-items>
     </div>
   </div>
 </template>
 
 <script>
-  import cascaderItem from './cascaderItem'
+  import cascaderItems from './cascader-items'
 
   export default {
     name: 'cascader',
@@ -22,7 +20,12 @@
       }
     },
     components: {
-      cascaderItem
+      cascaderItems
+    },
+    data () {
+      return {
+        popoverVisible: false
+      }
     }
   }
 </script>

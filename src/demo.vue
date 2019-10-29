@@ -1,14 +1,18 @@
 <template>
-  <cascader :source="source"></cascader>
+  <cascader :source="source">
+    <my-input></my-input>
+  </cascader>
 </template>
 
 <script>
   import Cascader from './cascader'
+  import Input from './input'
 
   export default {
     name: 'demo',
     components: {
-      'cascader': Cascader
+      Cascader,
+      'my-input': Input
     },
     data () {
       return {
