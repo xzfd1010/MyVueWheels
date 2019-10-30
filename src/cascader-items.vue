@@ -45,13 +45,13 @@
     },
     computed: {
       rightItems () {
-        let currentSelected = this.selected[this.level]
-        if (currentSelected && currentSelected.children) {
-          return currentSelected.children
-        } else {
-          return null
+        if (this.selected[this.level]) {
+          let selected = this.children.filter((item) => item.name === this.selected[this.level].name)
+          if (selected && selected[0].children && selected[0].children.length > 0) {
+            return selected[0].children
+          }
         }
-      }
+      },
     },
     methods: {
       onClickLabel (item) {
@@ -79,6 +79,7 @@
     .left {
       height: 100%;
       padding: 0.3em 0;
+      overflow: auto;
       .label {
         padding: 0.3em 1em;
         display: flex;

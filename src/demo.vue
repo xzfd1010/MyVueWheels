@@ -1,12 +1,20 @@
 <template>
   <div style="padding: 100px;">
-    <cascader :source="source" :selected.sync="selected" height="200px"></cascader>
+    <cascader :source.sync="source" :selected.sync="selected" height="200px" :load-data="loadData"></cascader>
   </div>
 </template>
 
 <script>
   import Cascader from './cascader'
   import Input from './input'
+  import db from './assets/db'
+
+  function ajax (parent_id = 0) {
+    return new Promise((resolve, reject) => {
+      let result = db.filter(item => item.parent_id === parent_id)
+      resolve(result)
+    })
+  }
 
   export default {
     name: 'demo',
@@ -17,30 +25,21 @@
     data () {
       return {
         selected: [],
-        source: [
-          {
-            name: '浙江',
-            children: [{
-              name: '杭州',
-              children: [{
-                name: '萧山'
-              }]
-            },
-              { name: '湖州', },
-              { name: '嘉兴' }
-            ]
-          }, {
-            name: '山东',
-            children: [{
-              name: '烟台',
-              children: [
-                { name: '龙口' }
-              ]
-            },
-              { name: '济南' }
-            ]
-          }]
+        source: []
       }
+    },
+    methods: {
+      loadData (parent_id, callback) {
+        ajax(parent_id).then(result => {
+          console.log('result', result)
+          callback(result)
+        })
+      }
+    },
+    mounted () {
+      ajax(0).then((result) => {
+        this.source = result
+      })
     }
   }
 </script>
