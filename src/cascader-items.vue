@@ -1,13 +1,15 @@
 <template>
   <div class="child" :style="{height}">
     <div class="left">
-      <div class="label" v-for="item in children" @click="leftSelected=item">
+      <div class="label" v-for="item in children" @click="onClickLabel(item)">
         {{item.name}}
         <icon name="right" v-if="item.children" class="icon"></icon>
       </div>
     </div>
     <div class="right" v-if="rightItems">
-      <cascader-items :children="rightItems" :height="height"></cascader-items>
+      <!--  自动向下一个层级  -->
+      <cascader-items :children="rightItems" :height="height" :selected="selected" :level="level+1"
+                      @update:selected="updateSelected"></cascader-items>
     </div>
   </div>
 </template>
@@ -19,10 +21,18 @@
     name: 'cascaderItems',
     props: {
       children: {
-        default: Array
+        type: Array
       },
       height: {
         type: String
+      },
+      selected: {
+        type: Array,
+        default: () => []
+      },
+      level: {
+        type: Number,
+        default: 0
       }
     },
     components: {
@@ -35,11 +45,24 @@
     },
     computed: {
       rightItems () {
-        if (this.leftSelected && this.leftSelected.children) {
-          return this.leftSelected.children
+        let currentSelected = this.selected[this.level]
+        if (currentSelected && currentSelected.children) {
+          return currentSelected.children
         } else {
           return null
         }
+      }
+    },
+    methods: {
+      onClickLabel (item) {
+        // 点击之后，先获得深拷贝的selected，修改对应level的值，删除之后level的值
+        let copySelected = JSON.parse(JSON.stringify(this.selected))
+        copySelected[this.level] = item
+        copySelected.splice(this.level + 1)
+        this.$emit('update:selected', copySelected)
+      },
+      updateSelected (newSelected) {
+        this.$emit('update:selected', newSelected) // 不断将递归组件的值向外传递
       }
     }
   }

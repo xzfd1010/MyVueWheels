@@ -1,6 +1,9 @@
 <template>
   <div style="padding: 100px;">
-    <cascader :source="source" height="200px"></cascader>
+    <p>{{selected && selected[0] && selected[0].name}}</p>
+    <p>{{selected && selected[1] && selected[1].name}}</p>
+    <p>{{selected && selected[2] && selected[2].name}}</p>
+    <cascader :source="source" :selected.sync="selected" height="200px"></cascader>
   </div>
 </template>
 
@@ -16,6 +19,7 @@
     },
     data () {
       return {
+        selected: [],
         source: [
           {
             name: '浙江',
@@ -50,12 +54,15 @@
     padding: 0;
     box-sizing: border-box;
   }
+
   #app {
     /*margin: 20px;*/
   }
+
   :root {
     --font-size: 14px;
   }
+
   body {
     font-size: var(--font-size);
   }

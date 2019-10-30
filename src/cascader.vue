@@ -4,7 +4,8 @@
       <slot></slot>
     </div>
     <div class="popover-wrapper" v-if="popoverVisible">
-      <cascader-items :children="source" :height="height" class="popover"></cascader-items>
+      <cascader-items :children="source" :height="height" class="popover" :selected="selected"
+                      :level="level" @update:selected="updateSelected"></cascader-items>
     </div>
   </div>
 </template>
@@ -16,10 +17,18 @@
     name: 'cascader',
     props: {
       source: {
-        default: Array,
+        type: Array,
       },
       height: {
         type: String
+      },
+      selected: {
+        type: Array,
+        default: () => []
+      },
+      level: {
+        type: Number,
+        default: 0
       }
     },
     components: {
@@ -28,6 +37,11 @@
     data () {
       return {
         popoverVisible: false
+      }
+    },
+    methods: {
+      updateSelected (newSelected) {
+        this.$emit('update:selected', newSelected)
       }
     }
   }
