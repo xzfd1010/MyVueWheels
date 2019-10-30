@@ -1,8 +1,5 @@
 <template>
   <div style="padding: 100px;">
-    <p>{{selected && selected[0] && selected[0].name}}</p>
-    <p>{{selected && selected[1] && selected[1].name}}</p>
-    <p>{{selected && selected[2] && selected[2].name}}</p>
     <cascader :source="source" :selected.sync="selected" height="200px"></cascader>
   </div>
 </template>
