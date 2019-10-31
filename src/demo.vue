@@ -8,8 +8,9 @@
   import Cascader from './cascader'
   import Input from './input'
   import db from './assets/db'
+  import { removeListener } from './click-outside'
 
-  const tempDb = db.map(node=>{
+  const tempDb = db.map(node => {
     node.isLeaf = db.filter(item => item.parent_id === node.id).length <= 0
     return node
   })
@@ -63,6 +64,9 @@
           callback(result)
         })
       }
+    },
+    destroyed () {
+      removeListener()
     },
     mounted () {
       ajax(0).then((result) => {
