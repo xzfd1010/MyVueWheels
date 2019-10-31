@@ -2,13 +2,14 @@
   <div class="child" :style="{height}">
     <div class="left">
       <div class="label" v-for="item in children" @click="onClickLabel(item)">
-        {{item.name}}
-        <icon name="right" v-if="item.children" class="icon"></icon>
+        <span class="name">{{item.name}}</span>
+        <icon name="right" v-if="loadData ? !item.isLeaf : item.children" class="icon"></icon>
       </div>
     </div>
     <div class="right" v-if="rightItems">
       <!--  自动向下一个层级  -->
       <cascader-items :children="rightItems" :height="height" :selected="selected" :level="level+1"
+                      :load-data="loadData"
                       @update:selected="updateSelected"></cascader-items>
     </div>
   </div>
@@ -33,6 +34,9 @@
       level: {
         type: Number,
         default: 0
+      },
+      loadData: {
+        type: Function
       }
     },
     components: {
@@ -85,9 +89,12 @@
         display: flex;
         align-items: center;
       }
+      .name {
+        margin-right: 0.5em;
+      }
       .icon {
+        margin-left: auto;
         transform: scale(0.8);
-        margin-left: 0.5em;
         fill: #606266;
       }
     }

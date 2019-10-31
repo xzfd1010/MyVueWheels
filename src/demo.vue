@@ -1,6 +1,6 @@
 <template>
   <div style="padding: 100px;">
-    <cascader :source.sync="source" :selected.sync="selected" height="200px" :load-data="loadData"></cascader>
+    <cascader :source.sync="source" :selected.sync="selected" height="200px"></cascader>
   </div>
 </template>
 
@@ -9,9 +9,14 @@
   import Input from './input'
   import db from './assets/db'
 
+  const tempDb = db.map(node=>{
+    node.isLeaf = db.filter(item => item.parent_id === node.id).length <= 0
+    return node
+  })
+
   function ajax (parent_id = 0) {
     return new Promise((resolve, reject) => {
-      let result = db.filter(item => item.parent_id === parent_id)
+      let result = tempDb.filter(item => item.parent_id === parent_id)
       resolve(result)
     })
   }
@@ -25,21 +30,43 @@
     data () {
       return {
         selected: [],
-        source: []
+        source: [
+          {
+            name: '浙江',
+            children: [{
+              name: '杭州',
+              children: [{
+                name: '萧山'
+              }]
+            },
+              { name: '湖州', },
+              { name: '嘉兴' }
+            ]
+          }, {
+            name: '山东',
+            children: [{
+              name: '烟台',
+              children: [
+                { name: '龙口' }
+              ]
+            },
+              { name: '济南' }
+            ]
+          }
+        ]
       }
     },
     methods: {
-      loadData (parent_id, callback) {
-        ajax(parent_id).then(result => {
-          console.log('result', result)
-          callback(result)
-        })
-      }
+      // loadData (parent_id, callback) {
+      //   ajax(parent_id).then(result => {
+      //     callback(result)
+      //   })
+      // }
     },
     mounted () {
-      ajax(0).then((result) => {
-        this.source = result
-      })
+      // ajax(0).then((result) => {
+      //   this.source = result
+      // })
     }
   }
 </script>

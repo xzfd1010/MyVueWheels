@@ -6,6 +6,7 @@
     </div>
     <div class="popover-wrapper" v-if="popoverVisible">
       <cascader-items :children="source" :height="height" class="popover" :selected="selected"
+                      :load-data="loadData"
                       :level="level" @update:selected="updateSelected"></cascader-items>
     </div>
   </div>
@@ -13,6 +14,36 @@
 
 <script>
   import cascaderItems from './cascader-items'
+
+  let simplest = (children, id) => {
+    return children.filter(item => item.id === id)[0]
+  }
+  let complex = (children, id) => {
+    let noChildren = []
+    let hasChildren = []
+    children.forEach(item => {
+      if (item.children) {
+        hasChildren.push(item)
+      } else {
+        noChildren.push(item)
+      }
+    })
+    let found = simplest(noChildren, id)
+    if (found) {
+      return found
+    } else {
+      found = simplest(hasChildren, id)
+      if (found) { return found } else {
+        for (let i = 0; i < hasChildren.length; i++) {
+          found = complex(hasChildren[i].children, id)
+          if (found) {
+            return found
+          }
+        }
+        return undefined
+      }
+    }
+  }
 
   export default {
     name: 'cascader',
@@ -52,43 +83,17 @@
       updateSelected (newSelected) {
         // 拿到当前的最后一个子节点
         let lastSelected = newSelected[newSelected.length - 1]
-        let simplest = (children, id) => {
-          return children.filter(item => item.id === id)[0]
-        }
-        let complex = (children, id) => {
-          let noChildren = []
-          let hasChildren = []
-          children.forEach(item => {
-            if (item.children) {
-              hasChildren.push(item)
-            } else {
-              noChildren.push(item)
-            }
-          })
-          let found = simplest(noChildren, id)
-          if (found) {
-            return found
-          } else {
-            found = simplest(hasChildren, id)
-            if (found) { return found }
-            else {
-              for (let i = 0; i < hasChildren.length; i++) {
-                found = complex(hasChildren[i].children, id)
-                if (found) {
-                  return found
-                }
-              }
-              return undefined
-            }
-          }
-        }
+        console.log(lastSelected)
+
         let updateSource = (result) => {
           let copy = JSON.parse(JSON.stringify(this.source))
           let toUpdate = complex(copy, lastSelected.id)
           toUpdate.children = result
           this.$emit('update:source', copy)
         }
-        this.loadData(lastSelected.id, updateSource)
+        if (!lastSelected.isLeaf) {
+          this.loadData && this.loadData(lastSelected.id, updateSource)
+        }
         this.$emit('update:selected', newSelected)
 
       }
