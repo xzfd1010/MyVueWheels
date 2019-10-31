@@ -3,13 +3,20 @@
     <div class="left">
       <div class="label" v-for="item in children" @click="onClickLabel(item)">
         <span class="name">{{item.name}}</span>
-        <icon name="right" v-if="loadData ? !item.isLeaf : item.children" class="icon"></icon>
+        <span class="icons">
+          <template v-if="loadingItem.name === item.name">
+            <icon name="loading" class="loading"></icon>
+          </template>
+          <template v-else>
+            <icon name="right" v-if="rightArrowVisible(item)"></icon>
+          </template>
+        </span>
       </div>
     </div>
     <div class="right" v-if="rightItems">
       <!--  自动向下一个层级  -->
       <cascader-items :children="rightItems" :height="height" :selected="selected" :level="level+1"
-                      :load-data="loadData"
+                      :load-data="loadData" :loading-item="loadingItem"
                       @update:selected="updateSelected"></cascader-items>
     </div>
   </div>
@@ -37,6 +44,10 @@
       },
       loadData: {
         type: Function
+      },
+      loadingItem: {
+        type: Object,
+        default: () => ({})
       }
     },
     components: {
@@ -58,6 +69,9 @@
       },
     },
     methods: {
+      rightArrowVisible (item) {
+        return this.loadData ? !item.isLeaf : item.children
+      },
       onClickLabel (item) {
         // 点击之后，先获得深拷贝的selected，修改对应level的值，删除之后level的值
         let copySelected = JSON.parse(JSON.stringify(this.selected))
@@ -74,6 +88,14 @@
 
 <style scoped lang="scss">
   @import "styles/var";
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg)
+    }
+    100% {
+      transform: rotate(360deg)
+    }
+  }
   .child {
     display: flex;
     flex-flow: row nowrap;
@@ -90,17 +112,20 @@
         align-items: center;
         white-space: nowrap;
         cursor: pointer;
-        &:hover{
+        &:hover {
           background: $grey;
         }
       }
       .name {
         margin-right: 0.5em;
       }
-      .icon {
+      .icons {
         margin-left: auto;
         transform: scale(0.8);
         fill: #606266;
+      }
+      .loading {
+        animation: spin 1.5s infinite linear;
       }
     }
     .right {

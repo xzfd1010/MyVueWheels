@@ -1,6 +1,11 @@
 <template>
   <div style="padding: 100px;">
-    <cascader :source.sync="source" :selected.sync="selected" height="200px" :load-data="loadData"></cascader>
+    <div>
+      <cascader :source.sync="source" :selected.sync="selected" height="200px" :load-data="loadData"></cascader><br>
+    </div>
+    <div>
+      <cascader :source.sync="source" :selected.sync="selected" height="200px" :load-data="loadData"></cascader>
+    </div>
   </div>
 </template>
 
@@ -17,8 +22,10 @@
 
   function ajax (parent_id = 0) {
     return new Promise((resolve, reject) => {
-      let result = tempDb.filter(item => item.parent_id === parent_id)
-      resolve(result)
+      setTimeout(()=>{
+        let result = tempDb.filter(item => item.parent_id === parent_id)
+        resolve(result)
+      },2000)
     })
   }
 

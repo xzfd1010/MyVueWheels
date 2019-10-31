@@ -2,11 +2,11 @@
   <div class="cascader" v-click-out-side="close">
     <div class="trigger" @click="toggle">
       <!--      <slot></slot>-->
-      {{result}}
+      {{result || '&nbsp;'}}
     </div>
     <div class="popover-wrapper" v-if="popoverVisible">
       <cascader-items :children="source" :height="height" class="popover" :selected="selected"
-                      :load-data="loadData"
+                      :load-data="loadData" :loading-item="loadingItem"
                       :level="level" @update:selected="updateSelected"></cascader-items>
     </div>
   </div>
@@ -65,7 +65,7 @@
       },
       loadData: {
         type: Function
-      }
+      },
     },
     directives: { ClickOutSide },
     components: {
@@ -73,7 +73,8 @@
     },
     data () {
       return {
-        popoverVisible: false
+        popoverVisible: false,
+        loadingItem: {}
       }
     },
     computed: {
@@ -83,7 +84,6 @@
     },
     methods: {
       close () {
-        console.log('关闭')
         this.popoverVisible = false
       },
       open () {
@@ -101,16 +101,19 @@
         let lastSelected = newSelected[newSelected.length - 1]
 
         let updateSource = (result) => {
+          this.loadingItem = {}
           let copy = JSON.parse(JSON.stringify(this.source))
           let toUpdate = complex(copy, lastSelected.id)
           toUpdate.children = result
           this.$emit('update:source', copy)
         }
         if (!lastSelected.isLeaf) {
-          this.loadData && this.loadData(lastSelected.id, updateSource)
+          if (this.loadData && (!lastSelected.children || lastSelected.children === 0)) {
+            this.loadData(lastSelected.id, updateSource)
+            this.loadingItem = lastSelected
+          }
         }
         this.$emit('update:selected', newSelected)
-
       }
     }
   }
@@ -135,6 +138,7 @@
       position: absolute;
       top: 100%;
       left: 0;
+      z-index: 1;
       background: white;
       display: flex;
       border-radius: 2px;
