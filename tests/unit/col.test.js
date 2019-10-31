@@ -1,6 +1,11 @@
-const expect = chai.expect
+import chai, { expect } from 'chai'
+import sinon from 'sinon'
+import sinonChai from 'sinon-chai'
+import { mount, shallowMount } from '@vue/test-utils'
 import Vue from 'vue'
-import Col from '../src/col'
+import Col from '@/col'
+
+chai.use(sinonChai)
 
 Vue.config.productionTip = false
 Vue.config.devtools = false
