@@ -1,6 +1,6 @@
 <template>
-  <div class="cascader">
-    <div class="trigger" @click="popoverVisible=!popoverVisible">
+  <div class="cascader" v-click-out-side="close">
+    <div class="trigger" @click="toggle">
       <!--      <slot></slot>-->
       {{result}}
     </div>
@@ -14,6 +14,7 @@
 
 <script>
   import cascaderItems from './cascader-items'
+  import ClickOutSide from './click-outside'
 
   let simplest = (children, id) => {
     return children.filter(item => item.id === id)[0]
@@ -66,6 +67,7 @@
         type: Function
       }
     },
+    directives: { ClickOutSide },
     components: {
       cascaderItems
     },
@@ -80,10 +82,23 @@
       }
     },
     methods: {
+      close () {
+        console.log('关闭')
+        this.popoverVisible = false
+      },
+      open () {
+        this.popoverVisible = true
+      },
+      toggle () {
+        if (this.popoverVisible) {
+          this.close()
+        } else {
+          this.open()
+        }
+      },
       updateSelected (newSelected) {
         // 拿到当前的最后一个子节点
         let lastSelected = newSelected[newSelected.length - 1]
-        console.log(lastSelected)
 
         let updateSource = (result) => {
           let copy = JSON.parse(JSON.stringify(this.source))
@@ -106,6 +121,7 @@
   .cascader {
     position: relative;
     height: $input-height;
+    display: inline-block;
     .trigger {
       height: $input-height;
       display: inline-flex;

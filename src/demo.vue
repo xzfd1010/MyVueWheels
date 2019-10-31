@@ -1,6 +1,6 @@
 <template>
   <div style="padding: 100px;">
-    <cascader :source.sync="source" :selected.sync="selected" height="200px"></cascader>
+    <cascader :source.sync="source" :selected.sync="selected" height="200px" :load-data="loadData"></cascader>
   </div>
 </template>
 
@@ -31,42 +31,43 @@
       return {
         selected: [],
         source: [
-          {
-            name: '浙江',
-            children: [{
-              name: '杭州',
-              children: [{
-                name: '萧山'
-              }]
-            },
-              { name: '湖州', },
-              { name: '嘉兴' }
-            ]
-          }, {
-            name: '山东',
-            children: [{
-              name: '烟台',
-              children: [
-                { name: '龙口' }
-              ]
-            },
-              { name: '济南' }
-            ]
-          }
+          // {
+          //   name: '浙江',
+          //   children: [{
+          //     name: '杭州',
+          //     children: [{
+          //       name: '萧山'
+          //     }]
+          //   },
+          //     { name: '湖州', },
+          //     { name: '嘉兴' }
+          //   ]
+          // },
+          // {
+          //   name: '山东',
+          //   children: [{
+          //     name: '烟台',
+          //     children: [
+          //       { name: '龙口' }
+          //     ]
+          //   },
+          //     { name: '济南' }
+          //   ]
+          // }
         ]
       }
     },
     methods: {
-      // loadData (parent_id, callback) {
-      //   ajax(parent_id).then(result => {
-      //     callback(result)
-      //   })
-      // }
+      loadData (parent_id, callback) {
+        ajax(parent_id).then(result => {
+          callback(result)
+        })
+      }
     },
     mounted () {
-      // ajax(0).then((result) => {
-      //   this.source = result
-      // })
+      ajax(0).then((result) => {
+        this.source = result
+      })
     }
   }
 </script>
