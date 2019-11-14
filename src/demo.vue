@@ -1,85 +1,45 @@
 <template>
-  <div style="padding: 100px;">
-    <div>
-      <cascader :source.sync="source" :selected.sync="selected" height="200px" :load-data="loadData"></cascader><br>
-    </div>
-    <div>
-      <cascader :source.sync="source" :selected.sync="selected" height="200px" :load-data="loadData"></cascader>
-    </div>
+  <div>
+    <g-slides :selected="selected">
+      <g-slides-item name="1">
+        <div class="box">1</div>
+      </g-slides-item>
+      <g-slides-item name="2">
+        <div class="box">2</div>
+      </g-slides-item>
+      <g-slides-item name="3">
+        <div class="box">3</div>
+      </g-slides-item>
+    </g-slides>
   </div>
 </template>
 
 <script>
-  import Cascader from './cascader'
-  import Input from './input'
-  import db from './assets/db'
-  import { removeListener } from './click-outside'
-
-  const tempDb = db.map(node => {
-    node.isLeaf = db.filter(item => item.parent_id === node.id).length <= 0
-    return node
-  })
-
-  function ajax (parent_id = 0) {
-    return new Promise((resolve, reject) => {
-      setTimeout(()=>{
-        let result = tempDb.filter(item => item.parent_id === parent_id)
-        resolve(result)
-      },2000)
-    })
-  }
+  import GSlides from './slides'
+  import GSlidesItem from './slides-item'
 
   export default {
     name: 'demo',
     components: {
-      Cascader,
-      'my-input': Input
+      GSlides,
+      GSlidesItem
     },
     data () {
       return {
-        selected: [],
-        source: [
-          // {
-          //   name: '浙江',
-          //   children: [{
-          //     name: '杭州',
-          //     children: [{
-          //       name: '萧山'
-          //     }]
-          //   },
-          //     { name: '湖州', },
-          //     { name: '嘉兴' }
-          //   ]
-          // },
-          // {
-          //   name: '山东',
-          //   children: [{
-          //     name: '烟台',
-          //     children: [
-          //       { name: '龙口' }
-          //     ]
-          //   },
-          //     { name: '济南' }
-          //   ]
-          // }
-        ]
+        selected: ''
       }
-    },
-    methods: {
-      loadData (parent_id, callback) {
-        ajax(parent_id).then(result => {
-          callback(result)
-        })
-      }
-    },
-    destroyed () {
-      removeListener()
     },
     mounted () {
-      ajax(0).then((result) => {
-        this.source = result
-      })
+      let n = 1
+      setInterval(() => {
+        if (n > 3) {
+          n = 1
+        }
+        this.selected = n.toString()
+        n++
+      }, 3000)
     }
+
   }
 </script>
 
@@ -90,15 +50,10 @@
     box-sizing: border-box;
   }
 
-  #app {
-    /*margin: 20px;*/
-  }
-
-  :root {
-    --font-size: 14px;
-  }
-
-  body {
-    font-size: var(--font-size);
+  .box {
+    width: 200px;
+    height: 150px;
+    background: #ddd;
+    border: 1px solid red;
   }
 </style>
