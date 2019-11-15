@@ -1,13 +1,13 @@
 <template>
   <div>
-    <g-slides :selected="selected">
-      <g-slides-item name="1">
+    <g-slides :selected.sync="selected" :autoplay="true">
+      <g-slides-item name="11">
         <div class="box">1</div>
       </g-slides-item>
-      <g-slides-item name="2">
+      <g-slides-item name="22">
         <div class="box">2</div>
       </g-slides-item>
-      <g-slides-item name="3">
+      <g-slides-item name="33">
         <div class="box">3</div>
       </g-slides-item>
     </g-slides>
@@ -30,16 +30,7 @@
       }
     },
     mounted () {
-      let n = 1
-      setInterval(() => {
-        if (n > 3) {
-          n = 1
-        }
-        this.selected = n.toString()
-        n++
-      }, 3000)
     }
-
   }
 </script>
 
