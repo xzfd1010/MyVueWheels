@@ -13,6 +13,8 @@
         <icon name="left"></icon>
       </span>
       <span v-for="n in childrenLength" :class="{active: selectedIndex === n-1}"
+            :key="n"
+            :data-index="n-1"
             @click="select(n-1)">{{n}}</span>
       <span @click="onClickNext">
         <icon name="right"></icon>
@@ -34,6 +36,10 @@
       autoplay: {
         type: Boolean,
         default: false
+      },
+      autoplayDelay: {
+        type: Number,
+        default: 3000
       }
     },
     data () {
@@ -41,7 +47,7 @@
         startTouch: undefined, // 初始位置
         childrenLength: 0,
         lastSelectedIndex: undefined,
-        timeId: undefined
+        timeId: undefined,
       }
     },
     computed: {
@@ -70,7 +76,7 @@
         // 正向
         let run = () => {
           this.select(++index)
-          this.timerId = setTimeout(run, 3000)
+          this.timerId = setTimeout(run, this.autoplayDelay)
         }
         // 反向
         // let run = () => {
@@ -78,7 +84,7 @@
         //   this.select(index)
         //   setTimeout(run, 3000)
         // }
-        this.timerId = setTimeout(run, 3000)
+        this.timerId = setTimeout(run, this.autoplayDelay)
       },
       onMouseEnter () {
         this.pause()

@@ -8,6 +8,7 @@
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "test": "karma start --single-run",
+    "test:watch": "karma start",
     "docs:build": "vuepress build docs",
     "docs:dev": "vuepress dev docs",
     "watch:unit": "vue-cli-service test:unit --watch"
