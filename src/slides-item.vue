@@ -1,6 +1,6 @@
 <template>
   <transition name="slide">
-    <div class="slides-item" v-if="visible" :class="{reverse}">
+    <div class="slide-item" v-if="visible" :class="{reverse}">
       <slot></slot>
     </div>
   </transition>
@@ -52,5 +52,9 @@
     position: absolute;
     left: 0;
     top: 0;
+  }
+  .slide-item{
+    width: 100%;
+    height: 100%;
   }
 </style>
