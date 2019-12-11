@@ -9,15 +9,24 @@
       <slot></slot>
     </div>
     <div class="slides-dots">
+      <span @click="onClickPrev">
+        <icon name="left"></icon>
+      </span>
       <span v-for="n in childrenLength" :class="{active: selectedIndex === n-1}"
             @click="select(n-1)">{{n}}</span>
+      <span @click="onClickNext">
+        <icon name="right"></icon>
+      </span>
     </div>
   </div>
 </template>
 
 <script>
+  import Icon from './icon'
+
   export default {
     name: 'slides',
+    components: { Icon },
     props: {
       selected: {
         type: String
@@ -37,14 +46,23 @@
     },
     computed: {
       names () {
-        return this.$children.map(vm => vm.name)
+        return this.items.map(vm => vm.name)
       },
       selectedIndex () {
         let selectedIndex = this.names.indexOf(this.selected)
         return selectedIndex < 0 ? 0 : selectedIndex
+      },
+      items () {
+        return this.$children.filter(vm => vm.$options.name === 'slides-item')
       }
     },
     methods: {
+      onClickPrev () {
+        this.select(this.selectedIndex - 1)
+      },
+      onClickNext () {
+        this.select(this.selectedIndex + 1)
+      },
       playAutomatically () {
         if (!this.autoplay) return
         if (this.timerId) return
@@ -109,12 +127,12 @@
         this.$emit('update:selected', this.names[index])
       },
       getSelected () {
-        let first = this.$children[0]
+        let first = this.items[0]
         return this.selected || first.name
       },
       updateChildren () {
         let selected = this.getSelected()
-        this.$children.forEach((vm) => {
+        this.items.forEach((vm) => {
           // 告知子元素应该如何执行动画
           // let newIndex = this.names.indexOf(selected) // 只有在父组件中能够拿到所有的名字
           let reverse = this.selectedIndex <= this.lastSelectedIndex
@@ -137,7 +155,7 @@
     mounted () {
       this.updateChildren()
       this.playAutomatically()
-      this.childrenLength = this.$children.length
+      this.childrenLength = this.items.length
     },
     updated () {
       this.updateChildren()
