@@ -34,15 +34,15 @@
     transition: transform 1s;
   }
   .slide-enter {
-    transform: translateX(100%) scale(0.5);
+    transform: translateX(100%);
     &.reverse {
-      transform: translateX(-100%) scale(0.5);
+      transform: translateX(-100%);
     }
   }
   .slide-leave-to {
-    transform: translateX(-100%) scale(0.5);
+    transform: translateX(-100%);
     &.reverse {
-      transform: translateX(100%) scale(0.5);
+      transform: translateX(100%);
     }
   }
   .slide-leave-active {
@@ -50,7 +50,7 @@
     left: 0;
     top: 0;
   }
-  .slide-item{
+  .slide-item {
     width: 100%;
     height: 100%;
   }

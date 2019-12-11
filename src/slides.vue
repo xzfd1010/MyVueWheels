@@ -1,13 +1,16 @@
 <template>
   <div class="slides"
        @mouseenter="onMouseEnter"
-       @mouseleave="onMouseLeave">
+       @mouseleave="onMouseLeave"
+       @touchstart="onTouchStart"
+       @touchmove="onTouchMove"
+       @touchend="onTouchEnd">
     <div class="slides-window">
       <slot></slot>
     </div>
     <div class="slides-dots">
       <span v-for="n in childrenLength" :class="{active: selectedIndex === n-1}"
-            @click="select(n-1)">{{n-1}}</span>
+            @click="select(n-1)">{{n}}</span>
     </div>
   </div>
 </template>
@@ -26,6 +29,7 @@
     },
     data () {
       return {
+        startTouch: undefined, // 初始位置
         childrenLength: 0,
         lastSelectedIndex: undefined,
         timeId: undefined
@@ -36,27 +40,22 @@
         return this.$children.map(vm => vm.name)
       },
       selectedIndex () {
-        return this.names.indexOf(this.selected) || 0
+        let selectedIndex = this.names.indexOf(this.selected)
+        return selectedIndex < 0 ? 0 : selectedIndex
       }
     },
     methods: {
       playAutomatically () {
+        if (!this.autoplay) return
         if (this.timerId) return
         let index = this.names.indexOf(this.getSelected()) // 当前选中项
         // 正向
         let run = () => {
-          if (index === this.names.length - 1) {
-            index = -1
-          }
           this.select(++index)
-          console.log(`index=${index}`)
           this.timerId = setTimeout(run, 3000)
         }
+        // 反向
         // let run = () => {
-        //   if (index === 0) {
-        //     index = 3
-        //   }
-        //   // this.$emit('update:selected', this.names[--index])
         //   index--
         //   this.select(index)
         //   setTimeout(run, 3000)
@@ -69,12 +68,44 @@
       onMouseLeave () {
         this.playAutomatically() // 如果已经执行动画的话，不再创建新的计时器
       },
+      onTouchStart (e) {
+        this.pause()
+        this.startTouch = e.touches[0]
+      },
+      onTouchMove (e) {
+      },
+      onTouchEnd (e) {
+        let endTouch = e.changedTouches[0]
+        let { clientX: x1, clientY: y1 } = this.startTouch
+        let { clientX: x2, clientY: y2 } = endTouch
+
+        let distance = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2))
+        let deltaY = Math.abs(y2 - y1)
+        let ratio = distance / deltaY
+        if (ratio > 2) {
+          // 认为是水平移动
+          if (x1 - x2 > 0) {
+            // 手指向左
+            this.select(this.selectedIndex + 1)
+          } else {
+            // 手指向右
+            this.select(this.selectedIndex - 1)
+          }
+        }
+        this.$nextTick(() => {
+          this.startTouch = undefined
+          this.playAutomatically()
+        })
+      },
       pause () {
         window.clearTimeout(this.timerId)
         this.timerId = undefined
       },
       select (index) {
         this.lastSelectedIndex = this.selectedIndex // 记录上次选中的值
+        // 边界判断
+        if (index === this.childrenLength) {index = 0}
+        if (index === -1) {index = this.childrenLength - 1}
         this.$emit('update:selected', this.names[index])
       },
       getSelected () {
@@ -87,12 +118,14 @@
           // 告知子元素应该如何执行动画
           // let newIndex = this.names.indexOf(selected) // 只有在父组件中能够拿到所有的名字
           let reverse = this.selectedIndex <= this.lastSelectedIndex
-          // 处理最后一张和第一张的边界情况
-          if (this.lastSelectedIndex === this.childrenLength - 1 && this.selectedIndex === 0) {
-            reverse = false
-          }
-          if (this.lastSelectedIndex === 0 && this.selectedIndex === this.childrenLength - 1) {
-            reverse = true
+          if (this.timerId || this.startTouch) {
+            // 自动播放时，处理最后一张和第一张的边界情况
+            if (this.lastSelectedIndex === this.childrenLength - 1 && this.selectedIndex === 0) {
+              reverse = false
+            }
+            if (this.lastSelectedIndex === 0 && this.selectedIndex === this.childrenLength - 1) {
+              reverse = true
+            }
           }
           vm.reverse = reverse
           this.$nextTick(() => {
@@ -103,11 +136,8 @@
     },
     mounted () {
       this.updateChildren()
-      if (this.autoplay) {
-        this.playAutomatically()
-      }
+      this.playAutomatically()
       this.childrenLength = this.$children.length
-      console.log('selected', this.selectedIndex)
     },
     updated () {
       this.updateChildren()
@@ -122,11 +152,30 @@
       overflow: hidden;
     }
     &-dots {
-      span {
-        margin: 10px;
+      padding: 8px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      > span {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #ddd;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 8px;
+        font-size: 12px;
+      }
+      &:hover {
+        cursor: pointer;
       }
       .active {
-        color: red;
+        background: black;
+        color: #fff;
+        &:hover {
+          cursor: default;
+        }
       }
     }
   }
