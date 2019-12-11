@@ -24,7 +24,7 @@
     },
     data () {
       return {
-        selected: ''
+        selected: '11'
       }
     },
     mounted () {
@@ -47,6 +47,10 @@
     width: 100%;
     height: 300px;
     background: #ddd;
-    border: 1px solid red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+
   }
 </style>

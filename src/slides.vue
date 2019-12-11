@@ -1,5 +1,7 @@
 <template>
-  <div class="slides">
+  <div class="slides"
+       @mouseenter="onMouseEnter"
+       @mouseleave="onMouseLeave">
     <div class="slides-window">
       <slot></slot>
     </div>
@@ -25,7 +27,8 @@
     data () {
       return {
         childrenLength: 0,
-        lastSelectedIndex: undefined
+        lastSelectedIndex: undefined,
+        timeId: undefined
       }
     },
     computed: {
@@ -38,29 +41,40 @@
     },
     methods: {
       playAutomatically () {
+        if (this.timerId) return
         let index = this.names.indexOf(this.getSelected()) // 当前选中项
         // 正向
+        let run = () => {
+          if (index === this.names.length - 1) {
+            index = -1
+          }
+          this.select(++index)
+          console.log(`index=${index}`)
+          this.timerId = setTimeout(run, 3000)
+        }
         // let run = () => {
-        //   if (index === names.length - 1) {
-        //     index = -1
+        //   if (index === 0) {
+        //     index = 3
         //   }
-        //   this.$emit('update:selected', names[++index])
-        //   console.log(`index=${index}`)
+        //   // this.$emit('update:selected', this.names[--index])
+        //   index--
+        //   this.select(index)
         //   setTimeout(run, 3000)
         // }
-        let run = () => {
-          if (index === 0) {
-            index = 3
-          }
-          // this.$emit('update:selected', this.names[--index])
-          index--
-          this.select(index)
-          setTimeout(run, 3000)
-        }
-        // setTimeout(run, 3000)
+        this.timerId = setTimeout(run, 3000)
+      },
+      onMouseEnter () {
+        this.pause()
+      },
+      onMouseLeave () {
+        this.playAutomatically() // 如果已经执行动画的话，不再创建新的计时器
+      },
+      pause () {
+        window.clearTimeout(this.timerId)
+        this.timerId = undefined
       },
       select (index) {
-        this.lastSelectedIndex = this.selectedIndex // 记录下来上次选中的值
+        this.lastSelectedIndex = this.selectedIndex // 记录上次选中的值
         this.$emit('update:selected', this.names[index])
       },
       getSelected () {
@@ -72,8 +86,16 @@
         this.$children.forEach((vm) => {
           // 告知子元素应该如何执行动画
           // let newIndex = this.names.indexOf(selected) // 只有在父组件中能够拿到所有的名字
-          vm.reverse = this.selectedIndex <= this.lastSelectedIndex
-          this.$nextTick(()=>{
+          let reverse = this.selectedIndex <= this.lastSelectedIndex
+          // 处理最后一张和第一张的边界情况
+          if (this.lastSelectedIndex === this.childrenLength - 1 && this.selectedIndex === 0) {
+            reverse = false
+          }
+          if (this.lastSelectedIndex === 0 && this.selectedIndex === this.childrenLength - 1) {
+            reverse = true
+          }
+          vm.reverse = reverse
+          this.$nextTick(() => {
             vm.selected = selected
           })
         })
@@ -85,6 +107,7 @@
         this.playAutomatically()
       }
       this.childrenLength = this.$children.length
+      console.log('selected', this.selectedIndex)
     },
     updated () {
       this.updateChildren()
@@ -94,7 +117,6 @@
 
 <style scoped lang="scss">
   .slides {
-    border: 1px solid #000;
     &-window {
       position: relative;
       overflow: hidden;

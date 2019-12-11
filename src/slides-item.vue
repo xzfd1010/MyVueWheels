@@ -34,18 +34,15 @@
     transition: transform 1s;
   }
   .slide-enter {
-    transform: translateX(100%);
+    transform: translateX(100%) scale(0.5);
     &.reverse {
-      transform: translateX(-100%);
+      transform: translateX(-100%) scale(0.5);
     }
   }
-  /*.slide-enter-to, .slide-leave {*/
-  /*  transform: translateX(0);*/
-  /*}*/
   .slide-leave-to {
-    transform: translateX(-100%);
+    transform: translateX(-100%) scale(0.5);
     &.reverse {
-      transform: translateX(100%);
+      transform: translateX(100%) scale(0.5);
     }
   }
   .slide-leave-active {
