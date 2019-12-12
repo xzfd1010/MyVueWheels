@@ -45,7 +45,7 @@
         contentWrapper.addEventListener('mouseleave', this.handleMouseLeave)
       }
     },
-    destroyed () {
+    beforeDestroy () {
       if (this.trigger === 'click') {
         document.removeEventListener('click', this.onClickDocument)
         this.$refs.popover.removeEventListener('click', this.onClick)
