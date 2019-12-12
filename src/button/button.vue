@@ -10,7 +10,7 @@
 </template>
 
 <script>
-  import Icon from './icon'
+  import Icon from '../icon'
 
   export default {
     name: 'my-button',
@@ -35,7 +35,7 @@
 </script>
 
 <style lang="scss" scoped>
-  @import "./styles/var";
+  @import "../styles/var";
 
   .g-button {
     font-size: $font-size;
