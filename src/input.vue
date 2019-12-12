@@ -41,7 +41,7 @@
 
 <style scoped lang="scss">
     //定义变量
-    @import "./styles/var";
+    @import "../styles/var";
     $height: $input-height;
     .wrapper {
         font-size: $font-size;display: inline-flex;align-items: center;

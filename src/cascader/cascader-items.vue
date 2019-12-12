@@ -87,7 +87,7 @@
 </script>
 
 <style scoped lang="scss">
-  @import "../styles/var";
+  @import "../../styles/var";
   @keyframes spin {
     0% {
       transform: rotate(0deg)

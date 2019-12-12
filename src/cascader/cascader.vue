@@ -120,7 +120,7 @@
 </script>
 
 <style scoped lang="scss">
-  @import "../styles/var";
+  @import "var";
   .cascader {
     position: relative;
     height: $input-height;
