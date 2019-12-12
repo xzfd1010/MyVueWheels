@@ -3,8 +3,8 @@ import sinon from 'sinon'
 import sinonChai from 'sinon-chai'
 import { mount, shallowMount } from '@vue/test-utils'
 import Vue from 'vue'
-import Slides from '@/slides'
-import SlidesItem from '@/slides-item'
+import Slides from '@/slides/slides'
+import SlidesItem from '@/slides/slides-item'
 
 chai.use(sinonChai)
 

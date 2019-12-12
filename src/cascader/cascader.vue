@@ -14,7 +14,7 @@
 
 <script>
   import cascaderItems from './cascader-items'
-  import ClickOutSide from './click-outside'
+  import ClickOutSide from '../click-outside'
 
   let simplest = (children, id) => {
     return children.filter(item => item.id === id)[0]
@@ -120,7 +120,7 @@
 </script>
 
 <style scoped lang="scss">
-  @import "./styles/var";
+  @import "../styles/var";
   .cascader {
     position: relative;
     height: $input-height;
