@@ -1,26 +1,39 @@
 <template>
-  <g-slides class="wrapper" :selected.sync="selected" :autoplay="true">
-    <g-slides-item name="11">
-      <div class="box">1</div>
-    </g-slides-item>
-    <g-slides-item name="22">
-      <div class="box">2</div>
-    </g-slides-item>
-    <g-slides-item name="33">
-      <div class="box">3</div>
-    </g-slides-item>
-  </g-slides>
+  <div>
+    <g-slides class="wrapper" :selected.sync="selected" :autoplay="true">
+      <g-slides-item name="11">
+        <div class="box">1</div>
+      </g-slides-item>
+      <g-slides-item name="22">
+        <div class="box">2</div>
+      </g-slides-item>
+      <g-slides-item name="33">
+        <div class="box">3</div>
+      </g-slides-item>
+    </g-slides>
+
+    <g-button-group>
+      <g-button>哈哈</g-button>
+      <g-button>嘿嘿</g-button>
+    </g-button-group>
+
+  </div>
+
 </template>
 
 <script>
   import GSlides from './slides/slides'
   import GSlidesItem from './slides/slides-item'
+  import GButton from './button/button'
+  import GButtonGroup from './button/button-group'
 
   export default {
     name: 'demo',
     components: {
       GSlides,
-      GSlidesItem
+      GSlidesItem,
+      GButton,
+      GButtonGroup,
     },
     data () {
       return {
@@ -39,7 +52,7 @@
     box-sizing: border-box;
   }
 
-  .wrapper{
+  .wrapper {
     margin: 40px;
   }
 
