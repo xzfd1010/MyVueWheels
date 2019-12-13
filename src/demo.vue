@@ -1,43 +1,31 @@
 <template>
   <div>
-    <g-slides class="wrapper" :selected.sync="selected" :autoplay="true">
-      <g-slides-item name="11">
-        <div class="box">1</div>
-      </g-slides-item>
-      <g-slides-item name="22">
-        <div class="box">2</div>
-      </g-slides-item>
-      <g-slides-item name="33">
-        <div class="box">3</div>
-      </g-slides-item>
-    </g-slides>
-
-    <g-button-group>
-      <g-button>哈哈</g-button>
-      <g-button>嘿嘿</g-button>
-    </g-button-group>
-
+    <!--  大部分人使用single，所以只在multiple时候需要写  -->
+    <!--  multiple  -->
+    <my-nav :selected.sync="selected" >
+      <my-nav-item name="home">首页</my-nav-item>
+      <my-nav-item name="about">关于</my-nav-item>
+      <my-nav-item name="hire">招聘</my-nav-item>
+    </my-nav>
   </div>
 
 </template>
 
 <script>
-  import GSlides from './slides/slides'
-  import GSlidesItem from './slides/slides-item'
-  import GButton from './button/button'
-  import GButtonGroup from './button/button-group'
+  import MyNav from '@/nav/nav'
+  import MyNavItem from '@/nav/nav-item'
+  import MySubNav from '@/nav/sub-nav'
 
   export default {
     name: 'demo',
     components: {
-      GSlides,
-      GSlidesItem,
-      GButton,
-      GButtonGroup,
+      MyNav,
+      MyNavItem,
+      MySubNav
     },
     data () {
       return {
-        selected: '11'
+        selected: ['home']
       }
     },
     mounted () {
