@@ -1,5 +1,5 @@
 <template>
-  <div class="my-nav-item" :class="{selected}" @click="onClick">
+  <div class="my-nav-item" :class="{selected,vertical}" @click="onClick">
     <slot></slot>
   </div>
 </template>
@@ -7,7 +7,7 @@
 <script>
   export default {
     name: 'MyNavItem',
-    inject: ['root'],
+    inject: ['root', 'vertical'],
     props: {
       name: {
         type: String,
@@ -36,16 +36,40 @@
   @import "../../styles/var";
   .my-nav-item {
     padding: 10px 20px;
-    &.selected {
-      position: relative;
-      &::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        border-bottom: 2px solid $blue;
-        width: 100%;
+    &:not(.vertical) {
+      &.selected {
+        position: relative;
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          border-bottom: 2px solid $blue;
+          width: 100%;
+        }
       }
+    }
+    &.vertical{
+      &.selected {
+        position: relative;
+        color: $blue;
+        background: $grey;
+        &::after {
+          display: none;
+        }
+      }
+    }
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
     }
   }
   .my-sub-nav .my-nav-item {
