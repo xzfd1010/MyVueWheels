@@ -143,7 +143,7 @@
     .my-sub-nav-popover {
       top: 0;
       left: 100%;
-      margin-left: 8px;
+      margin-left: 10px;
     }
     .my-sub-nav-label {
       display: flex;

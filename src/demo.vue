@@ -66,7 +66,14 @@
     },
     data () {
       return {
-        selected: ['home']
+        selected: 'home'
+      }
+    },
+    watch: {
+      selected (newValue) {
+        if (newValue === 'hire') {
+          alert('hi')
+        }
       }
     },
     mounted () {
