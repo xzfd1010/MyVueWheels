@@ -128,7 +128,7 @@
 <style scoped lang="scss">
   $border-color: #333;
   $border-radius: 4px;
-  .fade-enter-active, .fade-leave-active {
+  .x, .fade-leave-active {
     transition: all .3s;
   }
   .fade-enter, .fade-leave-to {
