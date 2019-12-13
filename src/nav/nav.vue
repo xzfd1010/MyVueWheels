@@ -61,7 +61,11 @@
 </script>
 
 <style scoped lang="scss">
+  @import "../../styles/var";
   .my-nav {
     display: flex;
+    border-bottom: 1px solid $grey;
+    color: $color;
+    cursor: default;
   }
 </style>
