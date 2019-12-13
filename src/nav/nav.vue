@@ -22,7 +22,8 @@
     },
     data () {
       return {
-        items: []
+        items: [],
+        namePath: []
       }
     },
     methods: {

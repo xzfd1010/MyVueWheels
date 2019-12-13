@@ -1,5 +1,5 @@
 <template>
-  <div class="my-sub-nav">
+  <div class="my-sub-nav" :class="{active}" v-click-out-side="close">
     <span @click="open = !open">
       <slot name="title"></slot>
     </span>
@@ -10,11 +10,35 @@
 </template>
 
 <script>
+  import ClickOutSide from '@/click-outside'
+
   export default {
     name: 'MySubNav',
+    inject: ['root'],
+    directives: {ClickOutSide},
+    props: {
+      name: {
+        type: String,
+        required: true
+      }
+    },
     data () {
       return {
-        open: false
+        open: false,
+      }
+    },
+    computed: {
+      active () {
+        return this.root.namePath.indexOf(this.name) > -1
+      }
+    },
+    methods: {
+      updateNamePath () {
+        this.$parent.updateNamePath && this.$parent.updateNamePath()
+        this.root.namePath.unshift(this.name)
+      },
+      close () {
+        this.open = false
       }
     }
   }
@@ -24,9 +48,19 @@
   @import "../../styles/var";
   .my-sub-nav {
     position: relative;
+    &.active {
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        border-bottom: 2px solid $blue;
+        width: 100%;
+      }
+    }
     > span {
-      padding: 10px 20px;
       display: block;
+      padding: 10px 20px;
     }
     &-popover {
       background: #fff;
