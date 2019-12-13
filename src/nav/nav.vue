@@ -7,6 +7,9 @@
 <script>
   export default {
     name: 'MyNav',
+    provide () {
+      return { root: this }
+    },
     props: {
       selected: {
         type: Array,
@@ -17,12 +20,15 @@
         default: false
       }
     },
-    computed: {
-      items () {
-        return this.$children.filter(vm => vm.$options.name === 'MyNavItem')
+    data () {
+      return {
+        items: []
       }
     },
     methods: {
+      addItem (vm) {
+        this.items.push(vm)
+      },
       updateChildren () {
         this.items.forEach(vm => {
           vm.selected = this.selected.indexOf(vm.name) >= 0
@@ -57,6 +63,5 @@
 <style scoped lang="scss">
   .my-nav {
     display: flex;
-    border: 1px solid red;
   }
 </style>

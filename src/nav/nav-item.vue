@@ -7,6 +7,7 @@
 <script>
   export default {
     name: 'MyNavItem',
+    inject: ['root'],
     props: {
       name: {
         type: String,
@@ -17,6 +18,9 @@
       return {
         selected: false
       }
+    },
+    created () {
+      this.root.addItem(this)
     },
     methods: {
       onClick () {
@@ -30,7 +34,7 @@
   .my-nav-item {
     padding: 10px 20px;
     &.selected {
-      color: red;
+      background: red;
     }
   }
 </style>
