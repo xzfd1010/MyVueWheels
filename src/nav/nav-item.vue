@@ -1,5 +1,6 @@
 <template>
-  <div class="my-nav-item" :class="{selected,vertical}" @click="onClick">
+  <div class="my-nav-item" :class="{selected,vertical}" @click="onClick"
+       :data-name="name">
     <slot></slot>
   </div>
 </template>
