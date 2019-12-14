@@ -3,7 +3,7 @@ module.exports = function (config) {
   config.set({
     frameworks: ['mocha'],
     files: [
-      'tests/**/*.spec.js',   //tests目录下，所有.spce.js结尾的测试文件
+      'tests/**/*.spec.js',   //tests目录下，所有.spec.js结尾的测试文件
       // 'tests/**/*.test.js'
     ],
     preprocessors: {
@@ -11,6 +11,8 @@ module.exports = function (config) {
     },
     webpack: webpackConfig,
     reporters: ['spec'],
+    autoWatch: true,
     browsers: ['ChromeHeadless']
   })
 }
+

@@ -6,12 +6,11 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "test:unit": "vue-cli-service test:unit",
+    "test:unit": "karma start",
     "test": "karma start --single-run",
     "test:watch": "karma start",
     "docs:build": "vuepress build docs",
-    "docs:dev": "vuepress dev docs",
-    "watch:unit": "vue-cli-service test:unit --watch"
+    "docs:dev": "vuepress dev docs"
   },
   "main": "dist/index.js",
   "dependencies": {
