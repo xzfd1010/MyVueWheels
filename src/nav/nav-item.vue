@@ -1,6 +1,6 @@
 <template>
-  <div class="my-nav-item" :class="{selected,vertical}" @click="onClick"
-       :data-name="name">
+  <div :class="{selected,vertical}" :data-name="name" @click="onClick"
+       class="my-nav-item">
     <slot></slot>
   </div>
 </template>
@@ -33,7 +33,7 @@
   }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
   @import "../../styles/var";
   .my-nav-item {
     padding: 10px 20px;

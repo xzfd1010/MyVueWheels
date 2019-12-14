@@ -1,5 +1,5 @@
 <template>
-  <div class="layout" :class="layoutClass">
+  <div :class="layoutClass" class="layout">
     <slot></slot>
   </div>
 </template>
@@ -24,7 +24,7 @@
   }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
   .layout {
     display: flex;
     flex-direction: column;

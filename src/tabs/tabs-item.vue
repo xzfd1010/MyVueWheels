@@ -1,6 +1,6 @@
 <template>
-  <div class="tabs-item" @click="onClick" :class="classes"
-       :data-name="name">
+  <div :class="classes" :data-name="name" @click="onClick"
+       class="tabs-item">
     <slot></slot>
   </div>
 </template>
@@ -48,7 +48,7 @@
   }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
   $blue: deepskyblue;
   $disabled-text-color: #666;
   .tabs-item {

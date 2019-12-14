@@ -10,8 +10,7 @@
   }
 </script>
 
-<style scoped lang="scss">
-  .header{
-
+<style lang="scss" scoped>
+  .header {
   }
 </style>

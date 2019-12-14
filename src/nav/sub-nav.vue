@@ -1,15 +1,15 @@
 <template>
-  <div class="my-sub-nav" :class="{active,vertical}" v-click-out-side="close">
+  <div :class="{active,vertical}" class="my-sub-nav" v-click-out-side="close">
     <span @click="open = !open" class="my-sub-nav-label">
       <slot name="title"></slot>
-      <span class="my-sub-nav-icon" :class="{open,vertical}">
+      <span :class="{open,vertical}" class="my-sub-nav-icon">
         <icon name="right"></icon>
       </span>
     </span>
     <!--  垂直和水平的动画不能混用  -->
     <template v-if="vertical">
-      <transition @enter="enter" @after-enter="afterEnter" @leave="leave" @after-leave="afterLeave">
-        <div class="my-sub-nav-popover" v-show="open" :class="{vertical}">
+      <transition @after-enter="afterEnter" @after-leave="afterLeave" @enter="enter" @leave="leave">
+        <div :class="{vertical}" class="my-sub-nav-popover" v-show="open">
           <slot></slot>
         </div>
       </transition>
@@ -89,7 +89,7 @@
   }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
   @import "../../styles/var";
   .my-sub-nav {
     position: relative;

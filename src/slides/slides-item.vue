@@ -1,6 +1,6 @@
 <template>
   <transition name="slide">
-    <div class="slide-item" v-if="visible" :class="{reverse}">
+    <div :class="{reverse}" class="slide-item" v-if="visible">
       <slot></slot>
     </div>
   </transition>
@@ -29,7 +29,7 @@
   }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
   .slide-enter-active, .slide-leave-active {
     transition: transform 1s;
   }

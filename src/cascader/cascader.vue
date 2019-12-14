@@ -1,13 +1,13 @@
 <template>
   <div class="cascader" v-click-out-side="close">
-    <div class="trigger" @click="toggle">
+    <div @click="toggle" class="trigger">
       <!--      <slot></slot>-->
       {{result || '&nbsp;'}}
     </div>
     <div class="popover-wrapper" v-if="popoverVisible">
-      <cascader-items :children="source" :height="height" class="popover" :selected="selected"
-                      :load-data="loadData" :loading-item="loadingItem"
-                      :level="level" @update:selected="updateSelected"></cascader-items>
+      <cascader-items :children="source" :height="height" :level="level" :load-data="loadData"
+                      :loading-item="loadingItem" :selected="selected"
+                      @update:selected="updateSelected" class="popover"></cascader-items>
     </div>
   </div>
 </template>
@@ -119,8 +119,8 @@
   }
 </script>
 
-<style scoped lang="scss">
-  @import "var";
+<style lang="scss" scoped>
+  @import "../../styles/var";
   .cascader {
     position: relative;
     height: $input-height;

@@ -1,6 +1,6 @@
 <template>
-  <div class="col" :class="colClass"
-       :style="colStyle">
+  <div :class="colClass" :style="colStyle"
+       class="col">
     <slot></slot>
   </div>
 </template>
@@ -70,7 +70,7 @@
   }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
   .col {
     /*width: 50%;*/
     > div {

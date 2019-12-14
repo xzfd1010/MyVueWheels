@@ -1,11 +1,11 @@
 <template>
-  <div class="child" :style="{height}">
+  <div :style="{height}" class="child">
     <div class="left">
-      <div class="label" v-for="item in children" @click="onClickLabel(item)">
+      <div @click="onClickLabel(item)" class="label" v-for="item in children">
         <span class="name">{{item.name}}</span>
         <span class="icons">
           <template v-if="loadingItem.name === item.name">
-            <icon name="loading" class="loading"></icon>
+            <icon class="loading" name="loading"></icon>
           </template>
           <template v-else>
             <icon name="right" v-if="rightArrowVisible(item)"></icon>
@@ -15,8 +15,8 @@
     </div>
     <div class="right" v-if="rightItems">
       <!--  自动向下一个层级  -->
-      <cascader-items :children="rightItems" :height="height" :selected="selected" :level="level+1"
-                      :load-data="loadData" :loading-item="loadingItem"
+      <cascader-items :children="rightItems" :height="height" :level="level+1" :load-data="loadData"
+                      :loading-item="loadingItem" :selected="selected"
                       @update:selected="updateSelected"></cascader-items>
     </div>
   </div>
@@ -86,7 +86,7 @@
   }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
   @import "../../styles/var";
   @keyframes spin {
     0% {

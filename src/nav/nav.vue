@@ -1,5 +1,5 @@
 <template>
-  <div class="my-nav" :class="{vertical}">
+  <div :class="{vertical}" class="my-nav">
     <slot></slot>
   </div>
 </template>
@@ -55,7 +55,7 @@
   }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
   @import "../../styles/var";
   .my-nav {
     display: flex;

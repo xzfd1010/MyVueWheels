@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper" :class="toastClasses">
+  <div :class="toastClasses" class="wrapper">
     <div class="toast">
       <div class="message">
         <slot>
@@ -8,7 +8,7 @@
         </slot>
       </div>
       <!--    todo 这里也要改，closeButton现在一直都存在  -->
-      <span class="close" v-if="closeButton" @click.stop="onClickClose" ref="button">
+      <span @click.stop="onClickClose" class="close" ref="button" v-if="closeButton">
       {{closeButton.text}}
     </span>
     </div>
@@ -88,7 +88,7 @@
   }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
   $font-size: 14px;
   $toast-height: 40px;
   $toast-bg: rgba(0, 0, 0, 0.75);

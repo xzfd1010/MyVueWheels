@@ -10,8 +10,7 @@
   }
 </script>
 
-<style scoped lang="scss">
-  .footer{
-
+<style lang="scss" scoped>
+  .footer {
   }
 </style>

@@ -1,8 +1,8 @@
 <template>
   <div class="popover" ref="popover">
     <transition name="fade">
-      <div class="content-wrapper" ref="contentWrapper" v-show="visible" :class="{[`position-${position}`]:true}">
-        <slot name="content" :close="close"></slot>
+      <div :class="{[`position-${position}`]:true}" class="content-wrapper" ref="contentWrapper" v-show="visible">
+        <slot :close="close" name="content"></slot>
       </div>
     </transition>
     <span class="trigger" ref="triggerWrapper" style="display: inline-block;">
@@ -125,7 +125,7 @@
   }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
   $border-color: #333;
   $border-radius: 4px;
   .x, .fade-leave-active {

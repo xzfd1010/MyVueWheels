@@ -1,10 +1,10 @@
 <template>
-  <div class="slides"
-       @mouseenter="onMouseEnter"
+  <div @mouseenter="onMouseEnter"
        @mouseleave="onMouseLeave"
-       @touchstart="onTouchStart"
+       @touchend="onTouchEnd"
        @touchmove="onTouchMove"
-       @touchend="onTouchEnd">
+       @touchstart="onTouchStart"
+       class="slides">
     <div class="slides-window">
       <slot></slot>
     </div>
@@ -12,10 +12,10 @@
       <span @click="onClickPrev">
         <icon name="left"></icon>
       </span>
-      <span v-for="n in childrenLength" :class="{active: selectedIndex === n-1}"
+      <span :class="{active: selectedIndex === n-1}" :data-index="n-1"
             :key="n"
-            :data-index="n-1"
-            @click="select(n-1)">{{n}}</span>
+            @click="select(n-1)"
+            v-for="n in childrenLength">{{n}}</span>
       <span @click="onClickNext">
         <icon name="right"></icon>
       </span>
@@ -169,7 +169,7 @@
   }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
   .slides {
     &-window {
       position: relative;

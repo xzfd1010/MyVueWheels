@@ -1,7 +1,5 @@
 import chai, { expect } from 'chai'
-import sinon from 'sinon'
 import sinonChai from 'sinon-chai'
-import { mount, shallowMount } from '@vue/test-utils'
 import Vue from 'vue'
 import Col from '@/grid/col'
 

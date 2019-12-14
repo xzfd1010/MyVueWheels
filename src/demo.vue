@@ -26,7 +26,7 @@
     </my-nav>
     <!--  大部分人使用single，所以只在multiple时候需要写  -->
     <!--  multiple  -->
-    <my-nav :selected.sync="selected" vertical style="width: 200px;margin: 20px;">
+    <my-nav :selected.sync="selected" style="width: 200px;margin: 20px;" vertical>
       <my-nav-item name="home">首页</my-nav-item>
       <my-sub-nav name="about">
         <!--        <my-nav-item name="about">关于</my-nav-item>-->
@@ -86,19 +86,5 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-  }
-
-  .wrapper {
-    margin: 40px;
-  }
-
-  .box {
-    width: 100%;
-    height: 300px;
-    background: #ddd;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 30px;
   }
 </style>

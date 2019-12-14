@@ -1,5 +1,5 @@
 <template>
-  <div class="tabs-pane" :class="classes" v-if="active">
+  <div :class="classes" class="tabs-pane" v-if="active">
     <slot></slot>
   </div>
 </template>
@@ -33,7 +33,7 @@
   }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
   .tabs-pane {
     padding: 1em;
   }

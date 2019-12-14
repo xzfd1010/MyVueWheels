@@ -30,7 +30,7 @@
   }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
   $tab-height: 40px;
   $blue: deepskyblue;
   $grey: #ccc;

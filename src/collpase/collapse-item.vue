@@ -1,6 +1,6 @@
 <template>
   <div class="collapse-item">
-    <div class="title" @click="toggle" :data-name="name">{{title}}</div>
+    <div :data-name="name" @click="toggle" class="title">{{title}}</div>
     <div class="content" v-if="open">
       <slot></slot>
     </div>
@@ -45,7 +45,7 @@
   }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
   $grey: #ddd;
   $border-radius: 4px;
   .collapse-item {
