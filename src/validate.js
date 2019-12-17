@@ -22,66 +22,76 @@
  *  }
  *
  */
-export default function validate (data, rules) {
-  let errors = {}
-  rules.forEach(rule => {
-    let value = data[rule.key]
-    if (rule.required) {
-      let error = validate.required(value)
-      if (error) {
-        ensureObjectExist(errors, rule.key)
-        errors[rule.key].required = error
-        return
-      }
-    }
-    // 遍历validators并注意调用对应的函数
-    let validators = Object.keys(rule).filter(key => key !== 'key' && key !== 'required')
-    validators.forEach(validatorKey => {
-      // key可能是 minLength/maxLength/pattern
-      if (validate[validatorKey]) {
-        let error = validate[validatorKey](value, rule[validatorKey])
+class Validator {
+  static addRule (name, fn) {
+    Validator.prototype.name = fn
+  }
+
+  constructor () {}
+
+  validate (data, rules) {
+    let errors = {}
+    rules.forEach(rule => {
+      let value = data[rule.key]
+      if (rule.required) {
+        let error = this.required(value)
         if (error) {
           ensureObjectExist(errors, rule.key)
-          errors[rule.key][validatorKey] = error
+          errors[rule.key].required = error
+          return
         }
-      } else {
-        throw `不存在的校验器：${validatorKey}`
       }
+      // 遍历validators并注意调用对应的函数
+      let validators = Object.keys(rule).filter(key => key !== 'key' && key !== 'required')
+      validators.forEach(validatorKey => {
+        // key可能是 minLength/maxLength/pattern
+        if (this[validatorKey]) {
+          let error = this[validatorKey](value, rule[validatorKey])
+          if (error) {
+            ensureObjectExist(errors, rule.key)
+            errors[rule.key][validatorKey] = error
+          }
+        } else {
+          throw `不存在的校验器：${validatorKey}`
+        }
 
+      })
     })
-  })
-  return errors
-}
-
-validate.required = (value) => {
-  if (!value && value !== 0) {
-    return '必填'
+    return errors
   }
-}
 
-validate.pattern = (value, pattern) => {
-  if (pattern === 'email') {
-    pattern = /^.+@.+$/
+  required (value) {
+    if (!value && value !== 0) {
+      return '必填'
+    }
   }
-  if (!pattern.test(value)) {
-    return '格式错误'
-  }
-}
 
-validate.minLength = (value, minLength) => {
-  if (value.length < minLength) {
-    return '太短'
+  pattern (value, pattern) {
+    if (pattern === 'email') {
+      pattern = /^.+@.+$/
+    }
+    if (!pattern.test(value)) {
+      return '格式错误'
+    }
   }
-}
 
-validate.maxLength = (value, minLength) => {
-  if (value.length > minLength) {
-    return '太长'
+  minLength (value, minLength) {
+    if (value.length < minLength) {
+      return '太短'
+    }
+  }
+
+  maxLength (value, minLength) {
+    if (value.length > minLength) {
+      return '太长'
+    }
   }
 }
 
 function ensureObjectExist (obj, key) {
-  if (!obj[key]) {
+  if (typeof obj[key] !== 'object') {
     obj[key] = {}
   }
 }
+
+export default Validator

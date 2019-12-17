@@ -1,13 +1,13 @@
 import chai, { expect } from 'chai'
 import sinonChai from 'sinon-chai'
 
-import validate from '@/validate'
+import Validator from '@/validate'
 
 chai.use(sinonChai)
 
 describe('validate', () => {
   it('存在', () => {
-    expect(validate).to.exist
+    expect(Validator).to.exist
   })
 
   it('测试必填', () => {
@@ -17,7 +17,8 @@ describe('validate', () => {
     let rules = [
       { key: 'email', required: true }
     ]
-    let errors = validate(data, rules)
+    const validator = new Validator()
+    let errors = validator.validate(data, rules)
     expect(errors.email.required).to.eq('必填')
   })
 
@@ -27,8 +28,9 @@ describe('validate', () => {
     let rules = [
       { key: 'email', pattern: 'email' }
     ]
-    let errors1 = validate(data1, rules)
-    let errors2 = validate(data2, rules)
+    const validator = new Validator()
+    let errors1 = validator.validate(data1, rules)
+    let errors2 = validator.validate(data2, rules)
     expect(errors1.email.pattern).to.eq('格式错误')
     expect(errors2.email).to.not.exist
   })
@@ -36,35 +38,77 @@ describe('validate', () => {
   it('测试最小长度', () => {
     let data = { password: 'gaga' }
     let rules = [{ key: 'password', minLength: 10 }]
-    let errors = validate(data, rules)
+    const validator = new Validator()
+    let errors = validator.validate(data, rules)
     expect(errors.password.minLength).to.eq('太短')
   })
   it('测试最小长度', () => {
     let data = { password: 'tinygaga-haha' }
     let rules = [{ key: 'password', maxLength: 10 }]
-    let errors = validate(data, rules)
+    const validator = new Validator()
+    let errors = validator.validate(data, rules)
     expect(errors.password.maxLength).to.eq('太长')
   })
   it('不存在的校验器报错', () => {
     let data = { password: 'tinygaga-haha' }
     let rules = [{ key: 'password', hasNumber: true }]
     let fn = () => {
-      validate(data, rules)
+      const validator = new Validator()
+      validator.validate(data, rules)
     }
     expect(fn).to.throw('不存在的校验器：hasNumber')
   })
   it('自己添加校验规则', () => {
     let data = { email: '123123' }
-    validate.hasNumber = (value) => {
+    const validator = new Validator()
+    validator.hasNumber = (value) => {
       if (!/\d/.test(value)) {
         return '必须含有数字'
       }
     }
     let rules = [{ key: 'email', required: true, minLength: 5, maxLength: 10, hasNumber: true }]
     let fn = () => {
-      validate(data, rules)
+      validator.validate(data, rules)
     }
     expect(fn).to.not.throw
+  })
+  it('两个validator互不影响', () => {
+    let data = { email: '123123' }
+    const validator1 = new Validator()
+    const validator2 = new Validator()
+    validator1.hasNumber = (value) => {
+      if (!/\d/.test(value)) {
+        return '必须含有数字'
+      }
+    }
+    let rules = [{ key: 'email', required: true, minLength: 5, maxLength: 10, hasNumber: true }]
+    let fn1 = () => {
+      validator1.validate(data, rules)
+    }
+    let fn2 = () => {
+      validator2.validate(data, rules)
+    }
+    expect(fn1).to.not.throw
+    expect(fn2).to.throw
+  })
+  it('给Validator Class添加校验器', () => {
+    let data = { email: '123123' }
+    Validator.addRule('hasNumber', () => {
+      if (!/\d/.test(value)) {
+        return '必须含有数字'
+      }
+    })
+    const validator1 = new Validator()
+    const validator2 = new Validator()
+    let rules = [{ key: 'email', required: true, minLength: 5, maxLength: 10, hasNumber: true }]
+    let fn1 = () => {
+      validator1.validate(data, rules)
+    }
+    let fn2 = () => {
+      validator2.validate(data, rules)
+    }
+    expect(fn1).to.not.throw
+    expect(fn2).to.not.throw
   })
 })
 
