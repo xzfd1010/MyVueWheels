@@ -43,7 +43,6 @@ describe('Button', () => {
       }
     })
     const icon = wrapper.element.querySelector('svg')
-    console.log(getComputedStyle(icon))
     expect(getComputedStyle(icon).order).to.eq('1')
   })
 

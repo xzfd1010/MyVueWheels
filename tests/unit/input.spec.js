@@ -56,7 +56,7 @@ describe('Input', () => {
   })
   describe('测试事件', () => {
     ['change', 'focus', 'input', 'blur'].forEach(eventName => {
-      it('change/focus/input/blur事件测试', () => {
+      it(`${eventName}事件测试`, () => {
         const callback = sinon.fake()
         const wrapper = mount(Input, {
           listeners: {
