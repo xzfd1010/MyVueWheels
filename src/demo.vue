@@ -1,6 +1,7 @@
 <template>
   <div style="margin: 20px;">
-    <pager :total-page="20" :current-page="20"></pager>
+    <pager :total-page="1" :current-page.sync="currentPage" :hide-if-one-page="false"
+           @update:currentPage="handlePageChange"></pager>
   </div>
 
 </template>
@@ -15,18 +16,16 @@
     },
     data () {
       return {
-        selected: 'home'
+        selected: 'home',
+        currentPage: 1
       }
     },
-    watch: {
-      selected (newValue) {
-        if (newValue === 'hire') {
-          alert('hi')
-        }
+    methods: {
+      handlePageChange (n) {
+        console.log(n)
       }
-    },
-    mounted () {
     }
+
   }
 </script>
 
