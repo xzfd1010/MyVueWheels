@@ -194,7 +194,7 @@
       &:hover {
         cursor: pointer;
       }
-      .active {
+      .current {
         background: black;
         color: #fff;
         &:hover {

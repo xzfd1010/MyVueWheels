@@ -59,7 +59,7 @@
     padding: 0 2em;
     cursor: pointer;
     height: 100%;
-    &.active {
+    &.current {
       color: $blue;
       font-weight: bold;
     }

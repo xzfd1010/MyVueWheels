@@ -94,7 +94,7 @@
   .my-sub-nav {
     position: relative;
     &:not(.vertical) {
-      &.active {
+      &.current {
         &::after {
           content: '';
           position: absolute;
@@ -135,7 +135,7 @@
     }
   }
   .my-sub-nav .my-sub-nav {
-    &.active {
+    &.current {
       &::after {
         display: none;
       }
