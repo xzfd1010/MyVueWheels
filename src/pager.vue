@@ -1,6 +1,7 @@
 <template>
-  <div class="my-pager">
-    <span class="my-pager-nav prev" :class="{disabled:currentPage===1}">
+  <div class="my-pager" :class="{hide:hideIfOnePage && totalPage===1}">
+    <span class="my-pager-nav prev" :class="{disabled:currentPage===1}"
+          @click="onClickPage(currentPage-1)">
       <icon name="left"></icon>
     </span>
     <template v-for="page in pages">
@@ -15,12 +16,13 @@
         </span>
       </template>
       <template v-else>
-        <span class="my-pager-item other">
+        <span class="my-pager-item other" @click="onClickPage(page)">
           {{page}}
         </span>
       </template>
     </template>
-    <span class="my-pager-nav next" :class="{disabled:currentPage===totalPage}">
+    <span class="my-pager-nav next" :class="{disabled:currentPage===totalPage}"
+          @click="onClickPage(currentPage+1)">
       <icon name="right"></icon>
     </span>
   </div>
@@ -46,24 +48,31 @@
         default: true
       }
     },
-    data () {
-      let pages = unique([1, this.totalPage,
-        this.currentPage,
-        this.currentPage - 1,
-        this.currentPage - 2,
-        this.currentPage + 1,
-        this.currentPage + 2]
-        .filter((n) => n >= 1 && n <= this.totalPage)
-        .sort((a, b) => a - b))
-        .reduce((prev, current, index, array) => {
-          prev.push(array[index])
-          if (array[index + 1] !== undefined && array[index + 1] - array[index] > 1) {
-            prev.push('...')
-          }
-          return prev
-        }, []) // 不提供initialValue的话，第一个元素会被当成initialValue
-      return {
-        pages: pages
+    computed: {
+      pages () {
+         // 不提供initialValue的话，第一个元素会被当成initialValue
+        return unique([1, this.totalPage,
+          this.currentPage,
+          this.currentPage - 1,
+          this.currentPage - 2,
+          this.currentPage + 1,
+          this.currentPage + 2]
+          .filter((n) => n >= 1 && n <= this.totalPage)
+          .sort((a, b) => a - b))
+          .reduce((prev, current, index, array) => {
+            prev.push(array[index])
+            if (array[index + 1] !== undefined && array[index + 1] - array[index] > 1) {
+              prev.push('...')
+            }
+            return prev
+          }, [])
+      }
+    },
+    methods: {
+      onClickPage (page) {
+        if(page >= 1 && page <= this.totalPage){
+          this.$emit('update:currentPage', page)
+        }
       }
     }
   }
@@ -90,6 +99,10 @@
     $width: 20px;
     $height: 20px;
     $font-size: 12px;
+    user-select: none;
+    &.hide {
+      display: none;
+    }
     &-item {
       display: inline-flex;
       align-items: center;
