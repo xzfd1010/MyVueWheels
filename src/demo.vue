@@ -1,7 +1,8 @@
 <template>
   <div>
+    {{selected}}
     <div style="margin:20px;">
-      <g-table :columns="columns" :data-source="dataSource" @changeItem="x"></g-table>
+      <g-table :columns="columns" :data-source="dataSource" :selected-items.sync="selected"></g-table>
     </div>
     <div style="margin:20px;">
       <g-table :columns="columns" :data-source="dataSource" bordered compact :striped="false"></g-table>
@@ -35,16 +36,19 @@
         dataSource: [
           { id: 1, name: 'nick', score: 100 },
           { id: 2, name: 'tom', score: 99 },
-          { id: 1, name: 'mary', score: 100 },
-          { id: 2, name: 'lily', score: 99 },
-          { id: 1, name: 'lorry', score: 100 },
-          { id: 2, name: 'tony', score: 99 }
-        ]
+          { id: 3, name: 'mary', score: 100 },
+          { id: 4, name: 'lily', score: 99 },
+          { id: 5, name: 'lorry', score: 100 },
+          { id: 6, name: 'tony', score: 99 }
+        ],
+        selected: []
       }
     },
     methods: {
       x (object) {
         let { selected, item, index } = object
+        console.log('selected', selected)
+        console.log('item', item)
         if (selected) {
           this.selected.push(item)
         } else {
