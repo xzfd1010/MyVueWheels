@@ -7,7 +7,13 @@
                    :checked="areAllItemsSelected"></th>
         <th v-if="numberVisible">#</th>
         <th v-for="column in columns" :key="column.field">
-          {{column.text}}
+          <div class="my-table-header">
+            {{column.text}}
+            <span class="my-table-sorter" v-if="column.field in orderBy" @click="changeOrderBy(column.field)">
+              <icon name="ascend" :class="{active: orderBy[column.field] === 'asc'}"></icon>
+              <icon name="descend" :class="{active: orderBy[column.field] === 'desc'}"></icon>
+            </span>
+          </div>
         </th>
       </tr>
       </thead>
@@ -27,9 +33,16 @@
 </template>
 
 <script>
+  import Icon from './icon'
+
   export default {
     name: 'GTable',
+    components: { Icon },
     props: {
+      orderBy: {
+        type: Object,
+        default: () => ({})
+      },
       columns: {
         type: Array,
         required: true,
@@ -64,6 +77,19 @@
       }
     },
     methods: {
+      changeOrderBy (key) {
+        // 排序应该让后端做？？我感觉还是可以让前端排序吧
+        const copy = JSON.parse(JSON.stringify(this.orderBy))
+        let oldValue = copy[key]
+        if (oldValue === 'asc') {
+          copy[key] = 'desc'
+        }else if(oldValue === 'desc'){
+          copy[key] = true
+        }else{
+          copy[key] = 'asc'
+        }
+        this.$emit('update:orderBy', copy)
+      },
       inSelectedItems (item) {
         return this.selectedItems.filter(i => item.id === i.id).length > 0
       },
@@ -86,8 +112,8 @@
     computed: {
       areAllItemsSelected () {
         // 判断两个数组所有元素的id是否都相同
-        const a = this.dataSource.map(item=>item.id).sort() // 字典序排序即可
-        const b = this.selectedItems.map(item=>item.id).sort()
+        const a = this.dataSource.map(item => item.id).sort() // 字典序排序即可
+        const b = this.selectedItems.map(item => item.id).sort()
         let equal = true
         if (a.length !== b.length) {
           equal = false
@@ -149,6 +175,31 @@
           }
         }
       }
+    }
+    &-sorter {
+      display: inline-flex;
+      flex-direction: column;
+      margin: 0 4px;
+      fill: $grey;
+      svg {
+        width: 10px;
+        height: 10px;
+        cursor: pointer;
+        &:first-child {
+          position: relative;
+          bottom: -1px;
+        }
+        &:last-child {
+          top: -1px;
+        }
+        &.active {
+          fill: red;
+        }
+      }
+    }
+    &-header {
+      display: flex;
+      align-items: center;
     }
   }
 </style>

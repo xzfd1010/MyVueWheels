@@ -2,7 +2,7 @@
   <div>
     {{selected}}
     <div style="margin:20px;">
-      <g-table :columns="columns" :data-source="dataSource" :selected-items.sync="selected"></g-table>
+      <g-table :columns="columns" :data-source="dataSource" :selected-items.sync="selected" :order-by.sync="orderBy"></g-table>
     </div>
     <div style="margin:20px;">
       <g-table :columns="columns" :data-source="dataSource" bordered compact :striped="false"></g-table>
@@ -33,6 +33,10 @@
           { text: '姓名', field: 'name' },
           { text: '分数', field: 'score' }
         ],
+        orderBy:{ // true - 开启排序，不确定是 asc、desc
+          name:true,
+          score:'desc'
+        },
         dataSource: [
           { id: 1, name: 'nick', score: 100 },
           { id: 2, name: 'tom', score: 99 },
@@ -45,17 +49,6 @@
       }
     },
     methods: {
-      x (object) {
-        let { selected, item, index } = object
-        console.log('selected', selected)
-        console.log('item', item)
-        if (selected) {
-          this.selected.push(item)
-        } else {
-          let index = this.selected.indexOf(item)
-          this.selected.splice(index, 1)
-        }
-      },
       handlePageChange (n) {
         console.log(n)
       }
