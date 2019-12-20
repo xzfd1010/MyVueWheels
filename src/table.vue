@@ -4,7 +4,7 @@
       <thead>
       <tr>
         <th><input type="checkbox" @change="onChangeAllItems" ref="allChecked"
-                   :checked="selectedItems.length === dataSource.length"></th>
+                   :checked="areAllItemsSelected"></th>
         <th v-if="numberVisible">#</th>
         <th v-for="column in columns" :key="column.field">
           {{column.text}}
@@ -83,9 +83,29 @@
         this.$emit('update:selectedItems', selected ? this.dataSource : [])
       }
     },
+    computed: {
+      areAllItemsSelected () {
+        // 判断两个数组所有元素的id是否都相同
+        const a = this.dataSource.map(item=>item.id).sort() // 字典序排序即可
+        const b = this.selectedItems.map(item=>item.id).sort()
+        let equal = true
+        if (a.length !== b.length) {
+          equal = false
+        } else {
+          for (let i = 0; i < a.length; i++) {
+            if (a[i] !== b[i]) {
+              equal = false
+              break
+            }
+          }
+        }
+        return equal
+        // return this.selectedItems.length === this.dataSource.length
+      }
+    },
     watch: {
       selectedItems () {
-        this.$refs.allChecked.indeterminate = this.selectedItems.length > 0 && this.selectedItems.length < this.dataSource.length;
+        this.$refs.allChecked.indeterminate = this.selectedItems.length > 0 && this.selectedItems.length < this.dataSource.length
       }
     }
   }
