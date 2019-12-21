@@ -1,34 +1,36 @@
 <template>
-  <div class="my-table-wrapper">
-    <table class="my-table" :class="{bordered,compact,striped}">
-      <thead>
-      <tr>
-        <th><input type="checkbox" @change="onChangeAllItems" ref="allChecked"
-                   :checked="areAllItemsSelected"></th>
-        <th v-if="numberVisible">#</th>
-        <th v-for="column in columns" :key="column.field">
-          <div class="my-table-header">
-            {{column.text}}
-            <span class="my-table-sorter" v-if="column.field in orderBy" @click="changeOrderBy(column.field)">
+  <div class="my-table-wrapper" ref="wrapper">
+    <div :style="{height,overflow:'auto'}">
+      <table class="my-table" :class="{bordered,compact,striped}" ref="table">
+        <thead>
+        <tr>
+          <th><input type="checkbox" @change="onChangeAllItems" ref="allChecked"
+                     :checked="areAllItemsSelected"></th>
+          <th v-if="numberVisible">#</th>
+          <th v-for="column in columns" :key="column.field">
+            <div class="my-table-header">
+              {{column.text}}
+              <span class="my-table-sorter" v-if="column.field in orderBy" @click="changeOrderBy(column.field)">
               <icon name="ascend" :class="{active: orderBy[column.field] === 'asc'}"></icon>
               <icon name="descend" :class="{active: orderBy[column.field] === 'desc'}"></icon>
             </span>
-          </div>
-        </th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="(item,index) in dataSource" :key="item.id">
-        <td>
-          <input type="checkbox" @change="onChangeItem(item,index,$event)"
-                 :checked="inSelectedItems(item)"></td>
-        <td v-if="numberVisible">{{index+1}}</td>
-        <template v-for="column in columns">
-          <td :key="column.field">{{item[column.field]}}</td>
-        </template>
-      </tr>
-      </tbody>
-    </table>
+            </div>
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="(item,index) in dataSource" :key="item.id">
+          <td>
+            <input type="checkbox" @change="onChangeItem(item,index,$event)"
+                   :checked="inSelectedItems(item)"></td>
+          <td v-if="numberVisible">{{index+1}}</td>
+          <template v-for="column in columns">
+            <td :key="column.field">{{item[column.field]}}</td>
+          </template>
+        </tr>
+        </tbody>
+      </table>
+    </div>
     <div class="my-table-loading" v-if="loading">
       <icon name="loading"></icon>
     </div>
@@ -49,6 +51,9 @@
       loading: {
         type: Boolean,
         default: false
+      },
+      height: {
+        type: String,
       },
       columns: {
         type: Array,
@@ -114,7 +119,37 @@
       onChangeAllItems (e) {
         let selected = e.target.checked
         this.$emit('update:selectedItems', selected ? this.dataSource : [])
+      },
+      updateHeaderWidth () {
+        let table2 = this.table2
+        let tableHeader = Array.from(this.$refs.table.children).filter(node => node.tagName.toLowerCase() === 'thead')[0]
+        let tableHeader2
+        Array.from(table2.children).map(node => {
+          if (node.tagName.toLowerCase() !== 'thead') {
+            node.remove()
+          } else {
+            tableHeader2 = node
+          }
+        })
+        Array.from(tableHeader.children[0].children).map((th, i) => {
+          const { width } = th.getBoundingClientRect()
+          console.log(width)
+          tableHeader2.children[0].children[i].style.width = width + 'px'
+        })
       }
+    },
+    mounted () {
+      let table2 = this.$refs.table.cloneNode(true)
+      this.table2 = table2
+      this.$refs.wrapper.appendChild(table2)
+      table2.classList.add('my-table-copy')
+      this.updateHeaderWidth()
+      this.onWindowResize = () => this.updateHeaderWidth()
+      window.addEventListener('resize', this.onWindowResize)
+    },
+    beforeDestroy () {
+      this.table2.remove()
+      window.removeEventListener('resize', this.onWindowResize)
     },
     computed: {
       areAllItemsSelected () {
@@ -154,6 +189,7 @@
     border-bottom: 1px solid $grey;
     &-wrapper {
       position: relative;
+      overflow: auto;
     }
     &.bordered {
       border: 1px solid $grey;
@@ -227,6 +263,14 @@
         height: 50px;
         @include spin;
       }
+    }
+    &-copy {
+      table-layout: fixed;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: #fff;
     }
   }
 
