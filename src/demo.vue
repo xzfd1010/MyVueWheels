@@ -2,7 +2,8 @@
   <div>
     {{selected}}
     <div style="margin:20px;">
-      <g-table :columns="columns" :data-source="dataSource" :selected-items.sync="selected" :order-by.sync="orderBy"></g-table>
+      <g-table :columns="columns" :data-source="dataSource" :selected-items.sync="selected"
+               :order-by.sync="orderBy" :loading="loading" @update:orderBy="x"></g-table>
     </div>
     <div style="margin:20px;">
       <g-table :columns="columns" :data-source="dataSource" bordered compact :striped="false"></g-table>
@@ -28,14 +29,15 @@
     },
     data () {
       return {
+        loading: false,
         currentPage: 1,
         columns: [
           { text: '姓名', field: 'name' },
           { text: '分数', field: 'score' }
         ],
-        orderBy:{ // true - 开启排序，不确定是 asc、desc
-          name:true,
-          score:'desc'
+        orderBy: { // true - 开启排序，不确定是 asc、desc
+          name: true,
+          score: 'desc'
         },
         dataSource: [
           { id: 1, name: 'nick', score: 100 },
@@ -49,6 +51,14 @@
       }
     },
     methods: {
+      x () {
+        console.log('x')
+        this.loading = true
+        setTimeout(() => {
+          this.loading = false
+        }, 3000)
+        this.dataSource = this.dataSource.sort((a, b) => a.score - b.score)
+      },
       handlePageChange (n) {
         console.log(n)
       }

@@ -29,6 +29,9 @@
       </tr>
       </tbody>
     </table>
+    <div class="my-table-loading" v-if="loading">
+      <icon name="loading"></icon>
+    </div>
   </div>
 </template>
 
@@ -42,6 +45,10 @@
       orderBy: {
         type: Object,
         default: () => ({})
+      },
+      loading: {
+        type: Boolean,
+        default: false
       },
       columns: {
         type: Array,
@@ -83,9 +90,9 @@
         let oldValue = copy[key]
         if (oldValue === 'asc') {
           copy[key] = 'desc'
-        }else if(oldValue === 'desc'){
+        } else if (oldValue === 'desc') {
           copy[key] = true
-        }else{
+        } else {
           copy[key] = 'asc'
         }
         this.$emit('update:orderBy', copy)
@@ -145,6 +152,9 @@
     border-collapse: collapse;
     border-spacing: 0;
     border-bottom: 1px solid $grey;
+    &-wrapper {
+      position: relative;
+    }
     &.bordered {
       border: 1px solid $grey;
       td, th {
@@ -201,5 +211,23 @@
       display: flex;
       align-items: center;
     }
+    // 这个外面并没有再套一层 .my-table 好奇怪
+    &-loading {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.8);
+      svg {
+        width: 50px;
+        height: 50px;
+        @include spin;
+      }
+    }
   }
+
 </style>

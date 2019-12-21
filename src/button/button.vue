@@ -77,7 +77,7 @@
       }
     }
     .loading {
-      animation: spin 1.5s infinite linear;
+      animation: spin 2s infinite linear;
     }
   }
 
