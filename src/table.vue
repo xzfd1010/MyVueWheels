@@ -1,13 +1,13 @@
 <template>
   <div class="my-table-wrapper" ref="wrapper">
-    <div :style="{height,overflow:'auto'}">
+    <div :style="{height,overflow:'auto'}" ref="tableWrapper">
       <table class="my-table" :class="{bordered,compact,striped}" ref="table">
         <thead>
         <tr>
-          <th><input type="checkbox" @change="onChangeAllItems" ref="allChecked"
+          <th style="width:50px;"><input type="checkbox" @change="onChangeAllItems" ref="allChecked"
                      :checked="areAllItemsSelected"></th>
-          <th v-if="numberVisible">#</th>
-          <th v-for="column in columns" :key="column.field">
+          <th style="width:50px;" v-if="numberVisible">#</th>
+          <th v-for="column in columns" :key="column.field" :style="{width:`${column.width}px`}">
             <div class="my-table-header">
               {{column.text}}
               <span class="my-table-sorter" v-if="column.field in orderBy" @click="changeOrderBy(column.field)">
@@ -20,12 +20,12 @@
         </thead>
         <tbody>
         <tr v-for="(item,index) in dataSource" :key="item.id">
-          <td>
+          <td style="width:50px;">
             <input type="checkbox" @change="onChangeItem(item,index,$event)"
                    :checked="inSelectedItems(item)"></td>
-          <td v-if="numberVisible">{{index+1}}</td>
+          <td style="width:50px;" v-if="numberVisible">{{index+1}}</td>
           <template v-for="column in columns">
-            <td :key="column.field">{{item[column.field]}}</td>
+            <td :style="{width:`${column.width}px`}" :key="column.field">{{item[column.field]}}</td>
           </template>
         </tr>
         </tbody>
@@ -53,7 +53,7 @@
         default: false
       },
       height: {
-        type: String,
+        type: Number,
       },
       columns: {
         type: Array,
@@ -139,11 +139,16 @@
       }
     },
     mounted () {
-      let table2 = this.$refs.table.cloneNode(true)
+      let table2 = this.$refs.table.cloneNode(false)
       this.table2 = table2
-      this.$refs.wrapper.appendChild(table2)
       table2.classList.add('my-table-copy')
-      this.updateHeaderWidth()
+      let tHead = this.$refs.table.children[0]
+      let { height } = tHead.getBoundingClientRect()
+      this.$refs.tableWrapper.style.marginTop = height + 'px'
+      this.$refs.tableWrapper.style.height = this.height - height + 'px'
+      table2.appendChild(tHead)
+      this.$refs.wrapper.appendChild(table2)
+      // this.updateHeaderWidth()
       this.onWindowResize = () => this.updateHeaderWidth()
       window.addEventListener('resize', this.onWindowResize)
     },
@@ -252,6 +257,7 @@
       position: absolute;
       top: 0;
       left: 0;
+      z-index: 100;
       width: 100%;
       height: 100%;
       display: flex;
@@ -265,7 +271,6 @@
       }
     }
     &-copy {
-      table-layout: fixed;
       position: absolute;
       top: 0;
       left: 0;

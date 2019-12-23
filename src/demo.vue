@@ -4,11 +4,11 @@
     <div style="margin:20px;">
       <g-table :columns="columns" :data-source="dataSource" :selected-items.sync="selected"
                :order-by.sync="orderBy" :loading="loading" @update:orderBy="x"
-               height="400px" bordered></g-table>
+               :height="400" bordered></g-table>
     </div>
-<!--    <div style="margin:20px;">-->
-<!--      <g-table :columns="columns" :data-source="dataSource" bordered compact :striped="false"></g-table>-->
-<!--    </div>-->
+    <!--    <div style="margin:20px;">-->
+    <!--      <g-table :columns="columns" :data-source="dataSource" bordered compact :striped="false"></g-table>-->
+    <!--    </div>-->
     <div style="margin: 20px;">
       <pager :total-page="1" :current-page.sync="currentPage" :hide-if-one-page="false"
              @update:currentPage="handlePageChange"></pager>
@@ -33,8 +33,8 @@
         loading: false,
         currentPage: 1,
         columns: [
-          { text: '姓名', field: 'name' },
-          { text: '分数', field: 'score' }
+          { text: '姓名', field: 'name', width: 150 },
+          { text: '分数', field: 'score'}
         ],
         orderBy: { // true - 开启排序，不确定是 asc、desc
           name: true,
