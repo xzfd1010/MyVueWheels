@@ -4,8 +4,9 @@
       <table class="my-table" :class="{bordered,compact,striped}" ref="table">
         <thead>
         <tr>
-          <th style="width:50px;"><input type="checkbox" @change="onChangeAllItems" ref="allChecked"
-                     :checked="areAllItemsSelected"></th>
+          <th v-if="expandField" :style="{width:'50px'}" class="my-table-center"></th>
+          <th v-if="checkable" style="width:50px;"><input type="checkbox" @change="onChangeAllItems" ref="allChecked"
+                                                          :checked="areAllItemsSelected"></th>
           <th style="width:50px;" v-if="numberVisible">#</th>
           <th v-for="column in columns" :key="column.field" :style="{width:`${column.width}px`}">
             <div class="my-table-header">
@@ -16,18 +17,36 @@
             </span>
             </div>
           </th>
+          <th v-if="$scopedSlots.default" ref="actionsHeader"></th>
+          <th style="width:15px;padding: 0;"></th>
         </tr>
         </thead>
         <tbody>
-        <tr v-for="(item,index) in dataSource" :key="item.id">
-          <td style="width:50px;">
-            <input type="checkbox" @change="onChangeItem(item,index,$event)"
-                   :checked="inSelectedItems(item)"></td>
-          <td style="width:50px;" v-if="numberVisible">{{index+1}}</td>
-          <template v-for="column in columns">
-            <td :style="{width:`${column.width}px`}" :key="column.field">{{item[column.field]}}</td>
-          </template>
-        </tr>
+        <template v-for="(item,index) in dataSource">
+          <tr :key="item.id">
+            <td v-if="expandField" :style="{width:'50px'}" class="my-table-center">
+              <icon class="my-table-expandIcon" name="right"
+                    :class="{down:inExpandedIds(item.id)}"
+                    @click="expandItem(item.id)"></icon>
+            </td>
+            <td v-if="checkable" style="width:50px;">
+              <input type="checkbox" @change="onChangeItem(item,index,$event)"
+                     :checked="inSelectedItems(item)"></td>
+            <td style="width:50px;" v-if="numberVisible">{{index+1}}</td>
+            <template v-for="column in columns">
+              <td :style="{width:`${column.width}px`}" :key="column.field">{{item[column.field]}}</td>
+            </template>
+            <td v-if="$scopedSlots.default">
+              <div ref="actions" style="display: inline-block;">
+                <slot :item="item"></slot>
+              </div>
+            </td>
+          </tr>
+          <tr v-if="inExpandedIds(item.id)" :key="`${item.id}-expand`">
+            <td :colspan="columns.length + expandedCellColSpan">{{item[expandField] || ' '}}</td>
+          </tr>
+        </template>
+
         </tbody>
       </table>
     </div>
@@ -44,6 +63,9 @@
     name: 'GTable',
     components: { Icon },
     props: {
+      expandField: {
+        type: String,
+      },
       orderBy: {
         type: Object,
         default: () => ({})
@@ -86,9 +108,28 @@
       striped: {
         type: Boolean,
         default: true
+      },
+      checkable: {
+        type: Boolean,
+        default: false
+      }
+    },
+    data () {
+      return {
+        expandedIds: []
       }
     },
     methods: {
+      inExpandedIds (id) {
+        return this.expandedIds.indexOf(id) >= 0
+      },
+      expandItem (id) {
+        if (this.inExpandedIds(id)) {
+          this.expandedIds.splice(this.expandedIds.indexOf(id), 1)
+        } else {
+          this.expandedIds.push(id)
+        }
+      },
       changeOrderBy (key) {
         // 排序应该让后端做？？我感觉还是可以让前端排序吧
         const copy = JSON.parse(JSON.stringify(this.orderBy))
@@ -120,23 +161,6 @@
         let selected = e.target.checked
         this.$emit('update:selectedItems', selected ? this.dataSource : [])
       },
-      updateHeaderWidth () {
-        let table2 = this.table2
-        let tableHeader = Array.from(this.$refs.table.children).filter(node => node.tagName.toLowerCase() === 'thead')[0]
-        let tableHeader2
-        Array.from(table2.children).map(node => {
-          if (node.tagName.toLowerCase() !== 'thead') {
-            node.remove()
-          } else {
-            tableHeader2 = node
-          }
-        })
-        Array.from(tableHeader.children[0].children).map((th, i) => {
-          const { width } = th.getBoundingClientRect()
-          console.log(width)
-          tableHeader2.children[0].children[i].style.width = width + 'px'
-        })
-      }
     },
     mounted () {
       let table2 = this.$refs.table.cloneNode(false)
@@ -148,15 +172,38 @@
       this.$refs.tableWrapper.style.height = this.height - height + 'px'
       table2.appendChild(tHead)
       this.$refs.wrapper.appendChild(table2)
+
+      if (this.$scopedSlots.default) {
+        let div = this.$refs.actions[0]
+        let { width } = div.getBoundingClientRect()
+        let parent = div.parentElement
+        let paddingLeft = getComputedStyle(parent).getPropertyValue('padding-left')
+        let paddingRight = getComputedStyle(parent).getPropertyValue('padding-right')
+        let borderLeft = getComputedStyle(parent).getPropertyValue('border-left-width')
+        let borderRight = getComputedStyle(parent).getPropertyValue('border-right-width')
+        let width2 = width + parseInt(paddingLeft) + parseInt(paddingRight) + parseInt(borderLeft) + parseInt(borderRight) + 'px'
+        this.$refs.actionsHeader.style.width = width2 // 我这里还有问题
+        this.$refs.actions.map(div => {
+          div.parentNode.style.width = width2
+        })
+        console.log(paddingLeft, paddingRight, borderLeft, borderRight)
+        console.log(width)
+      }
       // this.updateHeaderWidth()
-      this.onWindowResize = () => this.updateHeaderWidth()
-      window.addEventListener('resize', this.onWindowResize)
+      // this.onWindowResize = () => this.updateHeaderWidth()
+      // window.addEventListener('resize', this.onWindowResize)
     },
     beforeDestroy () {
       this.table2.remove()
-      window.removeEventListener('resize', this.onWindowResize)
+      // window.removeEventListener('resize', this.onWindowResize)
     },
     computed: {
+      expandedCellColSpan () {
+        let result = 0
+        if (this.checkable) {result += 1}
+        if (this.expandField) {result += 1}
+        return result
+      },
       areAllItemsSelected () {
         // 判断两个数组所有元素的id是否都相同
         const a = this.dataSource.map(item => item.id).sort() // 字典序排序即可
@@ -276,6 +323,17 @@
       left: 0;
       width: 100%;
       background: #fff;
+    }
+    &-expandIcon {
+      width: 10px;
+      height: 10px;
+      transition: transform 300ms;
+      &.down {
+        transform: rotate(90deg);
+      }
+    }
+    & &-center {
+      text-align: center;
     }
   }
 

@@ -4,7 +4,12 @@
     <div style="margin:20px;">
       <g-table :columns="columns" :data-source="dataSource" :selected-items.sync="selected"
                :order-by.sync="orderBy" :loading="loading" @update:orderBy="x"
-               :height="400" bordered></g-table>
+               :height="400" bordered expand-field="description" checkable>
+        <template slot-scope="scope">
+          <button @click="edit(scope.item)">编辑</button>
+          <button>查看</button>
+        </template>
+      </g-table>
     </div>
     <!--    <div style="margin:20px;">-->
     <!--      <g-table :columns="columns" :data-source="dataSource" bordered compact :striped="false"></g-table>-->
@@ -34,14 +39,14 @@
         currentPage: 1,
         columns: [
           { text: '姓名', field: 'name', width: 150 },
-          { text: '分数', field: 'score'}
+          { text: '分数', field: 'score' },
         ],
         orderBy: { // true - 开启排序，不确定是 asc、desc
           name: true,
           score: 'desc'
         },
         dataSource: [
-          { id: 1, name: 'nick', score: 100 },
+          { id: 1, name: 'nick', score: 100, description: '第一行展开' },
           { id: 2, name: 'tom', score: 99 },
           { id: 3, name: 'mary', score: 100 },
           { id: 4, name: 'lily', score: 99 },
@@ -68,6 +73,9 @@
       }
     },
     methods: {
+      edit (item) {
+        alert(item.id)
+      },
       x () {
         console.log('x')
         this.loading = true
