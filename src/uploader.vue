@@ -7,8 +7,10 @@
     <!--    <img :src="url"> &lt;!&ndash;为什么是about:blank&ndash;&gt;-->
     <ol>
       <li v-for="file in fileList" :key="file.name">
+        <template v-if="file.status==='uploading'">菊花</template>
         <img :src="file.url" width="100" height="100">
         {{file.name}}
+        <button @click="onRemoveFile(file)">&times;</button>
       </li>
     </ol>
   </div>
@@ -45,11 +47,19 @@
       }
     },
     methods: {
+      onRemoveFile (file) {
+        let answer = window.confirm('你确定要删除这张图片吗？')
+        if (answer) {
+          let copy = [...this.fileList]
+          let index = copy.indexOf(file)
+          copy.splice(index, 1)
+          this.$emit('update:fileList', copy)
+        }
+      },
       onClickUpload () {
         let input = this.createInput()
         input.addEventListener('change', () => {
-          let file = input.files[0]
-          this.uploadFile(file)
+          this.uploadFile(input.files[0])
           input.remove()
         })
         input.click()
@@ -60,22 +70,42 @@
         this.$refs.temp.appendChild(input)
         return input
       },
-      uploadFile (file) {
+      beforeUploadFile (rawFile, newName) {
+        let { name, size, type } = rawFile
+        this.$emit('update:fileList', [...this.fileList, { name: newName, size, type, status: 'uploading' }])
+      },
+      uploadFile (rawFile) {
+        let { name, size, type } = rawFile
+        let newName = this.generateNewName(name)
+        this.beforeUploadFile(rawFile, newName)
         let formData = new FormData()
-        formData.append(this.name, file)
-        let { name, size, type } = file
-        // 保证name的唯一性
+        //todo 服务器上传的文件名是name，而非newName，可能存在bug
+        formData.append(this.name, rawFile)
+
+        this.doUploadFile(formData, (response) => {
+          let url = this.parseResponse(response)
+          this.url = url
+          this.afterUploadFile(newName, url)
+        })
+      },
+      generateNewName (name) {
         while (this.fileList.filter(f => f.name === name).length > 0) {
           let dotIndex = name.lastIndexOf('.')
           let nameWithoutExtension = name.substring(0, dotIndex)
           let extension = name.substring(dotIndex)
           name = nameWithoutExtension + '(1)' + extension
         }
-        this.doUploadFile(formData, (response) => {
-          let url = this.parseResponse(response)
-          this.url = url
-          this.$emit('update:fileList', [...this.fileList, { name, size, type, url }])
-        })
+        return name
+      },
+      afterUploadFile (newName, url) {
+        let file = this.fileList.filter(f => f.name === newName)[0]
+        let index = this.fileList.indexOf(file)
+        let fileCopy = JSON.parse(JSON.stringify(file))
+        fileCopy.url = url
+        fileCopy.status = 'success'
+        let fileListCopy = [...this.fileList]
+        fileListCopy.splice(index, 1, fileCopy)
+        this.$emit('update:fileList', fileListCopy)
       },
       doUploadFile (formData, success) {
         let xhr = new XMLHttpRequest()
