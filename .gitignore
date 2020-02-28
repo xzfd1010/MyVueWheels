@@ -5,3 +5,5 @@ node_modules
 dist
 
 .cache
+
+node-server-1
