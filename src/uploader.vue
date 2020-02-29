@@ -3,22 +3,31 @@
     <div @click="onClickUpload">
       <slot></slot>
     </div>
-    <div ref="temp" style="width:0;height: 0;overflow: hidden;"></div>
-    <!--    <img :src="url"> &lt;!&ndash;为什么是about:blank&ndash;&gt;-->
-    <ol>
+    <ol class="my-uploader-fileList">
       <li v-for="file in fileList" :key="file.name">
-        <template v-if="file.status==='uploading'">菊花</template>
-        <img :src="file.url" width="100" height="100">
-        {{file.name}}
-        <button @click="onRemoveFile(file)">&times;</button>
+        <template v-if="file.status==='uploading'">
+          <icon name="loading" class="my-uploader-spin"></icon>
+        </template>
+        <template v-else-if="file.type.indexOf('image') === 0">
+          <img :src="file.url" class="my-uploader-image">
+        </template>
+        <template v-else>
+          <div class="my-uploader-defaultImage"></div>
+        </template>
+        <span :class="{[file.status]:file.status}" class="my-uploader-name">{{file.name}}</span>
+        <button class="my-uploader-remove" @click="onRemoveFile(file)">&times;</button>
       </li>
     </ol>
+    <div ref="temp" style="width:0;height: 0;overflow: hidden;"></div>
   </div>
 </template>
 
 <script>
+  import Icon from './icon'
+
   export default {
     name: 'uploader',
+    components: { Icon },
     props: {
       name: {
         type: String,
@@ -39,6 +48,9 @@
       fileList: {
         type: Array,
         default: () => []
+      },
+      sizeLimit: {
+        type: Number
       }
     },
     data () {
@@ -65,37 +77,22 @@
         input.click()
       },
       createInput () {
+        this.$refs.temp.innerHTML = ''
         let input = document.createElement('input')
         input.type = 'file'
         this.$refs.temp.appendChild(input)
         return input
       },
       beforeUploadFile (rawFile, newName) {
-        let { name, size, type } = rawFile
-        this.$emit('update:fileList', [...this.fileList, { name: newName, size, type, status: 'uploading' }])
-      },
-      uploadFile (rawFile) {
-        let { name, size, type } = rawFile
-        let newName = this.generateNewName(name)
-        this.beforeUploadFile(rawFile, newName)
-        let formData = new FormData()
-        //todo 服务器上传的文件名是name，而非newName，可能存在bug
-        formData.append(this.name, rawFile)
-
-        this.doUploadFile(formData, (response) => {
-          let url = this.parseResponse(response)
-          this.url = url
-          this.afterUploadFile(newName, url)
-        })
-      },
-      generateNewName (name) {
-        while (this.fileList.filter(f => f.name === name).length > 0) {
-          let dotIndex = name.lastIndexOf('.')
-          let nameWithoutExtension = name.substring(0, dotIndex)
-          let extension = name.substring(dotIndex)
-          name = nameWithoutExtension + '(1)' + extension
+        let { size, type } = rawFile
+        // 处理尺寸过大的情况，这个size应该是外部传入的
+        if (this.sizeLimit > 0 && size > this.sizeLimit) {
+          this.$emit('error', '文件大于2Mb')
+          return false
+        } else {
+          this.$emit('update:fileList', [...this.fileList, { name: newName, size, type, status: 'uploading' }])
+          return true
         }
-        return name
       },
       afterUploadFile (newName, url) {
         let file = this.fileList.filter(f => f.name === newName)[0]
@@ -107,11 +104,53 @@
         fileListCopy.splice(index, 1, fileCopy)
         this.$emit('update:fileList', fileListCopy)
       },
-      doUploadFile (formData, success) {
+      uploadFile (rawFile) {
+        let { name, size, type } = rawFile
+        let newName = this.generateNewName(name)
+        if (!this.beforeUploadFile(rawFile, newName)) return
+        let formData = new FormData()
+        //todo 服务器上传的文件名是name，而非newName，可能存在bug
+        formData.append(this.name, rawFile)
+
+        this.doUploadFile(formData, (response) => {
+          let url = this.parseResponse(response)
+          this.url = url
+          this.afterUploadFile(newName, url)
+        }, (xhr) => {
+          this.uploadError(xhr, newName)
+        })
+      },
+      uploadError (xhr, newName) {
+        let file = this.fileList.filter(f => f.name === newName)[0]
+        let index = this.fileList.indexOf(file)
+        let fileCopy = JSON.parse(JSON.stringify(file))
+        fileCopy.status = 'fail'
+        let fileListCopy = [...this.fileList]
+        fileListCopy.splice(index, 1, fileCopy)
+        this.$emit('update:fileList', fileListCopy)
+        let error = ''
+        if (xhr.status === 0) {
+          error = '网络无法连接'
+        }
+        this.$emit('error', error)
+      },
+      generateNewName (name) {
+        while (this.fileList.filter(f => f.name === name).length > 0) {
+          let dotIndex = name.lastIndexOf('.')
+          let nameWithoutExtension = name.substring(0, dotIndex)
+          let extension = name.substring(dotIndex)
+          name = nameWithoutExtension + '(1)' + extension
+        }
+        return name
+      },
+      doUploadFile (formData, success, fail) {
         let xhr = new XMLHttpRequest()
         xhr.open(this.method, this.action)
         xhr.onload = () => {
           success(xhr.response)
+        }
+        xhr.onerror = () => {
+          fail(xhr, xhr.status)
         }
         xhr.send(formData)
       }
@@ -120,11 +159,49 @@
 </script>
 
 <style scoped lang="scss">
+  @import "../styles/var";
   .my-uploader {
-  }
-  ol, li {
-    margin: 0;
-    padding: 0;
-    list-style: none;
+    &-fileList {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      > li {
+        display: flex;
+        align-items: center;
+        margin: 8px 0;
+        border: 1px solid darken($grey, 20%);
+      }
+    }
+    &-defaultImage {
+      width: 32px;
+      height: 32px;
+      margin-right: 8px;
+    }
+    &-image {
+      width: 32px;
+      height: 32px;
+      margin-right: 8px;
+    }
+    &-name {
+      margin-right: auto;
+      &.success {
+        color: green;
+      }
+      &.fail {
+        color: red;
+      }
+    }
+    &-remove {
+      width: 32px;
+      height: 32px;
+      background: none;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    &-spin {
+      width: 32px;
+      height: 32px;
+      @include spin;
+    }
   }
 </style>
