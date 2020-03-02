@@ -51,6 +51,13 @@
       },
       sizeLimit: {
         type: Number
+      },
+      multiple: {
+        type: Boolean,
+        default: false
+      },
+      accept: {
+        type: String,
       }
     },
     data () {
@@ -71,7 +78,8 @@
       onClickUpload () {
         let input = this.createInput()
         input.addEventListener('change', () => {
-          this.uploadFile(input.files[0])
+          // this.uploadFile(input.files[0])
+          this.uploadFiles(input.files)
           input.remove()
         })
         input.click()
@@ -80,19 +88,29 @@
         this.$refs.temp.innerHTML = ''
         let input = document.createElement('input')
         input.type = 'file'
+        input.accept = this.accept
+        input.multiple = this.multiple
         this.$refs.temp.appendChild(input)
         return input
       },
-      beforeUploadFile (rawFile, newName) {
-        let { size, type } = rawFile
-        // 处理尺寸过大的情况，这个size应该是外部传入的
-        if (this.sizeLimit > 0 && size > this.sizeLimit) {
-          this.$emit('error', '文件大于2Mb')
-          return false
-        } else {
-          this.$emit('update:fileList', [...this.fileList, { name: newName, size, type, status: 'uploading' }])
-          return true
+      // 更新状态
+      beforeUploadFiles (rawFiles, newNames) {
+        for (let i = 0; i < rawFiles.length; i++) {
+          let rawFile = rawFiles[i]
+          let { size } = rawFile
+          // 处理尺寸过大的情况，这个size应该是外部传入的
+          if (this.sizeLimit > 0 && size > this.sizeLimit) {
+            this.$emit('error', '文件大于2Mb')
+            return false
+          }
         }
+        let fileList = Array.from(rawFiles).map((rawFile, i) => {
+          let { size, type } = rawFile
+          return { name: newNames[i], type, size, status: 'uploading' }
+        })
+        // 一次性更新fileList
+        this.$emit('update:fileList', [...this.fileList, ...fileList])
+        return true
       },
       afterUploadFile (newName, url) {
         let file = this.fileList.filter(f => f.name === newName)[0]
@@ -104,21 +122,32 @@
         fileListCopy.splice(index, 1, fileCopy)
         this.$emit('update:fileList', fileListCopy)
       },
-      uploadFile (rawFile) {
-        let { name, size, type } = rawFile
-        let newName = this.generateNewName(name)
-        if (!this.beforeUploadFile(rawFile, newName)) return
-        let formData = new FormData()
-        //todo 服务器上传的文件名是name，而非newName，可能存在bug
-        formData.append(this.name, rawFile)
+      uploadFiles (rawFiles) {
+        let newNames = []
+        // 处理文件名，并建立关联
+        for (let i = 0; i < rawFiles.length; i++) {
+          let rawFile = rawFiles[i]
+          let { name } = rawFile
+          let newName = this.generateNewName(name)
+          newNames.push(newName)
+        }
+        if (!this.beforeUploadFiles(rawFiles, newNames)) return
+        // 执行上传操作
+        for (let i = 0; i < rawFiles.length; i++) {
+          let rawFile = rawFiles[i]
+          let newName = newNames[i]
+          let formData = new FormData()
+          //todo 服务器上传的文件名是name，而非newName，可能存在bug
+          formData.append(this.name, rawFile)
 
-        this.doUploadFile(formData, (response) => {
-          let url = this.parseResponse(response)
-          this.url = url
-          this.afterUploadFile(newName, url)
-        }, (xhr) => {
-          this.uploadError(xhr, newName)
-        })
+          this.doUploadFile(formData, (response) => {
+            let url = this.parseResponse(response)
+            this.url = url
+            this.afterUploadFile(newName, url)
+          }, (xhr) => {
+            this.uploadError(xhr, newName)
+          })
+        }
       },
       uploadError (xhr, newName) {
         let file = this.fileList.filter(f => f.name === newName)[0]
