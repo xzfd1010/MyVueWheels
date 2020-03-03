@@ -24,6 +24,7 @@
 
 <script>
   import Icon from './icon'
+  import http from './http'
 
   export default {
     name: 'uploader',
@@ -121,6 +122,7 @@
         let fileListCopy = [...this.fileList]
         fileListCopy.splice(index, 1, fileCopy)
         this.$emit('update:fileList', fileListCopy)
+        this.$emit('uploaded')
       },
       uploadFiles (rawFiles) {
         let newNames = []
@@ -173,15 +175,7 @@
         return name
       },
       doUploadFile (formData, success, fail) {
-        let xhr = new XMLHttpRequest()
-        xhr.open(this.method, this.action)
-        xhr.onload = () => {
-          success(xhr.response)
-        }
-        xhr.onerror = () => {
-          fail(xhr, xhr.status)
-        }
-        xhr.send(formData)
+        http[this.method.toLowerCase()](this.action, { success, fail, data: formData })
       }
     }
   }
