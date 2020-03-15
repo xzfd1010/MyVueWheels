@@ -72,11 +72,6 @@
 
 <style lang="scss" scoped>
   .col {
-    /*width: 50%;*/
-    > div {
-      background: gray;
-      border: 1px solid red;
-    }
     $class-prefix: col-;
     @for $n from 1 through 24 {
       &.#{$class-prefix}#{$n} {

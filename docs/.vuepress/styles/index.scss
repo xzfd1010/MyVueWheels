@@ -3,7 +3,6 @@
   border-top: 1px solid #eaeefb;
   overflow: hidden;
   transition: height .2s;
-
   .code-content-height {
     .code-user-desc {
       background: #ffffff;
@@ -14,18 +13,14 @@
       border: 1px solid #ebebeb;
       border-radius: 3px;
     }
-
     > pre {
       background: none;
-
       > code {
         color: #3182bd;
       }
     }
   }
 }
-
-
 .lock-code {
   border-top: 1px solid #eaeefb;
   height: 44px;
@@ -40,26 +35,20 @@
   position: relative;
   line-height: 44px;
   color: #d3dce6;
-
   &:hover {
     background-color: #f9fafc;
-
     .lock-code-word {
       color: #409eff;
     }
-
     .icon-down {
       fill: #409eff;
     }
   }
-
   .icon-down {
     transform: translateX(0px);
     transition: all .1s;
   }
-
   text-align: center;
-
   .lock-code-word {
     font-size: 0px;
     margin-left: 15px;
@@ -68,4 +57,22 @@
     opacity: 0;
   }
 }
-
+.row {
+  margin: 10px 0;
+}
+.col {
+  > div {
+    border-radius: 4px;
+    min-height: 36px;
+  }
+  &:nth-child(2n) {
+    > div {
+      background: #d3dce6;
+    }
+  }
+  &:nth-child(2n+1) {
+    > div {
+      background: #e5e9f2;
+    }
+  }
+}
