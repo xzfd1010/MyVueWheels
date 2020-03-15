@@ -2,35 +2,15 @@
 
 [![Build Status](https://www.travis-ci.org/xzfd1010/nick-vue-wheels.svg?branch=master)](https://www.travis-ci.org/xzfd1010/nick-vue-wheels)
 
-## 介绍
-这是我在学习Vue过程中做的一个UI框架，希望对你有用
+# Nick的轮子 官网
+这是我学习Vue过程中，造的UI框架
 
-## 开始使用
+## 有哪些轮子
+简单轮子：按钮、输入框、网格、布局、Toast、Tabs、Popover、手风琴（代码已完成）  
+进阶轮子：级联选择、无缝轮播、响应式导航条、分页、表单验证、Table、图片上传、Sticky等
 
-1. 安装框架
-   ```
-   npm i --save nick-vue-wheels
-   ```
-2. 引入框架
-    ```javascript
-    import { Button } from 'nick-vue-wheels'
-    import 'nick-vue-wheels/dist/index.css'
-    
-    export default {
-      name: 'app',
-      components: {
-      'my-button': Button
-      }
-    }
-    ```
+## 项目特点
+1. 使用 Travis CI 进行持续集成
+2. 有丰富的单元测试
 
-## 文档
-
-## 提问
-
-## 变更记录
-
-## 联系方式
-
-## 贡献代码
 
