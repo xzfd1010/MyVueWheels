@@ -1,5 +1,5 @@
 <template>
-  <div class="tabs-head">
+  <div class="tabs-head" ref="head">
     <slot></slot>
     <!--  slot上面不能加class  -->
     <div class="line" ref="line" v-show="lineVisible"></div>
@@ -10,24 +10,25 @@
 </template>
 
 <script>
-  export default {
-    name: 'tabs-head',
-    inject: ['eventBus'],
-    data () {
-      return {
-        lineVisible: false
-      }
-    },
-    mounted () {
-      // 这里控制线的偏移量
-      this.eventBus.$on('update:selected', (name, vm) => {
-        this.lineVisible = true
-        const rect = vm.$el.getBoundingClientRect()
-        this.$refs.line.style.width = `${rect.width}px`
-        this.$refs.line.style.transform = `translateX(${rect.left}px)`
-      })
+export default {
+  name: 'tabs-head',
+  inject: ['eventBus'],
+  data () {
+    return {
+      lineVisible: false
     }
+  },
+  mounted () {
+    // 这里控制线的偏移量
+    this.eventBus.$on('update:selected', (name, vm) => {
+      this.lineVisible = true
+      const { width, left } = vm.$el.getBoundingClientRect()
+      const { left: left2 } = this.$refs.head.getBoundingClientRect()
+      this.$refs.line.style.width = `${width}px`
+      this.$refs.line.style.transform = `translateX(${left - left2}px)`
+    })
   }
+}
 </script>
 
 <style lang="scss" scoped>
