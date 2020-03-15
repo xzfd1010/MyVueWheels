@@ -1,27 +1,27 @@
 <template>
-  <div class="my-pager" :class="{hide:hideIfOnePage && totalPage===1}">
-    <span class="my-pager-nav prev" :class="{disabled:currentPage===1}"
+  <div class="n-pager" :class="{hide:hideIfOnePage && totalPage===1}">
+    <span class="n-pager-nav prev" :class="{disabled:currentPage===1}"
           @click="onClickPage(currentPage-1)">
       <icon name="left"></icon>
     </span>
     <template v-for="page in pages">
       <template v-if="page === currentPage">
-        <span class="my-pager-item current">
+        <span class="n-pager-item current">
           {{page}}
         </span>
       </template>
       <template v-else-if="page === '...'">
-        <span class="my-pager-separator">
+        <span class="n-pager-separator">
           <icon name="dots"></icon>
         </span>
       </template>
       <template v-else>
-        <span class="my-pager-item other" @click="onClickPage(page)">
+        <span class="n-pager-item other" @click="onClickPage(page)">
           {{page}}
         </span>
       </template>
     </template>
-    <span class="my-pager-nav next" :class="{disabled:currentPage===totalPage}"
+    <span class="n-pager-nav next" :class="{disabled:currentPage===totalPage}"
           @click="onClickPage(currentPage+1)">
       <icon name="right"></icon>
     </span>
@@ -90,7 +90,7 @@
 
 <style scoped lang="scss">
   @import "../styles/var";
-  .my-pager {
+  .n-pager {
     display: flex;
     justify-content: flex-start;
     align-items: center;

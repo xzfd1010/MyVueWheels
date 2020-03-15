@@ -10,30 +10,30 @@
 </template>
 
 <script>
-  import Icon from '../icon'
+import Icon from '../icon'
 
-  export default {
-    name: 'my-button',
-    components: {
-      'icon': Icon
+export default {
+  name: 'n-button',
+  components: {
+    Icon
+  },
+  props: {
+    icon: {
+      type: String,
     },
-    props: {
-      icon: {
-        type: String,
-      },
-      loading: {
-        type: Boolean,
-        default: false
-      },
-      iconPosition: {
-        type: String,
-        default: 'left',
-        validator (value) {
-          return value === 'left' || value === 'right'
-        }
+    loading: {
+      type: Boolean,
+      default: false
+    },
+    iconPosition: {
+      type: String,
+      default: 'left',
+      validator (value) {
+        return value === 'left' || value === 'right'
       }
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>

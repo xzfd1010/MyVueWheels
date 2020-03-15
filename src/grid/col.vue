@@ -17,7 +17,7 @@
     return valid
   }
   export default {
-    name: 'my-col',
+    name: 'n-col',
     props: {
       span: {
         type: [Number, String]

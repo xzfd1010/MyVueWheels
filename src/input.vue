@@ -16,7 +16,7 @@
     import Icon from './icon'
 
     export default {
-    name: 'my-input',
+    name: 'n-input',
     components: {
       Icon
     },

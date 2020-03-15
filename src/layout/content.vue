@@ -6,7 +6,7 @@
 
 <script>
   export default {
-    name: 'my-content'
+    name: 'n-content'
   }
 </script>
 

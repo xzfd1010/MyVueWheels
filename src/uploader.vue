@@ -1,21 +1,21 @@
 <template>
-  <div class="my-uploader">
+  <div class="n-uploader">
     <div @click="onClickUpload">
       <slot></slot>
     </div>
-    <ol class="my-uploader-fileList">
+    <ol class="n-uploader-fileList">
       <li v-for="file in fileList" :key="file.name">
         <template v-if="file.status==='uploading'">
-          <icon name="loading" class="my-uploader-spin"></icon>
+          <icon name="loading" class="n-uploader-spin"></icon>
         </template>
         <template v-else-if="file.type.indexOf('image') === 0">
-          <img :src="file.url" class="my-uploader-image">
+          <img :src="file.url" class="n-uploader-image">
         </template>
         <template v-else>
-          <div class="my-uploader-defaultImage"></div>
+          <div class="n-uploader-defaultImage"></div>
         </template>
-        <span :class="{[file.status]:file.status}" class="my-uploader-name">{{file.name}}</span>
-        <button class="my-uploader-remove" @click="onRemoveFile(file)">&times;</button>
+        <span :class="{[file.status]:file.status}" class="n-uploader-name">{{file.name}}</span>
+        <button class="n-uploader-remove" @click="onRemoveFile(file)">&times;</button>
       </li>
     </ol>
     <div ref="temp" style="width:0;height: 0;overflow: hidden;"></div>
@@ -183,7 +183,7 @@
 
 <style scoped lang="scss">
   @import "../styles/var";
-  .my-uploader {
+  .n-uploader {
     &-fileList {
       list-style: none;
       padding: 0;

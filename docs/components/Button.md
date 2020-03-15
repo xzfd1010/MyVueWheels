@@ -3,6 +3,10 @@ title: Button
 ---
 # Button
 
+&nbsp;
 <ClientOnly>
-   <button-demos></button-demos>
+    <button-demo></button-demo>
+    <button-demo2></button-demo2>
+    <button-attributes></button-attributes>
 </ClientOnly>
+

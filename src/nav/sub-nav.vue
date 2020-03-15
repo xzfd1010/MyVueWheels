@@ -1,21 +1,21 @@
 <template>
-  <div :class="{active,vertical}" class="my-sub-nav" v-click-out-side="close">
-    <span @click="open = !open" class="my-sub-nav-label">
+  <div :class="{active,vertical}" class="n-sub-nav" v-click-out-side="close">
+    <span @click="open = !open" class="n-sub-nav-label">
       <slot name="title"></slot>
-      <span :class="{open,vertical}" class="my-sub-nav-icon">
+      <span :class="{open,vertical}" class="n-sub-nav-icon">
         <icon name="right"></icon>
       </span>
     </span>
     <!--  垂直和水平的动画不能混用  -->
     <template v-if="vertical">
       <transition @after-enter="afterEnter" @after-leave="afterLeave" @enter="enter" @leave="leave">
-        <div :class="{vertical}" class="my-sub-nav-popover" v-show="open">
+        <div :class="{vertical}" class="n-sub-nav-popover" v-show="open">
           <slot></slot>
         </div>
       </transition>
     </template>
     <template v-else>
-      <div class="my-sub-nav-popover" v-show="open">
+      <div class="n-sub-nav-popover" v-show="open">
         <slot></slot>
       </div>
     </template>
@@ -91,7 +91,7 @@
 
 <style lang="scss" scoped>
   @import "../../styles/var";
-  .my-sub-nav {
+  .n-sub-nav {
     position: relative;
     &:not(.vertical) {
       &.current {
@@ -134,23 +134,23 @@
       }
     }
   }
-  .my-sub-nav .my-sub-nav {
+  .n-sub-nav .n-sub-nav {
     &.current {
       &::after {
         display: none;
       }
     }
-    .my-sub-nav-popover {
+    .n-sub-nav-popover {
       top: 0;
       left: 100%;
       margin-left: 10px;
     }
-    .my-sub-nav-label {
+    .n-sub-nav-label {
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
-    .my-sub-nav-icon {
+    .n-sub-nav-icon {
       display: inline-flex;
       margin-left: 0.5em;
       transition: transform 300ms;

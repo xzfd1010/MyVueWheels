@@ -1,6 +1,6 @@
 <template>
-  <div class="my-sticky-wrapper" ref="wrapper" :style="{height}">
-    <div class="my-sticky" :class="classes" :style="{top,left,width}">
+  <div class="n-sticky-wrapper" ref="wrapper" :style="{height}">
+    <div class="n-sticky" :class="classes" :style="{top,left,width}">
       <slot></slot>
     </div>
   </div>
@@ -64,7 +64,7 @@
 </script>
 
 <style scoped lang="scss">
-  .my-sticky {
+  .n-sticky {
     &.sticky {
       position: fixed;
     }

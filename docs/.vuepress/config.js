@@ -1,3 +1,5 @@
+const path = require('path')
+
 module.exports = {
   base: '/nick-vue-wheels/',
   title: 'Nick的轮子',
@@ -27,5 +29,10 @@ module.exports = {
         collapsable: false,
       }
     ]
+  },
+  scss: {
+    sassOptions:{
+      includePaths: [path.join(__dirname, '../../styles')]
+    }
   }
 }

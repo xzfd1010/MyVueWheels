@@ -1,6 +1,6 @@
 <template>
   <div :class="{selected,vertical}" :data-name="name" @click="onClick"
-       class="my-nav-item">
+       class="n-nav-item">
     <slot></slot>
   </div>
 </template>
@@ -35,7 +35,7 @@
 
 <style lang="scss" scoped>
   @import "../../styles/var";
-  .my-nav-item {
+  .n-nav-item {
     padding: 10px 20px;
     &:not(.vertical) {
       &.selected {
@@ -73,7 +73,7 @@
       height: 100%;
     }
   }
-  .my-sub-nav .my-nav-item {
+  .n-sub-nav .n-nav-item {
     &.selected {
       color: $color;
       background: $grey;

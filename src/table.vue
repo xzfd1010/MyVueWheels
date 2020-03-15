@@ -1,17 +1,17 @@
 <template>
-  <div class="my-table-wrapper" ref="wrapper">
+  <div class="n-table-wrapper" ref="wrapper">
     <div :style="{height,overflow:'auto'}" ref="tableWrapper">
-      <table class="my-table" :class="{bordered,compact,striped}" ref="table">
+      <table class="n-table" :class="{bordered,compact,striped}" ref="table">
         <thead>
         <tr>
-          <th v-if="expandField" :style="{width:'50px'}" class="my-table-center"></th>
+          <th v-if="expandField" :style="{width:'50px'}" class="n-table-center"></th>
           <th v-if="checkable" style="width:50px;"><input type="checkbox" @change="onChangeAllItems" ref="allChecked"
                                                           :checked="areAllItemsSelected"></th>
           <th style="width:50px;" v-if="numberVisible">#</th>
           <th v-for="column in columns" :key="column.field" :style="{width:`${column.width}px`}">
-            <div class="my-table-header">
+            <div class="n-table-header">
               {{column.text}}
-              <span class="my-table-sorter" v-if="column.field in orderBy" @click="changeOrderBy(column.field)">
+              <span class="n-table-sorter" v-if="column.field in orderBy" @click="changeOrderBy(column.field)">
               <icon name="ascend" :class="{active: orderBy[column.field] === 'asc'}"></icon>
               <icon name="descend" :class="{active: orderBy[column.field] === 'desc'}"></icon>
             </span>
@@ -24,8 +24,8 @@
         <tbody>
         <template v-for="(item,index) in dataSource">
           <tr :key="item.id">
-            <td v-if="expandField" :style="{width:'50px'}" class="my-table-center">
-              <icon class="my-table-expandIcon" name="right"
+            <td v-if="expandField" :style="{width:'50px'}" class="n-table-center">
+              <icon class="n-table-expandIcon" name="right"
                     :class="{down:inExpandedIds(item.id)}"
                     @click="expandItem(item.id)"></icon>
             </td>
@@ -50,7 +50,7 @@
         </tbody>
       </table>
     </div>
-    <div class="my-table-loading" v-if="loading">
+    <div class="n-table-loading" v-if="loading">
       <icon name="loading"></icon>
     </div>
   </div>
@@ -165,7 +165,7 @@
     mounted () {
       let table2 = this.$refs.table.cloneNode(false)
       this.table2 = table2
-      table2.classList.add('my-table-copy')
+      table2.classList.add('n-table-copy')
       let tHead = this.$refs.table.children[0]
       let { height } = tHead.getBoundingClientRect()
       this.$refs.tableWrapper.style.marginTop = height + 'px'
@@ -234,7 +234,7 @@
 <style scoped lang="scss">
   @import "../styles/var";
   $grey: darken($grey, 10%);
-  .my-table {
+  .n-table {
     width: 100%;
     border-collapse: collapse;
     border-spacing: 0;
@@ -299,7 +299,7 @@
       display: flex;
       align-items: center;
     }
-    // 这个外面并没有再套一层 .my-table 好奇怪
+    // 这个外面并没有再套一层 .n-table 好奇怪
     &-loading {
       position: absolute;
       top: 0;

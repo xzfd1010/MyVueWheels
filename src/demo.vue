@@ -20,9 +20,9 @@
     <p>段落18</p>
     <p>段落19</p>
     <p>段落20</p>
-    <my-sticky :distance="100">
+    <n-sticky :distance="100">
       <div style="border: 1px solid red;">我是 sticky 内容</div>
-    </my-sticky>
+    </n-sticky>
     <p>段落1</p>
     <p>段落2</p>
     <p>段落3</p>
