@@ -3,7 +3,7 @@ import sinon from 'sinon'
 import sinonChai from 'sinon-chai'
 import { mount } from '@vue/test-utils'
 import Vue from 'vue'
-import Input from '@/input'
+import Input from '../../src/input'
 
 Vue.config.productionTip = false
 Vue.config.devtools = false

@@ -20,7 +20,7 @@
         </div>
       </div>
       <div class="lock-code" @click="showCode(0)" ref="xxx">
-        <n-icon class="icon-down" :name="isShow[0] === false ? 'down' : 'up'"></n-icon>
+        <icon class="icon-down" :name="isShow[0] === false ? 'down' : 'up'"></icon>
       </div>
     </div>
   </div>

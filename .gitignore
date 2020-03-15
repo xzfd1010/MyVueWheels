@@ -9,3 +9,5 @@ dist
 node-server-1
 
 .npmignore
+
+/coverage/*

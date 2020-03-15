@@ -13,30 +13,30 @@
 </template>
 
 <script>
-    import Icon from './icon'
+import Icon from './icon'
 
-    export default {
-    name: 'n-input',
-    components: {
-      Icon
+export default {
+  name: 'n-input',
+  components: {
+    Icon
+  },
+  props: {
+    value: {
+      type: String
     },
-    props: {
-      value: {
-        type: String
-      },
-      disabled: {
-        type: Boolean,
-        default: false
-      },
-      readonly: {
-        type: Boolean,
-        default: false
-      },
-      error: {
-        type: String
-      }
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+    readonly: {
+      type: Boolean,
+      default: false
+    },
+    error: {
+      type: String
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>
