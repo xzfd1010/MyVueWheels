@@ -2,29 +2,34 @@
   <transition name="slide">
     <div class="sider" v-if="visible">
       <slot></slot>
-      <button @click="visible=false">close</button>
+<!--      <n-button @click="visible=false" icon="left" circle v-if="visible"></n-button>-->
+<!--      <n-button @click="visible=true" icon="right" circle v-else></n-button>-->
     </div>
   </transition>
 </template>
 
 <script>
-  export default {
-    name: 'sider',
-    data () {
-      return {
-        visible: true
-      }
+import NButton from '../button/button'
+
+export default {
+  name: 'sider',
+  components: { NButton },
+  data () {
+    return {
+      visible: true
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>
   .sider {
     position: relative;
+    width: 200px;
     > button {
       position: absolute;
-      top: 0;
-      right: 0;
+      top: 10px;
+      right: 10px;
     }
   }
   .slide-enter-active, .slide-leave-active {

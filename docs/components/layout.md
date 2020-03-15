@@ -1,4 +1,9 @@
 ---
 title: Layout
 ---
-# 布局
+# Layout
+
+&nbsp;
+<ClientOnly>
+    <layout-demo></layout-demo>
+</ClientOnly>

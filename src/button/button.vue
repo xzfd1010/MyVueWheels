@@ -1,5 +1,5 @@
 <template>
-  <button :class="{[`icon-${iconPosition}`]:true}" @click="$emit('click')"
+  <button :class="{[`icon-${iconPosition}`]:true, circle}" @click="$emit('click')"
           class="g-button">
     <icon :name="icon" class="icon" v-if="icon && !loading"></icon>
     <icon class="icon loading" name="loading" v-if="loading"></icon>
@@ -18,6 +18,10 @@ export default {
     Icon
   },
   props: {
+    circle: {
+      type: Boolean,
+      default: false
+    },
     icon: {
       type: String,
     },
@@ -58,6 +62,14 @@ export default {
     }
     &:focus {
       outline: none;
+    }
+    &.circle {
+      height: auto;
+      padding: 0.6em;
+      border-radius: 50%;
+      > .icon {
+        margin-right: 0;
+      }
     }
     > .icon {
       order: 1;
