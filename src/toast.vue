@@ -3,89 +3,89 @@
     <div class="toast">
       <div class="message">
         <slot>
-          <div v-if="!enableHtml">{{message}}</div>
+          <div v-if="!enableHTML">{{message}}</div>
           <div v-else v-html="message"></div>
         </slot>
       </div>
       <!--    todo 这里也要改，closeButton现在一直都存在  -->
       <span @click.stop="onClickClose" class="close" ref="button" v-if="closeButton">
-      {{closeButton.text}}
-    </span>
+        {{closeButton.text}}
+      </span>
     </div>
   </div>
 </template>
 
 <script>
-  export default {
-    name: 'toast',
-    props: {
-      autoClose: {
-        type: [Boolean, Number],
-        default: 3,
-        validator (value) {
-          return value === false || typeof value === 'number'
-        }
-      },
-      closeButton: {
-        type: Object,
-        default: () => {
-          return {
-            text: '关闭',
-            callback: () => {}
-          }
-        }
-      },
-      enableHtml: {
-        type: Boolean,
-        default: false
-      },
-      message: {
-        default: ''
-      },
-      position: {
-        type: String,
-        default: 'top',
-        validator (value) {
-          return ['top', 'bottom', 'middle'].includes(value)
+export default {
+  name: 'Toast',
+  props: {
+    autoClose: {
+      type: [Boolean, Number],
+      default: 3,
+      validator (value) {
+        return value === false || typeof value === 'number'
+      }
+    },
+    closeButton: {
+      type: Object,
+      default: () => {
+        return {
+          text: '关闭',
+          callback: () => {}
         }
       }
     },
-    computed: {
-      toastClasses () {
-        return { [`position-${this.position}`]: true }
+    enableHTML: {
+      type: Boolean,
+      default: false
+    },
+    message: {
+      default: ''
+    },
+    position: {
+      type: String,
+      default: 'top',
+      validator (value) {
+        return ['top', 'bottom', 'middle'].includes(value)
+      }
+    }
+  },
+  computed: {
+    toastClasses () {
+      return { [`position-${this.position}`]: true }
+    }
+  },
+  methods: {
+    execAutoClose () {
+      if (this.autoClose) {
+        setTimeout(() => {
+          this.close()
+        }, this.autoClose * 1000)
       }
     },
-    methods: {
-      execAutoClose () {
-        if (this.autoClose) {
-          setTimeout(() => {
-            this.close()
-          }, this.autoCloseDelay * 1000)
-        }
-      },
-      close () {
-        this.$el.remove() // destroy不会删掉元素
-        this.$emit('close')
-        this.$destroy()
-      },
-      onClickClose () {
-        this.close()
-        if (this.closeButton && typeof this.closeButton.callback === 'function') {
-          this.closeButton.callback()
-        }
-      },
-      updateStyles () {
-        this.$nextTick(() => {
-          this.$refs.button.style.height = this.$el.getBoundingClientRect().height + 'px'
-        })
+    close () {
+      this.$el.remove() // destroy不会删掉元素
+      this.$emit('close')
+      this.$destroy()
+    },
+    onClickClose () {
+      this.close()
+      if (this.closeButton && typeof this.closeButton.callback === 'function') {
+        this.closeButton.callback(this)
       }
     },
-    mounted () {
-      this.execAutoClose()
-      this.updateStyles()
+    updateStyles () {
+      this.$nextTick(() => {
+        this.$refs.button.style.height = this.$el.getBoundingClientRect().height + 'px'
+      })
+    }
+  },
+  mounted () {
+    this.execAutoClose()
+    this.updateStyles()
 
-    },
-  }
+  },
+}
 </script>
 
 <style lang="scss" scoped>
@@ -108,6 +108,7 @@
   .wrapper {
     position: fixed;
     left: 50%;
+    z-index: 999;
     transform: translateX(-50%);
     &.position-top {
       top: 0;
