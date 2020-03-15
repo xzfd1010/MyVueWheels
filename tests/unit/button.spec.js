@@ -3,7 +3,7 @@ import sinon from 'sinon'
 import sinonChai from 'sinon-chai'
 import { mount } from '@vue/test-utils'
 import Vue from 'vue'
-import Button from '@/button/button'
+import Button from '../../src/button/button'
 
 chai.use(sinonChai)
 
