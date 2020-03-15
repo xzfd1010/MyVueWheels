@@ -1,52 +1,94 @@
 <template>
-  <div id="app">
-    <tabs :selected.sync="selectedTab">
-      <tabs-head>
-        <template slot="actions">
-          <n-button>编辑</n-button>
+  <div id="app" style="margin:100px;">
+    <popover>
+      <template v-slot:content="{close}">
+        <div>popover1里面的内容</div>
+        <n-button @click="close">关闭</n-button>
+      </template>
+      <template>
+        <n-button>点我</n-button>
+      </template>
+    </popover>
+    
+    <popover position="bottom">
+      <template slot="content">
+        <div>popover2里面的内容</div>
+      </template>
+      <template>
+        <n-button>点我</n-button>
+      </template>
+    </popover>
+    
+    <popover position="left">
+      <template slot="content">
+        <div>popover3里面的内容</div>
+      </template>
+      <template>
+        <n-button>点我</n-button>
+      </template>
+    </popover>
+    
+    <popover position="right">
+      <template slot="content">
+        <div>popover4里面的内容</div>
+      </template>
+      <template>
+        <n-button>点我</n-button>
+      </template>
+    </popover>
+    
+    <div style="margin-top:100px;">
+      <popover trigger="hover">
+        <template v-slot:content="{close}">
+          <div>popover1里面的内容</div>
+          <n-button @click="close">关闭</n-button>
         </template>
-        <tabs-item name="woman">
-          <icon name="settings"></icon>
-          美女
-        </tabs-item>
-        <tabs-item name="life">
-          生活
-        </tabs-item>
-        <tabs-item name="finance" disabled>
-          财经
-        </tabs-item>
-      </tabs-head>
-      <tabs-body>
-        <tabs-pane name="woman">
-          美女相关资讯
-        </tabs-pane>
-        <tabs-pane name="finance">
-          财经相关资讯
-        </tabs-pane>
-      </tabs-body>
-    </tabs>
+        <template>
+          <n-button>点我</n-button>
+        </template>
+      </popover>
+      
+      <popover trigger='hover' position="bottom">
+        <template slot="content">
+          <div>popover2里面的内容</div>
+        </template>
+        <template>
+          <n-button>点我</n-button>
+        </template>
+      </popover>
+      
+      <popover trigger='hover' position="left">
+        <template slot="content">
+          <div>popover3里面的内容</div>
+        </template>
+        <template>
+          <n-button>点我</n-button>
+        </template>
+      </popover>
+      
+      <popover trigger='hover' position="right">
+        <template slot="content">
+          <div>popover4里面的内容</div>
+        </template>
+        <template>
+          <n-button>点我</n-button>
+        </template>
+      </popover>
+    </div>
+  
   </div>
 
 
 </template>
 <script>
-import Tabs from './tabs/tabs'
-import TabsPane from './tabs/tabs-pane'
-import TabsHead from './tabs/tabs-head'
-import TabsItem from './tabs/tabs-item'
-import TabsBody from './tabs/tabs-body'
-import Icon from './icon'
+import Popover from './popover'
 import NButton from './button/button'
 
 export default {
   components: {
-    Icon,
-    Tabs,
-    TabsHead,
-    TabsBody,
-    TabsItem,
-    TabsPane,
+    Popover,
     NButton,
+
   },
   data () {
     return {
@@ -56,7 +98,6 @@ export default {
       selectedTab: 'woman'
     }
   },
-
 }
 </script>
 <style lang="scss"></style>

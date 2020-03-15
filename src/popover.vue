@@ -12,123 +12,123 @@
 </template>
 
 <script>
-  export default {
-    name: 'popover',
-    props: {
-      position: {
-        default: 'top',
-        validator (value) {
-          return ['top', 'bottom', 'left', 'right'].indexOf(value) > -1
-        }
-      },
-      trigger: {
-        default: 'click',
-        validator (value) {
-          return ['click', 'hover'].indexOf(value) > -1
-        }
+export default {
+  name: 'popover',
+  props: {
+    position: {
+      default: 'top',
+      validator (value) {
+        return ['top', 'bottom', 'left', 'right'].indexOf(value) > -1
       }
     },
-    data () {
-      return {
-        visible: false
+    trigger: {
+      default: 'click',
+      validator (value) {
+        return ['click', 'hover'].indexOf(value) > -1
       }
-    },
-    mounted () {
-      let triggerWrapper = this.$refs.triggerWrapper
-      const contentWrapper = this.$refs.contentWrapper
-      if (this.trigger === 'click') {
-        this.$refs.popover.addEventListener('click', this.onClick)
-      } else {
-        triggerWrapper.addEventListener('mouseenter', this.handleMouseEnter)
-        triggerWrapper.addEventListener('mouseleave', this.handleMouseLeave)
-        contentWrapper.addEventListener('mouseenter', this.handleMouseEnter)
-        contentWrapper.addEventListener('mouseleave', this.handleMouseLeave)
-      }
-    },
-    beforeDestroy () {
-      if (this.trigger === 'click') {
-        document.removeEventListener('click', this.onClickDocument)
-        this.$refs.popover.removeEventListener('click', this.onClick)
-      } else {
-        this.$refs.triggerWrapper.removeEventListener('mouseenter', this.handleMouseEnter)
-        this.$refs.triggerWrapper.removeEventListener('mouseleave', this.handleMouseLeave)
-        this.$refs.contentWrapper.removeEventListener('mouseenter', this.handleMouseEnter)
-        this.$refs.contentWrapper.removeEventListener('mouseleave', this.handleMouseLeave)
-      }
-    },
-    methods: {
-      handleMouseLeave () {
-        clearTimeout(this._timer)
-        this._timer = setTimeout(() => {
-          this.close()
-        }, 200)
-      },
-      handleMouseEnter () {
-        clearTimeout(this._timer)
-        this._timer = setTimeout(() => {
-          this.open()
-        }, 200)
-      },
-      onClickDocument (e) {
-        if (this.$refs.popover && this.$refs.popover.contains(e.target)) return // 判断点击的是否是popover
-        if (this.$refs.contentWrapper && this.$refs.contentWrapper.contains(e.target)) return // contentWrapper移到外面，需要单独判断
+    }
+  },
+  data () {
+    return {
+      visible: false
+    }
+  },
+  mounted () {
+    let triggerWrapper = this.$refs.triggerWrapper
+    const contentWrapper = this.$refs.contentWrapper
+    if (this.trigger === 'click') {
+      this.$refs.popover.addEventListener('click', this.onClick)
+    } else {
+      triggerWrapper.addEventListener('mouseenter', this.handleMouseEnter)
+      triggerWrapper.addEventListener('mouseleave', this.handleMouseLeave)
+      contentWrapper.addEventListener('mouseenter', this.handleMouseEnter)
+      contentWrapper.addEventListener('mouseleave', this.handleMouseLeave)
+    }
+  },
+  beforeDestroy () {
+    if (this.trigger === 'click') {
+      document.removeEventListener('click', this.onClickDocument)
+      this.$refs.popover.removeEventListener('click', this.onClick)
+    } else {
+      this.$refs.triggerWrapper.removeEventListener('mouseenter', this.handleMouseEnter)
+      this.$refs.triggerWrapper.removeEventListener('mouseleave', this.handleMouseLeave)
+      this.$refs.contentWrapper.removeEventListener('mouseenter', this.handleMouseEnter)
+      this.$refs.contentWrapper.removeEventListener('mouseleave', this.handleMouseLeave)
+    }
+  },
+  methods: {
+    handleMouseLeave () {
+      clearTimeout(this._timer)
+      this._timer = setTimeout(() => {
         this.close()
-      },
-      positionContent () {
-        const { contentWrapper, triggerWrapper } = this.$refs
-        document.body.appendChild(contentWrapper)
-        const { left, top, width, height } = triggerWrapper.getBoundingClientRect()
-        const { height: height2 } = contentWrapper.getBoundingClientRect()
-        let diff = (height - height2) / 2
-        let x = {
-          top: {
-            left: window.scrollX + left,
-            top: window.scrollY + top
-          },
-          bottom: {
-            left: window.scrollX + left,
-            top: window.scrollY + top + height
-          },
-          left: {
-            left: window.scrollX + left,
-            top: window.scrollY + top + diff
-          },
-          right: {
-            left: window.scrollX + left + width,
-            top: window.scrollY + top + diff
-          }
+      }, 200)
+    },
+    handleMouseEnter () {
+      clearTimeout(this._timer)
+      this._timer = setTimeout(() => {
+        this.open()
+      }, 200)
+    },
+    onClickDocument (e) {
+      if (this.$refs.popover && this.$refs.popover.contains(e.target)) return // 判断点击的是否是popover
+      if (this.$refs.contentWrapper && this.$refs.contentWrapper.contains(e.target)) return // contentWrapper移到外面，需要单独判断
+      this.close()
+    },
+    positionContent () {
+      const { contentWrapper, triggerWrapper } = this.$refs
+      document.body.appendChild(contentWrapper)
+      const { left, top, width, height } = triggerWrapper.getBoundingClientRect()
+      const { height: height2 } = contentWrapper.getBoundingClientRect()
+      let diff = (height - height2) / 2
+      let x = {
+        top: {
+          left: window.scrollX + left,
+          top: window.scrollY + top
+        },
+        bottom: {
+          left: window.scrollX + left,
+          top: window.scrollY + top + height
+        },
+        left: {
+          left: window.scrollX + left,
+          top: window.scrollY + top + diff
+        },
+        right: {
+          left: window.scrollX + left + width,
+          top: window.scrollY + top + diff
         }
-        contentWrapper.style.left = x[this.position].left + 'px'
-        contentWrapper.style.top = x[this.position].top + 'px'
-      },
-      open () {
-        this.visible = true
-        this.$nextTick(() => {
-          this.positionContent()
-          document.addEventListener('click', this.onClickDocument)
-        })
-      },
-      close () {
-        this.visible = false
-        document.removeEventListener('click', this.onClickDocument)
-      },
-      onClick (event) {
-        if (this.$refs.triggerWrapper.contains(event.target)) {
-          if (!this.visible) {
-            this.open()
-          } else {
-            this.close()
-          }
+      }
+      contentWrapper.style.left = x[this.position].left + 'px'
+      contentWrapper.style.top = x[this.position].top + 'px'
+    },
+    open () {
+      this.visible = true
+      this.$nextTick(() => {
+        this.positionContent()
+        document.addEventListener('click', this.onClickDocument)
+      })
+    },
+    close () {
+      this.visible = false
+      document.removeEventListener('click', this.onClickDocument)
+    },
+    onClick (event) {
+      if (this.$refs.triggerWrapper.contains(event.target)) {
+        if (!this.visible) {
+          this.open()
+        } else {
+          this.close()
         }
       }
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>
   $border-color: #333;
   $border-radius: 4px;
-  .x, .fade-leave-active {
+  .fade-leave-active {
     transition: all .3s;
   }
   .fade-enter, .fade-leave-to {

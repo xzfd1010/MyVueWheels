@@ -37,7 +37,7 @@
 <script>
 import NButton from '../../../src/button/button'
 import NButtonGroup from '../../../src/button/button-group'
-import NIcon from '../../../src/icon'
+import Icon from '../../../src/icon'
 
 import mixin from '../mixin'
 
@@ -46,7 +46,7 @@ export default {
   mixins: [mixin],
   components: {
     NButton,
-    NIcon,
+    Icon,
     NButtonGroup
   },
   data () {

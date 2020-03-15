@@ -28,7 +28,7 @@
 <script>
 import NButton from '../../../src/button/button'
 import NButtonGroup from '../../../src/button/button-group'
-import NIcon from '../../../src/icon'
+import Icon from '../../../src/icon'
 
 import mixin from '../mixin'
 
@@ -37,16 +37,16 @@ export default {
   mixins: [mixin],
   components: {
     NButton,
-    NIcon,
+    Icon,
     NButtonGroup
   },
   data () {
     return {
       codeStr: `
-<n-button>默认按钮</n-button>
-<n-button icon="settings">默认按钮</n-button>
-<n-button :loading="true">默认按钮</n-button>
-<n-button disabled>默认按钮</n-button>
+          <n-button>默认按钮</n-button>
+          <n-button icon="settings">带icon按钮</n-button>
+          <n-button :loading="true">加载按钮</n-button>
+          <n-button disabled>禁用按钮</n-button>
         `.trim().split(/\n/).map(item => item.trim()).join('\n')
     }
   }
