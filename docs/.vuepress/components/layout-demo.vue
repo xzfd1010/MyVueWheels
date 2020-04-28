@@ -10,7 +10,7 @@
           <n-sider class="sider">sider</n-sider>
           <n-layout>
             <n-header class="header">header</n-header>
-            <n-content class="content">content</n-content>
+            <n-content class="content" style="height: 300px;    background: #e9eef3;">content</n-content>
             <n-footer class="footer">footer</n-footer>
           </n-layout>
         </n-layout>
@@ -70,7 +70,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .sider {
     background: #d3dce6;
   }
@@ -83,7 +83,7 @@ export default {
     background: #b3c0d1;
   }
   .content {
-      height: 300px;
+    height: 300px;
     background: #e9eef3;
   }
 </style>

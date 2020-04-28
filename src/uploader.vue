@@ -23,162 +23,162 @@
 </template>
 
 <script>
-  import Icon from './icon'
-  import http from './http'
+import Icon from './icon'
+import http from './http'
 
-  export default {
-    name: 'uploader',
-    components: { Icon },
-    props: {
-      name: {
-        type: String,
-        required: true
-      },
-      action: {
-        type: String,
-        required: true
-      },
-      method: {
-        type: String,
-        default: 'POST'
-      },
-      parseResponse: {
-        type: Function,
-        required: true
-      },
-      fileList: {
-        type: Array,
-        default: () => []
-      },
-      sizeLimit: {
-        type: Number
-      },
-      multiple: {
-        type: Boolean,
-        default: false
-      },
-      accept: {
-        type: String,
+export default {
+  name: 'uploader',
+  components: { Icon },
+  props: {
+    name: {
+      type: String,
+      required: true
+    },
+    action: {
+      type: String,
+      required: true
+    },
+    method: {
+      type: String,
+      default: 'POST'
+    },
+    parseResponse: {
+      type: Function,
+      required: true
+    },
+    fileList: {
+      type: Array,
+      default: () => []
+    },
+    sizeLimit: {
+      type: Number
+    },
+    multiple: {
+      type: Boolean,
+      default: false
+    },
+    accept: {
+      type: String,
+    }
+  },
+  data () {
+    return {
+      url: 'about:blank',
+    }
+  },
+  methods: {
+    onRemoveFile (file) {
+      let answer = window.confirm('你确定要删除这张图片吗？')
+      if (answer) {
+        let copy = [...this.fileList]
+        let index = copy.indexOf(file)
+        copy.splice(index, 1)
+        this.$emit('update:fileList', copy)
       }
     },
-    data () {
-      return {
-        url: 'about:blank',
+    onClickUpload () {
+      let input = this.createInput()
+      input.addEventListener('change', () => {
+        // this.uploadFile(input.files[0])
+        this.uploadFiles(input.files)
+        input.remove()
+      })
+      input.click()
+    },
+    createInput () {
+      this.$refs.temp.innerHTML = ''
+      let input = document.createElement('input')
+      input.type = 'file'
+      input.accept = this.accept
+      input.multiple = this.multiple
+      this.$refs.temp.appendChild(input)
+      return input
+    },
+    // 更新状态
+    beforeUploadFiles (rawFiles, newNames) {
+      for (let i = 0; i < rawFiles.length; i++) {
+        let rawFile = rawFiles[i]
+        let { size } = rawFile
+        // 处理尺寸过大的情况，这个size应该是外部传入的
+        if (this.sizeLimit > 0 && size > this.sizeLimit) {
+          this.$emit('error', '文件大于2Mb')
+          return false
+        }
+      }
+      let fileList = Array.from(rawFiles).map((rawFile, i) => {
+        let { size, type } = rawFile
+        return { name: newNames[i], type, size, status: 'uploading' }
+      })
+      // 一次性更新fileList
+      this.$emit('update:fileList', [...this.fileList, ...fileList])
+      return true
+    },
+    afterUploadFile (newName, url) {
+      let file = this.fileList.filter(f => f.name === newName)[0]
+      let index = this.fileList.indexOf(file)
+      let fileCopy = JSON.parse(JSON.stringify(file))
+      fileCopy.url = url
+      fileCopy.status = 'success'
+      let fileListCopy = [...this.fileList]
+      fileListCopy.splice(index, 1, fileCopy)
+      this.$emit('update:fileList', fileListCopy)
+      this.$emit('uploaded')
+    },
+    uploadFiles (rawFiles) {
+      let newNames = []
+      // 处理文件名，并建立关联
+      for (let i = 0; i < rawFiles.length; i++) {
+        let rawFile = rawFiles[i]
+        let { name } = rawFile
+        let newName = this.generateNewName(name)
+        newNames.push(newName)
+      }
+      if (!this.beforeUploadFiles(rawFiles, newNames)) return
+      // 执行上传操作
+      for (let i = 0; i < rawFiles.length; i++) {
+        let rawFile = rawFiles[i]
+        let newName = newNames[i]
+        let formData = new FormData()
+        //todo 服务器上传的文件名是name，而非newName，可能存在bug
+        formData.append(this.name, rawFile)
+
+        this.doUploadFile(formData, (response) => {
+          let url = this.parseResponse(response)
+          this.url = url
+          this.afterUploadFile(newName, url)
+        }, (xhr) => {
+          this.uploadError(xhr, newName)
+        })
       }
     },
-    methods: {
-      onRemoveFile (file) {
-        let answer = window.confirm('你确定要删除这张图片吗？')
-        if (answer) {
-          let copy = [...this.fileList]
-          let index = copy.indexOf(file)
-          copy.splice(index, 1)
-          this.$emit('update:fileList', copy)
-        }
-      },
-      onClickUpload () {
-        let input = this.createInput()
-        input.addEventListener('change', () => {
-          // this.uploadFile(input.files[0])
-          this.uploadFiles(input.files)
-          input.remove()
-        })
-        input.click()
-      },
-      createInput () {
-        this.$refs.temp.innerHTML = ''
-        let input = document.createElement('input')
-        input.type = 'file'
-        input.accept = this.accept
-        input.multiple = this.multiple
-        this.$refs.temp.appendChild(input)
-        return input
-      },
-      // 更新状态
-      beforeUploadFiles (rawFiles, newNames) {
-        for (let i = 0; i < rawFiles.length; i++) {
-          let rawFile = rawFiles[i]
-          let { size } = rawFile
-          // 处理尺寸过大的情况，这个size应该是外部传入的
-          if (this.sizeLimit > 0 && size > this.sizeLimit) {
-            this.$emit('error', '文件大于2Mb')
-            return false
-          }
-        }
-        let fileList = Array.from(rawFiles).map((rawFile, i) => {
-          let { size, type } = rawFile
-          return { name: newNames[i], type, size, status: 'uploading' }
-        })
-        // 一次性更新fileList
-        this.$emit('update:fileList', [...this.fileList, ...fileList])
-        return true
-      },
-      afterUploadFile (newName, url) {
-        let file = this.fileList.filter(f => f.name === newName)[0]
-        let index = this.fileList.indexOf(file)
-        let fileCopy = JSON.parse(JSON.stringify(file))
-        fileCopy.url = url
-        fileCopy.status = 'success'
-        let fileListCopy = [...this.fileList]
-        fileListCopy.splice(index, 1, fileCopy)
-        this.$emit('update:fileList', fileListCopy)
-        this.$emit('uploaded')
-      },
-      uploadFiles (rawFiles) {
-        let newNames = []
-        // 处理文件名，并建立关联
-        for (let i = 0; i < rawFiles.length; i++) {
-          let rawFile = rawFiles[i]
-          let { name } = rawFile
-          let newName = this.generateNewName(name)
-          newNames.push(newName)
-        }
-        if (!this.beforeUploadFiles(rawFiles, newNames)) return
-        // 执行上传操作
-        for (let i = 0; i < rawFiles.length; i++) {
-          let rawFile = rawFiles[i]
-          let newName = newNames[i]
-          let formData = new FormData()
-          //todo 服务器上传的文件名是name，而非newName，可能存在bug
-          formData.append(this.name, rawFile)
-
-          this.doUploadFile(formData, (response) => {
-            let url = this.parseResponse(response)
-            this.url = url
-            this.afterUploadFile(newName, url)
-          }, (xhr) => {
-            this.uploadError(xhr, newName)
-          })
-        }
-      },
-      uploadError (xhr, newName) {
-        let file = this.fileList.filter(f => f.name === newName)[0]
-        let index = this.fileList.indexOf(file)
-        let fileCopy = JSON.parse(JSON.stringify(file))
-        fileCopy.status = 'fail'
-        let fileListCopy = [...this.fileList]
-        fileListCopy.splice(index, 1, fileCopy)
-        this.$emit('update:fileList', fileListCopy)
-        let error = ''
-        if (xhr.status === 0) {
-          error = '网络无法连接'
-        }
-        this.$emit('error', error)
-      },
-      generateNewName (name) {
-        while (this.fileList.filter(f => f.name === name).length > 0) {
-          let dotIndex = name.lastIndexOf('.')
-          let nameWithoutExtension = name.substring(0, dotIndex)
-          let extension = name.substring(dotIndex)
-          name = nameWithoutExtension + '(1)' + extension
-        }
-        return name
-      },
-      doUploadFile (formData, success, fail) {
-        http[this.method.toLowerCase()](this.action, { success, fail, data: formData })
+    uploadError (xhr, newName) {
+      let file = this.fileList.filter(f => f.name === newName)[0]
+      let index = this.fileList.indexOf(file)
+      let fileCopy = JSON.parse(JSON.stringify(file))
+      fileCopy.status = 'fail'
+      let fileListCopy = [...this.fileList]
+      fileListCopy.splice(index, 1, fileCopy)
+      this.$emit('update:fileList', fileListCopy)
+      let error = ''
+      if (xhr.status === 0) {
+        error = '网络无法连接'
       }
+      this.$emit('error', error)
+    },
+    generateNewName (name) {
+      while (this.fileList.filter(f => f.name === name).length > 0) {
+        let dotIndex = name.lastIndexOf('.')
+        let nameWithoutExtension = name.substring(0, dotIndex)
+        let extension = name.substring(dotIndex)
+        name = nameWithoutExtension + '(1)' + extension
+      }
+      return name
+    },
+    doUploadFile (formData, success, fail) {
+      http[this.method.toLowerCase()](this.action, { success, fail, data: formData })
     }
   }
+}
 </script>
 
 <style scoped lang="scss">
