@@ -1,5 +1,5 @@
 <template>
-  <svg class="g-icon" @click="$emit('click',$event)">
+  <svg class="n-icon" @click="$emit('click',$event)">
     <use :xlink:href="`#icon-${name}`"></use>
   </svg>
 </template>
@@ -14,7 +14,7 @@
 </script>
 
 <style lang="scss" scoped>
-  .g-icon {
+  .n-icon {
     width: 1em;
     height: 1em;
   }
