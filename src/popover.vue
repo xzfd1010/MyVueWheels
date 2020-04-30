@@ -26,6 +26,9 @@ export default {
       validator (value) {
         return ['click', 'hover'].indexOf(value) > -1
       }
+    },
+    container: {
+      type: Element
     }
   },
   data () {
@@ -75,8 +78,8 @@ export default {
       this.close()
     },
     positionContent () {
-      const { contentWrapper, triggerWrapper } = this.$refs
-      document.body.appendChild(contentWrapper)
+      const { contentWrapper, triggerWrapper } = this.$refs;
+      (this.container || document.body).appendChild(contentWrapper)
       const { left, top, width, height } = triggerWrapper.getBoundingClientRect()
       const { height: height2 } = contentWrapper.getBoundingClientRect()
       let diff = (height - height2) / 2

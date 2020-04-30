@@ -1,36 +1,39 @@
 <template>
-  <n-pop-over position="bottom">
-    <template>
-      <n-input type="text"></n-input>
-    </template>
-    <template v-slot:content>
-      <div :class="c('pop')">
-        <div :class="c('nav')">
-          <span><n-icon name="leftleft"></n-icon></span>
-          <span><n-icon name="left"></n-icon></span>
-          <span @click="onClickYear">2020年</span>
-          <span @click="onClickMonth">4月</span>
-          <span><n-icon name="right"></n-icon></span>
-          <span><n-icon name="rightright"></n-icon></span>
-        </div>
-        <div :class="c('content')">
-          <div>
-            <span v-for="i in helper.range(0,7)">{{weekdays[i]}}</span>
+  <div :class="c('wrapper')" ref="wrapper">
+    <n-pop-over position="bottom" :container="container">
+      <template>
+        <n-input type="text"></n-input>
+      </template>
+      <template v-slot:content>
+        <div :class="c('pop')">
+          <div :class="c('nav')">
+            <span><n-icon name="leftleft"></n-icon></span>
+            <span><n-icon name="left"></n-icon></span>
+            <span @click="onClickYear">2020年</span>
+            <span @click="onClickMonth">4月</span>
+            <span><n-icon name="right"></n-icon></span>
+            <span><n-icon name="rightright"></n-icon></span>
           </div>
-          <div :class="c('date')" v-if="mode==='date'">
-            <div v-for="i in helper.range(0,6)">
-              <span v-for="j in helper.range(i * 7, i * 7 + 7)">{{visibleDates[j].getDate()}} </span>
+          <div :class="c('content')">
+            <div>
+              <span v-for="i in helper.range(0,7)">{{weekdays[i]}}</span>
             </div>
+            <div :class="c('date')" v-if="mode==='date'">
+              <div v-for="i in helper.range(0,6)">
+                <span v-for="j in helper.range(i * 7, i * 7 + 7)">{{visibleDates[j].getDate()}} </span>
+              </div>
+            </div>
+            <div :class="c('month')" v-else-if="mode==='months'">月份</div>
+            <div :class="c('year')" v-else>年份</div>
           </div>
-          <div :class="c('month')" v-else-if="mode==='months'">月份</div>
-          <div :class="c('year')" v-else>年份</div>
+          <div :class="c('actions')">
+            <button>清除</button>
+          </div>
         </div>
-        <div :class="c('actions')">
-          <button>清除</button>
-        </div>
-      </div>
-    </template>
-  </n-pop-over>
+      </template>
+    </n-pop-over>
+  </div>
+
 
 </template>
 
@@ -54,7 +57,8 @@ export default {
       mode: 'date',
       value: new Date(),
       helper: helper,
-      weekdays: ['一', '二', '三', '四', '五', '六', '日']
+      weekdays: ['一', '二', '三', '四', '五', '六', '日'],
+      container: null
     }
   },
   computed: {
@@ -101,15 +105,20 @@ export default {
     }
   },
   mounted () {
-
+    this.container = this.$refs.wrapper
   }
 }
 </script>
 
 <style scoped lang="scss">
-  .n-date-picker{
-    &-nav{
+  .n-date-picker {
+    &-nav {
       background: red;
+    }
+    &-wrapper{
+      /deep/ .content-wrapper{
+        padding: 0;
+      }
     }
     
   }
