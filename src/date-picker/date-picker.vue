@@ -4,28 +4,28 @@
       <n-input type="text"></n-input>
     </template>
     <template v-slot:content>
-      <div class="n-date-picker-pop">
-        <div class="n-date-picker-nav">
-          <span><n-icon name="left"></n-icon></span>
+      <div :class="c('pop')">
+        <div :class="c('nav')">
+          <span><n-icon name="leftleft"></n-icon></span>
           <span><n-icon name="left"></n-icon></span>
           <span @click="onClickYear">2020年</span>
           <span @click="onClickMonth">4月</span>
           <span><n-icon name="right"></n-icon></span>
-          <span><n-icon name="right"></n-icon></span>
+          <span><n-icon name="rightright"></n-icon></span>
         </div>
-        <div class="n-date-picker-content">
+        <div :class="c('content')">
           <div>
             <span v-for="i in helper.range(0,7)">{{weekdays[i]}}</span>
           </div>
-          <div class="n-date-picker-date" v-if="mode==='date'">
+          <div :class="c('date')" v-if="mode==='date'">
             <div v-for="i in helper.range(0,6)">
               <span v-for="j in helper.range(i * 7, i * 7 + 7)">{{visibleDates[j].getDate()}} </span>
             </div>
           </div>
-          <div class="n-date-picker-month" v-else-if="mode==='months'">月份</div>
-          <div class="n-date-picker-year" v-else>年份</div>
+          <div :class="c('month')" v-else-if="mode==='months'">月份</div>
+          <div :class="c('year')" v-else>年份</div>
         </div>
-        <div class="n-date-picker-actions">
+        <div :class="c('actions')">
           <button>清除</button>
         </div>
       </div>
@@ -90,6 +90,9 @@ export default {
     }
   },
   methods: {
+    c (className) {
+      return `n-date-picker-${className}`
+    },
     onClickMonth () {
       this.mode = 'months'
     },
@@ -104,5 +107,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
+  .n-date-picker{
+    &-nav{
+      background: red;
+    }
+    
+  }
 </style>
